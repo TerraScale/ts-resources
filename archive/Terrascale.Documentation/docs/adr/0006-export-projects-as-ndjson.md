@@ -1,0 +1,3 @@
+# Export projects as compressed NDJSON
+
+A complete Project export is one versioned ZIP package with a versioned manifest, integrity hashes, and one newline-delimited JSON file per Repository. It includes Database, Environment, Repository, Document, index, and version metadata needed to interpret the data. Billing receipts are exported separately, and credential secrets are never included. The Customer chooses either an authenticated, revocable download available for 24 hours or upload to a short-lived customer-provided AWS S3 presigned destination. TerraScale stores no customer AWS access keys. The export is a portability feature, not a backup or Database snapshot.

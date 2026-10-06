@@ -1,0 +1,92 @@
+# TerraScale docs — llms.txt (P-8)
+
+> TerraScale is a multi-region document database-as-a-service: leaderless
+> causal replication across selected Regions, CDN-backed reactive
+> live queries, SQL over documents (SQLite dialect), per-document history
+> with deterministic conflict explanations, PITR/branching, and a database
+> per tenant. Usage is metered in operation units (each started 4 KiB read
+> or written; writes count once per selected region, reads only in the
+> serving region) and storage across regions. Plans use hard allowances with
+> no paid overages during Public Alpha.
+> SQL is the only query language (D-78). A write counts once per selected
+> region regardless of views/subscribers (D-22).
+
+Base URL: https://docs.terrascale.tech
+
+## Docs map
+
+- TerraScale docs home: what TerraScale is, quickstart with an unqualified five-minute target.: https://docs.terrascale.tech/
+- Quickstart: create-terrascale-app to development write and live query; sign-in journey unqualified.: https://docs.terrascale.tech/getting-started
+- Quickstart: cloud dev branch, document write, and live query; real browser journey unqualified.: https://docs.terrascale.tech/getting-started/
+- Core concepts: documents, SQL-only queries (D-78), live queries vs collection sync (D-38), branches, tenants, placement.: https://docs.terrascale.tech/concepts
+- Replication guarantees: causal sessions, conflict limits, RegionalDurable/GlobalDurable.: https://docs.terrascale.tech/concepts/replication
+- Sync model: shared views, immutable delta log, CDN delivery.: https://docs.terrascale.tech/concepts/sync
+- SQL: live subset, allow-list, typed builder, auto-indexing.: https://docs.terrascale.tech/concepts/sql
+- Pricing philosophy: operation units and storage across regions are the two meters.: https://docs.terrascale.tech/concepts/pricing-philosophy
+- Guides overview.: https://docs.terrascale.tech/guides/
+- Pricing (generated from the canonical https://terrascale.tech/pricing.json): plans, operation units, storage across regions.: https://docs.terrascale.tech/pricing
+- Pricing & limits: plans, quotas, guards, shared organization allowances.: https://docs.terrascale.tech/pricing/
+- Limits and unbilled abuse guards, generated from the same source as pricing.: https://docs.terrascale.tech/limits
+- Runnable snippets: CRUD, SQL, and live subscriptions run against a real sandbox branch pre-filled with the reader's key; database-scoped branch, backup, and export routes are published, while tenant and project-scoped branch/backup fixtures await contracts and the export fixture awaits qualification.: https://docs.terrascale.tech/snippets
+- Superseded launch post draft: Reads are free — how.: https://docs.terrascale.tech/blog/reads-are-free
+- Benchmark publication policy: no measured results published.: https://docs.terrascale.tech/blog/benchmarks
+- Draft: choosing durability across Regions.: https://docs.terrascale.tech/blog/replication
+- Launch post draft: a database per customer.: https://docs.terrascale.tech/blog/database-per-customer
+- Changelog.: https://docs.terrascale.tech/changelog
+
+## Pricing summary (canonical source: https://terrascale.tech/pricing.json; full tables in /pricing and /pricing/)
+
+- Plans: Hobby $0/month, Starter $5/month, Pro $50/month, Enterprise $500/month (unavailable during Public Alpha).
+- One operation unit is each started 4 KiB (4,096 bytes) of a logical object successfully read or written. Lists, queries, and batches count each item independently. Writes count once per selected region; reads count only in the serving region. Failed, denied, invalid, throttled, and not-found requests are not billed.
+- Storage across regions: Stored bytes count once in every selected region.
+- Plans use hard allowances during Public Alpha. New billable work stops at the allowance. Reads, exports, deletion, and usage reduction remain available.
+
+## Snippet harness
+
+- Snippet sources: docs/snippets/*.ts. Runnable snippets export `run(sandbox)`.
+- Local mode (the default): `npm test` runs the deterministic stub harness.
+- Remote qualification (explicit, fail-closed): set TERRASCALE_SANDBOX_URL,
+  TERRASCALE_SANDBOX_API_KEY, and TERRASCALE_SANDBOX_DATABASE_ID, then run
+  `npm run test:remote`. The local harness does not qualify the remote
+  contract.
+
+## API entry points
+
+Base domain terrascale.tech. Regions at launch: GRU (São Paulo), SFO (San Jose), FRA (Frankfurt).
+
+- Discovery: GET https://atlas.terrascale.tech/api/v1/discovery?database=…
+  (optional branch, rev, stale) — served by ts-atlas, a metadata-only Worker:
+  credential-free KV-backed metadata that returns ranked regional endpoints
+  with capabilities, residency, a routing revision, and a refresh policy. The
+  TS SDK calls it once per database/branch/scope, then connects directly
+  (HTTPS + WebSocket).
+- Region catalog: GET https://atlas.terrascale.tech/api/v1/regions — also
+  ts-atlas; the catalog-selection fallback when discovery fails and the
+  selector for database-less member routes.
+- Nearest-region API router: https://api.terrascale.tech — forwards requests
+  to the nearest configured regional TerraBase HTTPS API. SDKs use discovery
+  to select direct regional origins.
+- Direct regional REST + WebSocket: https://gru.api.terrascale.tech,
+  https://sfo.api.terrascale.tech,
+  https://fra.api.terrascale.tech — direct
+  routing with catalog fallback; SDK data requests go straight to the region.
+- Reactive HTTP (live queries; CDN-backed long-polling, capability header):
+  https://sync.api.terrascale.tech
+- SQL (read-only; JSON or MessagePack):
+  POST /api/v1/databases/{id}/sql
+- Reactive views (create/attach; returns view id, snapshot chunk URLs, log
+  URL, checkpoint, view capability):
+  POST /api/v1/reactive/views
+- Reactive log (shared cache key; offset = revision):
+  GET /api/v1/reactive/views/{view}/{generation}/log?offset={revision}
+- Export (lossless bundle or JSONL):
+  POST /api/v1/databases/{id}/exports
+- Public status and metrics pages are deferred.
+
+## SDKs
+
+TypeScript (@terrascale/sdk), C#, Go, and Rust are supported SDK projects.
+Use each published package's pinned public contract for its available methods;
+cross-SDK parity and connected customer journeys still require qualification.
+Tenant provisioning is awaiting its producer contract. Framework adapters
+(React, TanStack, Better Auth) are TypeScript-only launch scope.

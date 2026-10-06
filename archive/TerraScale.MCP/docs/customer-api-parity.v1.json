@@ -1,0 +1,114 @@
+{
+  "inventoryVersion": 1,
+  "apiVersion": "/api/v1",
+  "source": "dependencies/TerraScale.DotNet",
+  "launchClaim": "blocked-until-qualified",
+  "scope": "configured-project",
+  "supportedReadTools": [
+    "get_configured_project",
+    "get_configured_project_latency",
+    "get_database_backup",
+    "get_database_environment",
+    "get_database_restore_job",
+    "get_project_database",
+    "get_project_usage",
+    "get_project_usage_history",
+    "get_project_workload",
+    "list_database_backups",
+    "list_database_backups_page_v2",
+    "list_database_environments",
+    "list_database_environments_page_v2",
+    "list_database_restore_jobs",
+    "list_database_restore_jobs_page_v2",
+    "list_project_databases",
+    "list_project_databases_page_v2",
+    "list_regions",
+    "plan_database_backup"
+  ],
+  "capabilities": [
+    {
+      "family": "organization",
+      "status": "deferred",
+      "reason": "Organization and membership data are not fixed-project reads and membership actions are high-risk customer mutations."
+    },
+    {
+      "family": "project",
+      "status": "partial",
+      "supported": ["get_configured_project"],
+      "reason": "Project reads are rooted in TERRASCALE_PROJECT_ID; creation, editing, placement, and deletion remain denied pending mutation admission."
+    },
+    {
+      "family": "database",
+      "status": "partial",
+      "supported": ["list_project_databases", "list_project_databases_page_v2", "get_project_database"],
+      "reason": "Database metadata reads are scoped and projected; create, edit, branch, and delete operations remain denied pending mutation admission."
+    },
+    {
+      "family": "environment",
+      "status": "partial",
+      "supported": ["list_database_environments", "list_database_environments_page_v2", "get_database_environment"],
+      "reason": "Environment metadata reads are scoped and projected; creation and deletion remain denied pending mutation admission."
+    },
+    {
+      "family": "repository",
+      "status": "deferred",
+      "reason": "Repository and schema responses are not currently part of the approved safe MCP projection."
+    },
+    {
+      "family": "document",
+      "status": "deferred",
+      "reason": "Raw document content, document queries, and document mutations are outside the approved MCP read scope."
+    },
+    {
+      "family": "query",
+      "status": "deferred",
+      "reason": "TQL and raw query inputs are prohibited; a bounded public query projection requires a separately reviewed contract."
+    },
+    {
+      "family": "credential",
+      "status": "deferred",
+      "reason": "Credential creation, rotation, and revocation are high-risk and secrets must never be returned or retained by MCP."
+    },
+    {
+      "family": "region",
+      "status": "partial",
+      "supported": ["list_regions"],
+      "reason": "Only the globally public catalog is available; project placement changes require an admitted mutation contract."
+    },
+    {
+      "family": "billing",
+      "status": "deferred",
+      "reason": "Billing, checkout, portal, and payment operations require fresh authentication and a separately approved customer workflow."
+    },
+    {
+      "family": "usage",
+      "status": "partial",
+      "supported": ["get_project_usage", "get_project_usage_history", "get_project_workload", "get_configured_project_latency"],
+      "reason": "Only fixed-project usage observations are exposed; no billing claims are inferred."
+    },
+    {
+      "family": "monitoring",
+      "status": "partial",
+      "supported": ["get_configured_project_latency", "get_project_workload"],
+      "reason": "Only typed project observations are exposed; operator dashboards and private monitoring APIs are prohibited."
+    },
+    {
+      "family": "backup-and-restore",
+      "status": "partial",
+      "supported": ["list_database_backups", "list_database_backups_page_v2", "get_database_backup", "list_database_restore_jobs", "list_database_restore_jobs_page_v2", "get_database_restore_job", "plan_database_backup"],
+      "reason": "Inspection and the read-only external approval handoff are available. MCP cannot trigger backups or restore data."
+    },
+    {
+      "family": "export",
+      "status": "deferred",
+      "reason": "Export responses may contain customer content and require a separately reviewed bounded delivery contract."
+    }
+  ],
+  "mutationAdmission": {
+    "status": "denied",
+    "requiredFlow": ["prepare", "external-human-approval", "execute"],
+    "requiredBindings": ["configured-project", "canonical-payload-hash", "authenticated-caller", "idempotency-key", "expiry"],
+    "requiredAuditFields": ["operation", "result", "configured-project", "authenticated-actor", "token-outcome", "idempotency-key", "correlation-id"],
+    "reason": "The current MCP transports do not provide a genuine non-agent-controlled approval authority or an atomically consumed public token bound to these values."
+  }
+}

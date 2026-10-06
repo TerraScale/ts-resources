@@ -1,0 +1,68 @@
+{
+  "capturedAtUtc": "2026-07-26T14:15:49Z",
+  "captureClass": "legacy-development-container",
+  "status": "superseded-invalid-timing-environment",
+  "note": "Preserved identity evidence only. These CPU and host values are not a decision-grade timing baseline.",
+  "terraBase": {
+    "commit": "e149ba4eccf22725313ee36900b2aa3aa3f07856",
+    "branch": "bench/baseline-sync-20260726",
+    "worktree": "/workspaces/TerraScale/TerraBase.Benchmark/.worktrees/baseline-sync-20260726",
+    "clean": true
+  },
+  "image": {
+    "id": "sha256:41458402507086af004951f180666439e7ee6459202587f30ccbdb40e48c2faa",
+    "digest": "sha256:b2d1404a19c682f406c4238c89f5e2c28624bf002fc9fc6b652e1eeb9cb7601f",
+    "reference": "localhost/terrabase-sync-baseline@sha256:b2d1404a19c682f406c4238c89f5e2c28624bf002fc9fc6b652e1eeb9cb7601f",
+    "embeddedRevision": "e149ba4eccf22725313ee36900b2aa3aa3f07856",
+    "smokeStarted": true
+  },
+  "host": {
+    "name": "mariogk-dev",
+    "operatingSystem": "Ubuntu 26.04 LTS",
+    "kernel": "7.0.0-28-generic",
+    "cpu": "Intel(R) Xeon(R) CPU E5-2660 v4 @ 2.00GHz",
+    "sockets": 2,
+    "physicalCores": 28,
+    "logicalCores": 56,
+    "memoryBytes": 130456158208,
+    "governor": "performance",
+    "dotNetSdk": "10.0.302",
+    "dotNetRuntime": "10.0.10",
+    "podman": "5.7.0",
+    "workspaceStorage": "NVMe btrfs"
+  },
+  "benchmarkAffinity": {
+    "clientCpus": "0-7",
+    "helperCpus": "8-13",
+    "serverCpus": "14-21",
+    "clientNumaNodes": "0",
+    "helperNumaNodes": "0",
+    "serverNumaNodes": "1",
+    "databaseMemoryLimitBytes": 8589934592
+  },
+  "supersededBy": {
+    "environmentClass": "dedicated-kvm-guest",
+    "guestVcpus": 13,
+    "guestMemoryBytes": 25769803776,
+    "clientCpus": "0-3",
+    "helperCpus": "4-5",
+    "serverCpus": "6-11",
+    "housekeepingCpus": "12",
+    "hostVcpuMap": "0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,10:10,11:11,12:12",
+    "hostEmulatorCpus": "13,41",
+    "hostControllerCpus": "27,55",
+    "devHostMode": "stopped and proved cgroup-quiescent, then restored for every guest command",
+    "nonPersistentStorage": "1 GiB fully allocated scratch guest disk on the existing host SSD",
+    "persistentStorage": "128 GiB NOCOW raw guest disk on the existing host SSD",
+    "harnessCandidateCommit": "59fbbb3d7212045c380f888bfd5d8764bf1a8ab1",
+    "settingsSha256": "de7f8692d904ea46db858b9a663697aa37d4e6cca22287be5a38a02ff0f4caa9",
+    "isolatedSelfTestRunId": "20260726T201733Z",
+    "isolatedSelfTestChecks": 121,
+    "isolatedSelfTestStatus": "checks-passed-environment-invalid-outside-kvm",
+    "cloudImageSha256": "117816726abbdefc5ef3e38902e81a76f1c76c3610e709999d0885f9d5d9b477",
+    "firmwareSha256": "a5708766c49ee39db0f4e7e53d73376e2dbc0d45bf12501c0977c48412bf8902",
+    "ociArchiveSha256": "3f0b99b5f90f9abfddce7c54cd2d9838baf7fe84b4d3186f417f9eadd55b639e",
+    "timingResultsCaptured": false
+  },
+  "timingBaselineValid": false
+}

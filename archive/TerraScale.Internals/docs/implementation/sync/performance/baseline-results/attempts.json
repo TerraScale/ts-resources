@@ -1,0 +1,29 @@
+{
+  "attempts": [
+    {
+      "runId": "20260726T140241Z",
+      "command": "self-test",
+      "harnessCommit": "50c14e58ccdcd697d723ff2455113f10aad11da1",
+      "terraBaseCommit": "e149ba4eccf22725313ee36900b2aa3aa3f07856",
+      "outcome": "Failed",
+      "reason": "get_mempolicy returned mode 0, expected bind mode 2",
+      "source": "TerraBase.Benchmark/history/2026/07/26/20260726T140241Z-self-test/result.json"
+    },
+    {
+      "runId": "20260726T140258Z",
+      "command": "self-test",
+      "harnessCommit": "ae386eacd2d5d05b88f524308af7257a8326849f",
+      "terraBaseCommit": "e149ba4eccf22725313ee36900b2aa3aa3f07856",
+      "outcome": "Failed",
+      "reason": "helper registration starts at zero and cannot import prior lifetime CPU",
+      "environmentValid": false,
+      "environmentInvalidReasons": [
+        "median background CPU 6.95% exceeded 5%",
+        "load average 5.91 exceeded the committed threshold",
+        "competing database workload detected",
+        "runner cgroup does not delegate cpuset"
+      ],
+      "source": "TerraBase.Benchmark/history/2026/07/26/20260726T140258Z-self-test/result.json"
+    }
+  ]
+}

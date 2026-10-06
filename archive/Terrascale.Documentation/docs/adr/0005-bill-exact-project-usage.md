@@ -1,0 +1,3 @@
+# Bill exact project usage at the organization level
+
+TerraScale aggregates measured project usage into the organization that owns the subscription. Storage billing sums byte-hours stored in every selected region, and database work uses the documented operation-unit rules. Developer, Starter, and Pro use hard allowances during Public Alpha. At a limit, TerraScale preserves reads, exports, usage reduction, and deletion while rejecting new billable work. Paid plans may add overages only after the provider-attributed ledger, reconciliation, customer-visible usage, dispute, refund, and failure paths pass production checks. Per-database storage allocations are estimates and never determine a charge. Customer egress is measured for visibility but is not billed.

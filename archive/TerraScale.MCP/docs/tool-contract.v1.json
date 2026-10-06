@@ -1,0 +1,630 @@
+{
+  "contractVersion": 1,
+  "distributionVersion": "0.1.0",
+  "supportedApiVersions": [
+    "/api/v1"
+  ],
+  "breakingChangeNotice": "at least six months",
+  "errorEnvelope": {
+    "error": "string",
+    "status": "optional integer",
+    "retryAfterSeconds": "optional number"
+  },
+  "errors": [
+    "authentication_required",
+    "invalid_input",
+    "request_cancelled",
+    "request_failed",
+    "request_timed_out",
+    "request_too_large",
+    "response_invalid",
+    "response_limit_exceeded",
+    "response_scope_invalid",
+    "response_scope_unverifiable",
+    "response_too_large",
+    "transport_failure"
+  ],
+  "tools": [
+    {
+      "runtime": {
+        "name": "get_configured_project",
+        "title": "Get configured project",
+        "description": "Gets metadata for the project configured in TERRASCALE_PROJECT_ID.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        },
+        "annotations": {
+          "title": "Get configured project",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "not-required",
+      "output": "SafeProject"
+    },
+    {
+      "runtime": {
+        "name": "get_configured_project_latency",
+        "title": "Get project regional latency",
+        "description": "Gets latency estimates for configured project regions without using caller location coordinates.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        },
+        "annotations": {
+          "title": "Get project regional latency",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "not-required",
+      "output": "SafeLatency"
+    },
+    {
+      "runtime": {
+        "name": "get_database_backup",
+        "title": "Get database backup",
+        "description": "Gets safe backup inspection metadata for a database in the configured project.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "databaseId": {
+              "description": "Logical database identifier.",
+              "type": "string"
+            },
+            "backupId": {
+              "description": "Backup identifier.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "databaseId",
+            "backupId"
+          ]
+        },
+        "annotations": {
+          "title": "Get database backup",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "not-required",
+      "output": "SafeBackup"
+    },
+    {
+      "runtime": {
+        "name": "get_database_environment",
+        "title": "Get database environment",
+        "description": "Gets one database environment in the configured project.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "databaseId": {
+              "description": "Logical database identifier.",
+              "type": "string"
+            },
+            "environmentId": {
+              "description": "Database environment identifier.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "databaseId",
+            "environmentId"
+          ]
+        },
+        "annotations": {
+          "title": "Get database environment",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "not-required",
+      "output": "SafeEnvironment"
+    },
+    {
+      "runtime": {
+        "name": "get_database_restore_job",
+        "title": "Get database restore job",
+        "description": "Gets safe restore-job inspection metadata for a database in the configured project. This does not restore data.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "databaseId": {
+              "description": "Logical database identifier.",
+              "type": "string"
+            },
+            "restoreId": {
+              "description": "Restore job identifier.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "databaseId",
+            "restoreId"
+          ]
+        },
+        "annotations": {
+          "title": "Get database restore job",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "not-required",
+      "output": "SafeRestoreJob"
+    },
+    {
+      "runtime": {
+        "name": "get_project_database",
+        "title": "Get project database",
+        "description": "Gets metadata for one logical database in the configured project.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "databaseId": {
+              "description": "Logical database identifier.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "databaseId"
+          ]
+        },
+        "annotations": {
+          "title": "Get project database",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "not-required",
+      "output": "SafeDatabase"
+    },
+    {
+      "runtime": {
+        "name": "get_project_usage",
+        "title": "Get project usage",
+        "description": "Gets current usage for the configured project. Billing checkout and account management are unavailable.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        },
+        "annotations": {
+          "title": "Get project usage",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "not-required",
+      "output": "SafeProjectUsage"
+    },
+    {
+      "runtime": {
+        "name": "get_project_usage_history",
+        "title": "Get project usage history",
+        "description": "Gets bounded usage history for the configured project. Range must be 24h, 7d, or 30d.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "range": {
+              "description": "24h, 7d, or 30d.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "range"
+          ]
+        },
+        "annotations": {
+          "title": "Get project usage history",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "not-required",
+      "output": "SafeUsageHistory"
+    },
+    {
+      "runtime": {
+        "name": "get_project_workload",
+        "title": "Get project workload",
+        "description": "Gets a bounded workload time series for the configured project. Range must be 24h, 7d, or 30d.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "range": {
+              "description": "24h, 7d, or 30d.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "range"
+          ]
+        },
+        "annotations": {
+          "title": "Get project workload",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "not-required",
+      "output": "SafeWorkload"
+    },
+    {
+      "runtime": {
+        "name": "list_database_backups",
+        "title": "List database backups",
+        "description": "Lists safe backup inspection metadata for a database in the configured project. This does not expose backup policy or trigger backups.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "databaseId": {
+              "description": "Logical database identifier.",
+              "type": "string"
+            },
+            "skip": {
+              "description": "Zero-based offset, 0 through 10000.",
+              "type": "integer",
+              "default": 0
+            },
+            "take": {
+              "description": "Maximum records, 1 through 100.",
+              "type": "integer",
+              "default": 50
+            }
+          },
+          "required": [
+            "databaseId"
+          ]
+        },
+        "annotations": {
+          "title": "List database backups",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "not-required",
+      "output": "SafeBackup[]"
+    },
+    {
+      "runtime": {
+        "name": "list_database_backups_page_v2",
+        "title": "List database backups page v2",
+        "description": "Lists a continuation-aware page of safe backup inspection metadata for a database in the configured project.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "databaseId": {
+              "description": "Logical database identifier.",
+              "type": "string"
+            },
+            "skip": {
+              "description": "Zero-based offset, 0 through 10000.",
+              "type": "integer",
+              "default": 0
+            },
+            "take": {
+              "description": "Maximum records, 1 through 100.",
+              "type": "integer",
+              "default": 50
+            }
+          },
+          "required": [
+            "databaseId"
+          ]
+        },
+        "annotations": {
+          "title": "List database backups page v2",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "not-required",
+      "output": "SafePage<SafeBackup>"
+    },
+    {
+      "runtime": {
+        "name": "list_database_environments",
+        "title": "List database environments",
+        "description": "Lists database environments in the configured project. Returns at most 100 metadata records.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "databaseId": {
+              "description": "Logical database identifier.",
+              "type": "string"
+            },
+            "skip": {
+              "description": "Zero-based offset, 0 through 10000.",
+              "type": "integer",
+              "default": 0
+            },
+            "take": {
+              "description": "Maximum records, 1 through 100.",
+              "type": "integer",
+              "default": 50
+            }
+          },
+          "required": [
+            "databaseId"
+          ]
+        },
+        "annotations": {
+          "title": "List database environments",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "not-required",
+      "output": "SafeEnvironment[]"
+    },
+    {
+      "runtime": {
+        "name": "list_database_environments_page_v2",
+        "title": "List database environments page v2",
+        "description": "Lists a continuation-aware page of database environments in the configured project.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "databaseId": {
+              "description": "Logical database identifier.",
+              "type": "string"
+            },
+            "skip": {
+              "description": "Zero-based offset, 0 through 10000.",
+              "type": "integer",
+              "default": 0
+            },
+            "take": {
+              "description": "Maximum records, 1 through 100.",
+              "type": "integer",
+              "default": 50
+            }
+          },
+          "required": [
+            "databaseId"
+          ]
+        },
+        "annotations": {
+          "title": "List database environments page v2",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "not-required",
+      "output": "SafePage<SafeEnvironment>"
+    },
+    {
+      "runtime": {
+        "name": "list_database_restore_jobs",
+        "title": "List database restore jobs",
+        "description": "Lists safe restore-job inspection metadata for a database in the configured project. This does not restore data.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "databaseId": {
+              "description": "Logical database identifier.",
+              "type": "string"
+            },
+            "skip": {
+              "description": "Zero-based offset, 0 through 10000.",
+              "type": "integer",
+              "default": 0
+            },
+            "take": {
+              "description": "Maximum records, 1 through 100.",
+              "type": "integer",
+              "default": 50
+            }
+          },
+          "required": [
+            "databaseId"
+          ]
+        },
+        "annotations": {
+          "title": "List database restore jobs",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "not-required",
+      "output": "SafeRestoreJob[]"
+    },
+    {
+      "runtime": {
+        "name": "list_database_restore_jobs_page_v2",
+        "title": "List database restore jobs page v2",
+        "description": "Lists a continuation-aware page of safe restore-job inspection metadata for a database in the configured project.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "databaseId": {
+              "description": "Logical database identifier.",
+              "type": "string"
+            },
+            "skip": {
+              "description": "Zero-based offset, 0 through 10000.",
+              "type": "integer",
+              "default": 0
+            },
+            "take": {
+              "description": "Maximum records, 1 through 100.",
+              "type": "integer",
+              "default": 50
+            }
+          },
+          "required": [
+            "databaseId"
+          ]
+        },
+        "annotations": {
+          "title": "List database restore jobs page v2",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "not-required",
+      "output": "SafePage<SafeRestoreJob>"
+    },
+    {
+      "runtime": {
+        "name": "list_project_databases",
+        "title": "List project databases",
+        "description": "Lists logical databases in the configured project. Returns at most 100 metadata records.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "skip": {
+              "type": "integer",
+              "default": 0
+            },
+            "take": {
+              "type": "integer",
+              "default": 50
+            }
+          }
+        },
+        "annotations": {
+          "title": "List project databases",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "not-required",
+      "output": "SafeDatabase[]"
+    },
+    {
+      "runtime": {
+        "name": "list_project_databases_page_v2",
+        "title": "List project databases page v2",
+        "description": "Lists a continuation-aware page of logical databases in the configured project.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "skip": {
+              "type": "integer",
+              "default": 0
+            },
+            "take": {
+              "type": "integer",
+              "default": 50
+            }
+          }
+        },
+        "annotations": {
+          "title": "List project databases page v2",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "not-required",
+      "output": "SafePage<SafeDatabase>"
+    },
+    {
+      "runtime": {
+        "name": "list_regions",
+        "title": "List TerraScale regions",
+        "description": "Lists the public TerraScale region catalog. This server is read-only.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        },
+        "annotations": {
+          "title": "List TerraScale regions",
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "global-catalog",
+      "confirmation": "not-required",
+      "output": "SafeRegion[]"
+    },
+    {
+      "runtime": {
+        "name": "plan_database_backup",
+        "title": "Plan database backup handoff",
+        "description": "Creates a scoped, read-only backup plan projection for external human review. MCP cannot execute backups and never returns the Platform confirmation token. Review and execute the operation in Dashboard or another approved out-of-band authority.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "databaseId": {
+              "description": "Logical database identifier in the configured project.",
+              "type": "string"
+            },
+            "operationSessionId": {
+              "description": "Fresh client operation session identifier, 1 through 128 characters.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "databaseId",
+            "operationSessionId"
+          ]
+        },
+        "annotations": {
+          "title": "Plan database backup handoff",
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        }
+      },
+      "scope": "configured-project",
+      "confirmation": "external-handoff-only",
+      "output": "SafeBackupPlan"
+    }
+  ]
+}

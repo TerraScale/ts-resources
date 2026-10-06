@@ -1,0 +1,3 @@
+# Purge Customer content after unpaid grace
+
+An Organization with a failed paid renewal receives seven days of payment retries with normal access, followed by 30 days of read-only access limited to reads, usage reduction, deletion, and export. Successful payment during either period restores the prior plan and data access. At the end of the read-only period, TerraScale purges Customer content and customer-restorable copies, retaining only the minimal Organization, billing, security, Audit, and deletion-receipt records required by policy. The same empty Organization may later reactivate, but purged data cannot return. This lifecycle is distinct from voluntary User deletion and does not downgrade an unpaid Organization into Developer.

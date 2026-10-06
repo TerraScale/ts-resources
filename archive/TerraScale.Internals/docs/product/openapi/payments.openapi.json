@@ -1,0 +1,1040 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "TerraScale Billing API",
+    "version": "v1",
+    "description": "Provider-neutral billing endpoints backed by TerraScale Payments and TerraScale.Queue. Polar is the default provider; Stripe remains available through configuration."
+  },
+  "servers": [
+    {
+      "url": "https://api.terrascale.tech"
+    }
+  ],
+  "paths": {
+    "/api/v1/organizations/{organizationId}/billing": {
+      "get": {
+        "tags": [
+          "Billing"
+        ],
+        "summary": "Get organization billing account",
+        "operationId": "getOrganizationBilling",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/OrganizationId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Organization billing account.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BillingAccountResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/organizations/{organizationId}/billing/invoices": {
+      "get": {
+        "tags": [
+          "Billing"
+        ],
+        "summary": "List organization billing invoices",
+        "operationId": "listOrganizationBillingInvoices",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/OrganizationId"
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "take",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A page of billing invoices.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BillingInvoicePageResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/organizations/{organizationId}/billing/checkout-sessions": {
+      "post": {
+        "tags": [
+          "Billing"
+        ],
+        "summary": "Create payment checkout session",
+        "operationId": "createPaymentCheckoutSession",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/OrganizationId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCheckoutSessionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateCheckoutSessionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TerraScaleErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TerraScaleErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TerraScaleErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TerraScaleErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TerraScaleErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TerraScaleErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TerraScaleErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TerraScaleErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/organizations/{organizationId}/billing/portal-sessions": {
+      "post": {
+        "tags": [
+          "Billing"
+        ],
+        "summary": "Create a payment portal session",
+        "operationId": "createPaymentPortalSession",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/OrganizationId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBillingPortalSessionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment-provider customer portal session.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateBillingPortalSessionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/pricing/plans": {
+      "get": {
+        "tags": [
+          "Pricing"
+        ],
+        "summary": "List pricing plans",
+        "operationId": "ListPricingPlans",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PricingPlanResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TerraScaleErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TerraScaleErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TerraScaleErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TerraScaleErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TerraScaleErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TerraScaleErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TerraScaleErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/billing/stripe/webhook": {
+      "post": {
+        "tags": [
+          "Billing"
+        ],
+        "summary": "Receive a signed Stripe webhook",
+        "operationId": "handleStripeWebhook",
+        "description": "Verifies the Stripe-Signature header and enqueues the Stripe event on the TerraScale payment webhook queue for durable processing.",
+        "parameters": [
+          {
+            "name": "Stripe-Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Webhook accepted and queued.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentWebhookAcceptedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/api/v1/billing/polar/webhook": {
+      "post": {
+        "tags": [
+          "Billing"
+        ],
+        "summary": "Receive a signed Polar webhook",
+        "operationId": "handlePolarWebhook",
+        "description": "Verifies the Standard Webhooks id, timestamp, and signature headers and enqueues the Polar event on the TerraScale payment webhook queue for durable processing.",
+        "parameters": [
+          {
+            "name": "webhook-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "webhook-timestamp",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "webhook-signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Webhook accepted and queued.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentWebhookAcceptedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "parameters": {
+      "OrganizationId": {
+        "name": "organizationId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/Ulid"
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "The request was invalid."
+      },
+      "Conflict": {
+        "description": "The requested billing operation conflicts with current billing state."
+      },
+      "Unauthorized": {
+        "description": "Authentication is required."
+      },
+      "Forbidden": {
+        "description": "Billing access to the organization is forbidden."
+      },
+      "NotFound": {
+        "description": "The organization was not found."
+      },
+      "TooManyRequests": {
+        "description": "Too many requests."
+      },
+      "InternalServerError": {
+        "description": "An unexpected server error occurred."
+      },
+      "ServiceUnavailable": {
+        "description": "The configured payment provider is not configured or temporarily unavailable."
+      }
+    },
+    "schemas": {
+      "Ulid": {
+        "type": "string",
+        "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+        "examples": [
+          "01J2K7RTEQC3F4NG9HZ8Y62P6A"
+        ]
+      },
+      "BillingAccountResponse": {
+        "type": "object",
+        "required": [
+          "billingAccountId",
+          "organizationId",
+          "planId",
+          "provider",
+          "status"
+        ],
+        "properties": {
+          "billingAccountId": {
+            "$ref": "#/components/schemas/Ulid"
+          },
+          "organizationId": {
+            "$ref": "#/components/schemas/Ulid"
+          },
+          "planId": {
+            "$ref": "#/components/schemas/Ulid"
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "polar",
+              "stripe"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "canceled",
+              "past_due",
+              "trialing"
+            ]
+          },
+          "billingInterval": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "BillingInvoiceResponse": {
+        "type": "object",
+        "required": [
+          "invoiceId",
+          "billingAccountId",
+          "amountCents",
+          "currency",
+          "status",
+          "issuedAt"
+        ],
+        "properties": {
+          "invoiceId": {
+            "$ref": "#/components/schemas/Ulid"
+          },
+          "billingAccountId": {
+            "$ref": "#/components/schemas/Ulid"
+          },
+          "amountCents": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "currency": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 3
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "open",
+              "paid",
+              "void"
+            ]
+          },
+          "issuedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "BillingInvoicePageResponse": {
+        "type": "object",
+        "required": [
+          "items",
+          "totalCount"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BillingInvoiceResponse"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "CreateCheckoutSessionRequest": {
+        "type": "object",
+        "properties": {
+          "priceId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "deprecated": true,
+            "description": "Legacy provider product or price identifier. Prefer planId with billingInterval."
+          },
+          "quantity": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "minimum": 1,
+            "maximum": 1000,
+            "default": 1
+          },
+          "planId": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/Ulid"
+              }
+            ]
+          },
+          "billingInterval": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Requested plan interval: monthly or annual."
+          },
+          "provider": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Optional payment provider selection: polar or stripe."
+          }
+        }
+      },
+      "PricingPlanResponse": {
+        "required": [
+          "planId",
+          "name",
+          "currency",
+          "monthlyBaseCents",
+          "annualBaseCents",
+          "includedUsage",
+          "key",
+          "provider",
+          "monthlyPriceId",
+          "annualPriceId",
+          "monthlyPolarProductId",
+          "annualPolarProductId",
+          "monthlyStripePriceId",
+          "annualStripePriceId",
+          "monthlyTrialDays",
+          "annualTrialDays",
+          "visible",
+          "maxRegions",
+          "operationOverageCentsPerMillion",
+          "storageOverageCentsPerGbRegion"
+        ],
+        "type": "object",
+        "properties": {
+          "planId": {
+            "$ref": "#/components/schemas/Ulid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "monthlyBaseCents": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "annualBaseCents": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "includedUsage": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PricingUsageMetricResponse"
+            }
+          },
+          "key": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "monthlyPriceId": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "annualPriceId": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "monthlyPolarProductId": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "annualPolarProductId": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "monthlyStripePriceId": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "annualStripePriceId": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "monthlyTrialDays": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "annualTrialDays": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "visible": {
+            "type": "boolean"
+          },
+          "maxRegions": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "operationOverageCentsPerMillion": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "storageOverageCentsPerGbRegion": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          }
+        }
+      },
+      "PricingUsageMetricResponse": {
+        "required": [
+          "name",
+          "quantity",
+          "unit"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "quantity": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int64"
+          },
+          "unit": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateCheckoutSessionResponse": {
+        "type": "object",
+        "required": [
+          "sessionId",
+          "url"
+        ],
+        "properties": {
+          "sessionId": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "CreateBillingPortalSessionRequest": {
+        "type": "object",
+        "properties": {
+          "returnUrl": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri"
+          }
+        }
+      },
+      "CreateBillingPortalSessionResponse": {
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "TerraScaleErrorResponse": {
+      "required": [
+        "error"
+      ],
+      "type": "object",
+      "properties": {
+        "error": {
+          "description": "Machine-readable error object.",
+          "$ref": "#/components/schemas/TerraScaleError"
+        }
+      },
+      "description": "Standardized API error response envelope.\nAll TerraScale Database errors use this shape for consistency across endpoints and SDKs."
+    },
+    "TerraScaleError": {
+      "required": [
+        "code",
+        "message",
+        "category"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Machine-readable error code (e.g., \"TERRASCALE-1001\").\nSDK clients should switch on this code for programmatic error handling."
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable error message suitable for display."
+        },
+        "category": {
+          "description": "Error category for grouping related errors.",
+          "$ref": "#/components/schemas/ErrorCategory"
+        },
+        "detail": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "Additional context about the error (field names, limits, etc.)."
+        },
+        "suggestedAction": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "Suggested action to resolve the error."
+        },
+        "docsUrl": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "Link to relevant documentation."
+        },
+        "traceId": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "Request-scoped trace ID for support correlation."
+        },
+        "fieldErrors": {
+          "type": [
+            "null",
+            "array"
+          ],
+          "items": {
+            "$ref": "#/components/schemas/FieldError"
+          },
+          "description": "Field-level validation errors, if applicable."
+        }
+      },
+      "description": "Structured error with machine-readable code, human-readable message, and actionable guidance."
+    },
+    "FieldError": {
+      "required": [
+        "field",
+        "constraint",
+        "message"
+      ],
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string",
+          "description": "Field path (e.g., \"data.email\" or \"schema.fields[0].type\")."
+        },
+        "constraint": {
+          "type": "string",
+          "description": "Machine-readable constraint that failed."
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable description of the validation failure."
+        }
+      },
+      "description": "A validation error on a specific field."
+    },
+    "ErrorCategory": {
+      "enum": [
+        "Validation",
+        "Authentication",
+        "Authorization",
+        "NotFound",
+        "Conflict",
+        "RateLimit",
+        "Schema",
+        "Query",
+        "Placement",
+        "AutoFix",
+        "AutoIndex",
+        "Sandbox",
+        "System"
+      ],
+      "description": "Error categories for the TerraScale Database."
+    },
+    "PaymentWebhookAcceptedResponse": {
+        "type": "object",
+        "required": [
+          "eventId",
+          "eventType",
+          "received"
+        ],
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "examples": [
+              "evt_terrascale_invoice_paid"
+            ]
+          },
+          "eventType": {
+            "type": "string",
+            "examples": [
+              "invoice.paid"
+            ]
+          },
+          "received": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

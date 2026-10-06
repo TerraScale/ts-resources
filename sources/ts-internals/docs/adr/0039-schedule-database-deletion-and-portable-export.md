@@ -1,0 +1,3 @@
+# Schedule Database deletion and portable Project export
+
+TerraScale schedules deletion of one explicitly selected Database for seven days instead of deleting a User, Organization, or Project. During that period the Database remains readable and exportable but rejects writes, new Environments, new Repositories, and new charges; an Organization Owner or Project Owner may cancel until an atomic transition claims final deletion. Full-Project exports use an authorized, audited, point-in-time asynchronous job, while final deletion removes customer-restorable copies and lets protected shared recovery backups expire without permitting them to restore the deleted Database into service.

@@ -1,0 +1,304 @@
+# Multi-region foundation
+
+Status: foundation plus the first operations. Every piece below is off by
+default; a controller without the new configuration blocks behaves exactly as
+before. The only OCI effect is the opt-in region subscription
+(`controller.region_planner.subscribe_regions`).
+
+## Topology
+
+Each region stays its own NATS/JetStream cluster with its own operator. Its
+servers follow the [static names](region-bootstrap.md#static-names) of
+`internal/naming` (`<region>-1-ctl-N`, `<region>-1-db-N`); the JetStream
+domain and NATS cluster name stay the lower-case cell token (`gru`). When
+`nats.embedded.interregion.enabled` is set:
+
+- The JetStream domain is the cell name (`gru`, `sfo`, `fra`).
+- Regions link by NATS leafnodes over mutual TLS, never gateways. The links
+  form a tree rooted at the global home region (GRU): each spoke dials one
+  parent, the hub by default or another spoke for a shorter path
+  (`natscell.LeafTopology`). Leafnode loop detection forbids cycles.
+- Every leaf connection binds the dedicated interregion account on both sides.
+  The system and cell accounts must set `LeafNodeConn = 0`; the server then
+  refuses a leaf user of either account.
+- A remote authenticates with a leaf user of the parent's interregion
+  account, issued by that child's scoped signing key under the parent's
+  operator. The remote pins that account key (`peer_account`). The user
+  carries no permissions or limits of its own: the scoped key's template
+  (leafnode-only, the child's subtree permissions below) replaces them, and a
+  remote refuses credentials that would override it. A user signed by the
+  account identity key gets the account's deny-all defaults.
+- A region with a leaf listener names each direct child's subtree
+  (`nats.embedded.interregion.subtrees`, child to the regions reached through
+  it, `LeafTopology.Subtrees`); listener and subtrees are configured together.
+- `nats.embedded.interregion.topology` carries the whole reviewed tree
+  (`hub`, `parents`). When it is set, startup derives this region's view from
+  it and refuses any other: `peers` must be every other region of the tree,
+  `subtrees` exactly this region's children and their subtrees, `remotes`
+  exactly one link to the parent (none at the root), and `global_home` the
+  hub. Without it only the region's local view is checked, as before.
+
+## Interregion material
+
+`ts-orch bootstrap generate-interregion-material --material-directory
+<controller material> --config <reviewed config> --config-sha256 <digest>
+--directory <new private dir> --out <public inventory>` issues a region's
+interregion credentials from its controller material
+(`bootstrapmaterial.GenerateInterRegion`). The reviewed config is
+`{"topology": {"hub": "gru", "parents": {...}}, "listenPort": 7422}`; the
+port is required exactly when the region has children. Into a new
+owner-only directory it writes:
+
+- `interregion.jwt`: the interregion account, signed by the regional
+  operator: exactly the contract's exports and imports, deny-all default leaf
+  permissions, `DisallowBearer`, no JetStream, and one scoped signing key per
+  direct child whose template is that child's subtree permissions,
+  leafnode-only.
+- `cell-interregion.jwt` and `system-interregion.jwt`: the material's cell
+  and system accounts reissued with the contract and `LeafNodeConn = 0`.
+  Point the embedded broker at these instead of `cell.jwt` and `system.jwt`.
+- per child, `child-<cell>.seed` (its scoped signing key, kept for rotation)
+  and `leaf-<cell>.creds`: one leaf-only user that key issued, with no
+  permissions or limits of its own. These credentials are pairwise: each
+  parent/child link has its own, and they go to that child only.
+
+Before anything is written, the claims pass the same contract verifier the
+server runs at startup, and the credentials pass the dialing side's check.
+The material is immutable like the controller material: a second run with
+the same input returns it, any other input is refused. Its metadata
+(`interregion.json`, also the public inventory) records each file's SHA-256,
+the controller material digest it was issued from, and `ledgerDigest`, the
+SHA-256 of the whole record, which is the value the deployment's signed
+bootstrap ledger records for this material.
+
+A child's remote comes only from the reviewed private-peer receipt
+(`bootstrapmaterial.LeafRemote`): the receipt's exact bytes must hash to the
+reviewed digest, and it must be a passing, unexpired
+`oci_private_peer_foundation_configuration_readback` of exactly the
+parent/child peering that allows the parent's leaf port. Every URL is a
+parent controller address inside the parent subnet the receipt observed, and
+the credentials file must be byte-identical to the parent's issued
+`leaf-<child>.creds`.
+
+## Subject contract
+
+`natscell.InterRegionContract` lists every subject that may cross, as explicit
+exports and imports between the cell and interregion accounts:
+
+| Direction | Subject | Type |
+| --- | --- | --- |
+| out | `ts.orch.v1.<cell>.region.health` | stream |
+| out | `ts.orch.v1.<cell>.query.>` | service |
+| in, per peer | `ts.orch.v1.<peer>.region.health` | stream |
+| in, per peer | `ts.orch.v1.<peer>.query.>` | service |
+| out / in, per peer | `ts.orch.v1.<cell>.obs.region`, `ts.orch.v1.<cell>.obs.decisions` (exact subjects) | service |
+| home out, per peer | `ts.interregion.v1.<peer>.global` (fixed delivery subject) | stream |
+| home out, per peer | `$JS.API.CONSUMER.RESET.TS_GLOBAL_CONTROL.global-mirror-<peer>` as `ts.interregion.v1.<home>.jsapi.CONSUMER.RESET.TS_GLOBAL_CONTROL.global-mirror-<peer>` | service |
+| home out, per peer | `$JS.FC.TS_GLOBAL_CONTROL.global-mirror-<peer>.*` | service |
+| spoke in | the three home subjects above for its own mirror only | |
+
+No consumer-create, stream, account or wildcard JetStream API subject is ever
+exported. A JetStream consumer-create request carries its own
+`deliver_subject`, which the home region would resolve in its cell account, so
+exporting it would let a peer push home-stream records onto any hub-local
+subject (an earlier revision did, and a review probe delivered onto
+`ts.orch.v1.gru.placement.apply`). Instead the mirror uses durable sourcing:
+the home region itself creates one durable push consumer per peer
+(`globalcontrol.MirrorConsumerConfig`, ack policy flow control) whose delivery
+subject is that peer's fixed contract subject, and the peer's mirror
+(`Mirror.Consumer`) only resets that consumer and acknowledges through its
+flow-control replies. A peer can never choose where the home region delivers.
+
+Only the region summary and decision query observability services cross,
+as exact request/reply subjects; member snapshots and the raw journal stream
+stay regional. Both responders decode requests strictly and bound every
+filter. `regionlink` links every interregion peer through the cell
+connection, so peers no longer show as `not_linked`.
+
+The interregion account's default leaf permissions deny everything. Each
+direct child gets one scoped signing key whose template is
+`InterRegionContract.ChildLeafPermissions(child)`, and startup verifies there
+is exactly one such key per child with exactly that template. Accepted leafs
+are always children in the tree, so each roster contract subject is allowed
+only in the direction it travels from that child, for its own subtree alone
+(transit included): a child may send its subtree's health, query and
+observability requests to any region, and its subtree's mirror resets/acks;
+it may receive any health, requests for its subtree's query and observability
+services and its subtree's mirror feeds, plus the `_R_.>` service-reply
+namespace NATS creates for the contract's service imports. A child can never
+speak for the accepting region, the global home or a sibling's subtree, take
+a sibling's requests, reset or acknowledge a sibling's mirror consumer, or
+send a mirror feed. The hub closes any leaf
+link that publishes anything else, so one peer cannot relay onto another
+peer's subjects (for example, forge another region's mirror feed). Regression tests replay the
+review probe from a peer cell and over a raw leafnode connection with a valid
+leaf credential.
+
+Known limit: NATS exempts inbound `_R_` publishes from leaf permission
+checks, and a child must receive `_R_` deliveries for its own replies, whose
+prefix is random per server start. A child that subscribes to `_R_.>` can
+therefore see replies to other regions' requests through its hub, and could
+only forge one by guessing an in-flight request's random reply token before
+the real responder answers (service exports are singleton responses).
+
+A mirror's own region can still reset its consumer to any sequence, including
+one ahead of what the mirror stored, which would skip home records for good.
+The home stream can never lose a record, so a mirror reader
+(`globalcontrol.OpenMirror`) checks on every read that the mirror holds a
+gap-free prefix of the home stream and otherwise fails closed with
+`globalcontrol.ErrMirrorGap`; recreate the mirror to recover. Reopening the
+home stream deletes the `global-mirror-<peer>` consumers of removed peers.
+
+Startup, and every later cell claim replacement, verify the installed account
+JWTs, including the default leaf permissions and child signing keys, against
+this contract exactly. The embedded resolver reports `IsTrackingUpdate`, so
+the server ignores `$SYS.REQ.ACCOUNT.<account>.CLAIMS.UPDATE` (routed or
+client-sent); each broker installs a replacement only through
+`Runtime.ApplyCellClaim`, after the pinned-operator, contract and issued-at
+checks.
+Commands, agent traffic, control logs, inboxes and broker subjects never cross
+a link. Subjects are built by `internal/protocol`; a test rejects `ts.` string
+literals elsewhere.
+
+## Global state
+
+`controller.global` (`enabled`, `home`) turns on the global control plane:
+
+- In the home region, a global-scope `authority.Runtime` holds the
+  `ts.control.global.lease` lease in the regional control log, and
+  `globalcontrol.Writer` writes the region roster and database directory to
+  `TS_GLOBAL_CONTROL` (`ts.global.v1.>`). Writes are fenced in the stream
+  itself: a new leader appends a term barrier (`ts.global.v1.term.current`)
+  right after its lease `Guard`, and every record append is a whole-stream
+  compare-and-set on the last sequence at which the writer saw its own term
+  plus a per-subject compare-and-set, with a `Ts-Global-Epoch` header that
+  must match the record. A leader that passed its `Guard` and then paused can
+  never commit after a newer term's barrier.
+- The home region also creates the durable mirror consumer of every
+  interregion peer. A pre-existing consumer under a peer's name that delivers
+  anywhere else is refused, never adopted.
+- Every other region opens a verified read-only mirror of that stream through
+  the interregion contract. During a partition each region keeps serving
+  from its mirror; only global changes stop.
+
+### Credentials
+
+Only the home region's controllers may publish the global subjects
+(`natscell.GlobalControllerPublishes`: `ts.control.global.>` and
+`ts.global.v1.>`). Bootstrap material issues them when its config sets
+`globalHome: true`; Lab NKey controller grants use `global: true`. Every other
+region's controller keeps its regional grants and reads the mirror through the
+JetStream API it already has.
+
+Before the global lease starts, the home controller checks its credentials
+(`natscell.ValidateGlobalControllerPermissions`) and refuses to start with
+`ErrMissingGlobalGrants` instead of retrying a denied publish forever.
+Material is immutable, so making a region the global home (or rotating an
+existing home onto the new grants) means generating new material with
+`globalHome: true`, rolling the controllers onto it, and only then enabling
+`controller.global`. Turning `globalHome` off again needs the same rotation.
+
+## Region lifecycle
+
+`internal/regionlifecycle` is the state machine from the region auto-start
+review: Proposed, Approved, Admitted, one journaled step per effect up to
+Active, then RetireProposed, RetireApproved and reverse steps to Retired, plus
+Held, RollingBack and Rejected. Approvals are Ed25519-signed protocol
+envelopes from configured approvers, bound to the exact proposal digest and
+proposal generation. Spending steps need a cost admission younger than 15
+minutes; admission also enforces the region maximum and the global monthly
+ceiling. Records live in the `TS_REGION_LIFECYCLE` KV bucket and are advanced
+with compare-and-set under the global lease. The step intent, with a
+deterministic create key used as the OCI retry token and ownership tag, is
+stored before each effect; after a crash the driver observes before retrying.
+Every effect is fenced: the intent is stamped with the leader's epoch by a
+compare-and-set before `Execute`, and the lease is guarded again immediately
+before it; a recovered intent is re-claimed through `Machine.ClaimStep`,
+which re-checks approval expiry and admission freshness. A region that fails
+after the seed launch is removed through `ProposeFailedRetire` and the signed
+retirement path; its pending intent is settled by observation before any
+teardown step. Approvals can be renewed in flight (`RenewApproval`,
+`RenewRetireApproval`). The global home counts toward the region maximum and
+the budget, budget sums saturate instead of wrapping, and a held unapproved
+proposal takes no slot.
+
+`internal/regionplanner` turns unplaceable placement intents, classified OCI
+capacity and limit errors, and latency rollups into proposals. It only
+proposes; a human or policy approval is always required. Proposal IDs carry
+the target proposal generation (`<cell>-g<generation>-<hash>`), so no two
+attempts on one cell ever share a proposal ID. With
+`controller.region_planner` enabled (global home only, off by default) it runs
+on the global leader and feeds its budgets to the insight engine;
+`controller.rollouts` likewise opens the rollout store for the dashboard and
+insights.
+
+Its signals are the home's own capacity and limit placement holds and, with
+`peer_signals` (off by default), every interregion peer's: the planner
+queries each peer's decision journal over the observability contract for
+placement `held` decisions and keeps only those about that peer, paging
+back through truncated results (at most 8 pages of 256 per peer and round).
+The query federation runs on the cell connection, independent of the HTTP
+observability listener; `peer_signals` without interregion peers refuses
+to start. A peer's
+journal is another region's data; a forged hold can at most propose the
+peer's overflow region, which still needs a signed approval. Latency signals
+have no source yet: TerraBase member status carries no client latency.
+
+### Region operations loop
+
+`internal/regionops` is the global leader's loop, run every
+`interval_seconds` while the controller holds the global lease. Each tick it:
+
+1. runs the planner;
+2. with `admit`, admits an Approved region at its `region_monthly_cents`
+   price under the region maximum, the ceiling and the approval's cap, and
+   readmits an in-flight region before it starts a new spending step once
+   its admission is in the last third of its TTL. A refused readmission
+   blocks that step even while the older admission is still fresh. A
+   journaled (recovered) spending intent is observed first: an existing
+   effect is recorded regardless of budget, and an absent one is re-run
+   only after a successful readmission. The price is signed policy, not a
+   live quote; the admission is re-evaluated against the current fleet each
+   time;
+3. with `drive`, calls `Driver.Advance` once per region whose next step has
+   an effector, and resumes a Held region only when an observation finds
+   its pending effect (an absent effect stays held for an operator).
+
+`admit` and `drive` need `approvers` (actor to base64 Ed25519 key); nothing
+is admitted or driven without a verifiable signed approval. Waits (no
+approval, stale admission, no effector, an OCI effect in progress) and
+refusals are journaled once per region and reason.
+
+The only effector so far is `subscribe_regions` (needs `drive`): the home's
+instance principal subscribes the tenancy to the proposal's catalog region
+(`catalog.Entry.OCIRegionKey`, for example `SJC`), with the step's create key
+as the `opc-retry-token`. An accepted but not yet READY subscription holds
+the step, and the loop completes it once a later observation finds it READY.
+Every other step waits, journaled.
+
+## Not yet done
+
+- Effectors for the remaining lifecycle steps. Foundation (inspect then
+  provision) and image import can reuse `internal/ociregion` and
+  `internal/ociregion/imageimport`, but those are operator tools built on
+  plan files and an admission inventory, not on lifecycle records; they need
+  a record-to-plan mapping and ownership tags by create key first. Material,
+  seed, link, public API, handoff, activation and teardown are not started.
+- A signed path for operators to submit approvals (and renewals) into
+  lifecycle records; today approvals can only be stored by code.
+- Appending interregion material's `ledgerDigest` to the OCI bootstrap
+  ledger as its own record kind, and rendering controller configuration
+  (cell/system JWT paths, listener, subtrees, topology, remotes) from the
+  material.
+- A latency signal source (TerraBase client latency rollups).
+- Granting controllers publish rights on peer `query` subjects, signed region
+  health heartbeats (`internal/regionhealth`), and directory-gated placement
+  admission.
+- Home-region transfer and cross-region disaster recovery.
+- Fencing admission across records: each lifecycle write is a per-record
+  compare-and-set under the lease, so during a lease handover an old leader
+  and the new one could each admit a different region against the same fleet
+  snapshot and together exceed the region maximum or the ceiling.
+- `TS_GLOBAL_CONTROL` records written before the `Ts-Global-Epoch` header
+  existed read as corrupt. Global control is off by default; a region that
+  ever enabled it must recreate the stream (there is no migration).
