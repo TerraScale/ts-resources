@@ -80,8 +80,6 @@ behind. There is no repository-managed cleanup path, automatic garbage
 collection, or eviction of admitted objects. Once the quota is full, new
 uploads fail with `ErrArtifactStoreFull`.
 
-## OCI and capacity
-
 Managed placement configuration is provided through the controller's
 `oci_region_intent_file`, `oci_region_config`, and `placement_config` paths.
 The strict placement file accepts `environment`, `member_role`, `resources`,
@@ -89,26 +87,17 @@ and optional `tick_millis`; a zero tick uses five seconds. Configured tick
 intervals must be 100 ms to five minutes. These options are rejected unless
 all three managed configuration paths are set together.
 
-For admitted placement, the regional controller provisions an OCI host and a
-retained volume, waits for the host's exact signed registration and a positive
-`ATTACHED` observation, and records the member at `awaiting-runtime-contract`.
 Once the admitted runtime artifact and a safe managed mount path are available,
 it publishes signed TerraBase host desired state. The host verifies the pinned,
 exclusively mounted retained filesystem, volume claim, and member material,
 launches TerraBase, reads its member status, and reports local process and
 mount status. The controller then holds the member at `awaiting-healthy`; it
 does not claim the member is healthy or serving because no independent serving
-proof exists, and a `serving` record is returned to `awaiting-runtime-contract`.
-The orchestrator does not discover, format, or mount the guest block device.
-Host image preparation, first-boot configuration, and signed registration
+proof exists, and a `serving` record is returned to `awaiting-runtime-contract`. The orchestrator does not discover, format, or mount the guest block device. Host image preparation, first-boot configuration, and signed registration
 remain operator steps; database serving, scale-in, and region decommission
 are not implemented acceptance claims. See the
 [TerraBase runtime contract](terrabase-runtime-contract.md).
 
-OCI provider coverage uses fakes; no live OCI account mutation has been
-qualified. If OCI accepts a create but the recovery result is lost before
-durable journaling, later matching tags alone do not authorize adoption; the
-resource remains unowned and requires manual inspection and reconciliation.
 Automatic first-region boot, cross-region authority recovery, and safe
 retirement still need integration and failure-recovery evidence. The current
 implementation is not production-ready.

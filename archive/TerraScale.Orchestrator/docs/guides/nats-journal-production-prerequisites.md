@@ -1,8 +1,6 @@
 # Production CreateNode journal prerequisites
 
-The Orchestrator can host a private NATS journal-writer substrate, but it does
-not compose an enabled `NatsCreateNodeOperationJournal`, `CreateNodeCoordinator`,
-or OCI provider. It must not report an authoritative CreateNode capability.
+It must not report an authoritative CreateNode capability.
 
 ## Required code composition
 
@@ -19,9 +17,6 @@ one reviewed lifecycle:
   plus the configured reply verifier and private mutation client;
 - `CreateNodeCoordinator` bound to the authoritative journal; and
 - a separately reviewed, explicitly enabled provider adapter.
-
-No in-memory key ring, development journal, generic NATS request, or OCI
-client placeholder is an acceptable substitute.
 
 ## Process and credential boundary
 
@@ -89,8 +84,7 @@ and one-member loss behavior; controller denial of KV delete/purge/rollup and
 stream mutation; caller-scoped reply routing and forged-reply rejection; all
 eligible controllers through multiple writer instances; one atomic proof-ledger
 consume across writers and restart before a journal mutation; key rotation; and
-the full CreateNode crash/recovery flow against an approved provider. This is
-an evidence gate, not a local RF1 or OCI claim.
+the full CreateNode crash/recovery flow against an approved provider.
 
 A local three-node development NATS/NKey ACL regression proves two credentialed
 controllers can concurrently create/open the one canonical startup consumer,

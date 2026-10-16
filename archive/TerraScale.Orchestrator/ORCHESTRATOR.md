@@ -6,7 +6,6 @@
 - Target repository: `TerraScale/TerraScale.Orchestrator`
 - Deployment posture: full greenfield; OKE and the live Kubernetes estate are already deleted, and no prior cloud/data/control resource is adopted
 - Primary implementation: C# / .NET 10, self-contained single-file Linux artifacts for `linux-arm64` and `linux-x64`
-- Primary production architecture: ARM64/AArch64 on OCI `VM.Standard.A1.Flex` Ampere hosts
 - Production host model: one `terrascale-orchestrator` process per host, managed by systemd
 
 ## Executive decision
@@ -31,8 +30,6 @@ The design keeps the parts that already work:
 - containerd and runc for OCI containers.
 - containerd and runc as the single OCI runtime substrate for trusted,
   tenant, and CI containers.
-- Forgejo, BuildKit, OCIR, and Forgejo packages for source, builds, and immutable artifacts.
-- OCI APIs, KMS/Vault, Object Storage, load balancers, networking, and block volumes as the first provider implementation.
 - Pulumi for durable cloud foundation.
 - OpenTelemetry, Prometheus, Loki, Tempo, Alertmanager, Alloy/OTel Collector, and Grafana.
 - WireGuard through an established VPN implementation rather than a TerraScale VPN protocol.
@@ -67,9 +64,6 @@ For NATS, mTLS proves the machine/workload transport identity. NKeys, operator/a
 - Every active region has a dedicated three-server orchestrator NATS cluster and a separate three-server TerraScale product NATS cluster. Under decision 8A they may share the three compact-profile hosts, but never share a process, trust root, account, credentials, port, cgroup, or store directory. The cheapest physical-volume layout that passes isolation, recovery, and performance tests is selected automatically during qualification.
 - Pulumi is the bootstrap/foundation layer. After a durable handoff, every regional controller owns and repairs that region's concrete nodes, attachments, workload backends, and expandable storage.
 - Each region deletes safely unused elastic nodes, creates capacity when needed, replaces failed nodes, and expands storage without depending on GRU.
-- TerraBase, Platform, Authentication, and Dashboard run as signed trusted OCI
-  containers. Required first-party platform workloads retain narrow privileged
-  role descriptors and remain unavailable through the customer API.
 - Customer workloads are stateless or serverless unprivileged OCI containers
   admitted by digest under the tenant container contract. Launch supports HTTP
   and TerraScale Project Queue triggers. Arbitrary process execution and
@@ -78,9 +72,7 @@ For NATS, mTLS proves the machine/workload transport identity. NKeys, operator/a
 - GitOps is native to the orchestrator. Flux is removed, not embedded, emulated, or retained as a runtime dependency.
 - Grafana is the operator web console for status, health, capacity, failure, storage, deployments, NATS, cost, and regional state. The orchestrator does not build a second dashboard UI.
 - Decision 1A resolves “quorum of three in at least three regions” as three controller candidates backed by a local three-server control-NATS cluster in every region, with no WAN-spanning control quorum.
-- OCI is the first production provider and A1 Ampere ARM64 is the primary compute target. The region catalog and provider contract cannot hard-code GRU/SFO/FRA and must support a cloud footprint with at least twenty production regions. Hetzner is excluded by owner decision.
 - Local integration uses digest-pinned, rootless Podman containers with a closed image catalog, private pod networking, dropped capabilities, `no-new-privileges`, explicit resource limits, owner labels, and deterministic cleanup. The bounded GRU/FRA/SFO development topology uses one instance per regional role (RF=1); production-shaped multi-host qualification is never recreated locally.
-- Real systemd-as-PID-1 and OCI A1/IAM/block-volume/storage-performance boundary tests are mandatory in addition to the full container topology; containers cannot qualify systemd, ARM64, cloud autoscaling, or database-storage behavior.
 
 ### Requirement reconciliation
 
@@ -89,10 +81,8 @@ Later owner statements take precedence over earlier exploratory requests. This p
 | Earlier exploration | Final requirement represented by this specification |
 |---|---|
 | Embed Flux | Remove Flux completely; implement native GitOps with direct, durable acknowledgement and no Flux runtime or compatibility layer |
-| Build a vault and console into the orchestrator | Build the vault policy/PKI/lease capability into the control plane with OCI Vault/KMS root protection under decision 3A; use read-only Grafana as the browser console and keep mutations in the audited operator API/CLI |
 | Consider whether mTLS is needed | Use selective mTLS at privileged machine/workload/cross-region boundaries; keep same-host Unix sockets and public customer HTTPS on their appropriate existing identity boundaries |
 | Consider Nomad or another lightweight orchestrator | Build the TerraScale-specific C# orchestrator; Nomad and Kubernetes are not runtime dependencies |
-| Consider broad cloud alternatives | Ship OCI/A1 first, preserve a provider-neutral interface and a dynamic catalog of at least 20 provider regions, exclude Hetzner, and make another provider an explicit adapter rather than lowest-common-denominator design |
 | General container/binary management | Run the exhaustive TerraScale/platform role catalog as trusted OCI containers, retain systemd for bootstrap-critical host roles, and admit customer compute only through the unprivileged tenant-container contract |
 | Plan a Kubernetes/OKE migration | OKE is already deleted; perform a full-greenfield three-region deployment that adopts nothing from the old estate, and keep any stale cloud/IAM/DNS/secret/configuration cleanup outside the new ownership graph |
 
@@ -110,10 +100,8 @@ explicit superseding decision and an architecture review.
 |---|---|---|---|
 | 1 | Regional control topology | Three controller candidates plus three control-NATS servers in **each** region: 9 of each across GRU/SFO/FRA, with independent regional JetStream R3 consensus | Three total controllers/NATS servers, one per region; this creates a WAN quorum and requires rewriting the regional-autonomy invariants |
 | 2 | GRU/WAN outage deployments | Regions keep serving, healing, replacing/scaling nodes, expanding storage, and renewing existing identities; freeze new global releases/policy changes | Allow each isolated region to accept independent releases/policy changes |
-| 3 | Vault authority | Built-in policy/PKI/lease/rotation service with ciphertext/root protection in OCI Vault/KMS initially | Store envelope-encrypted authoritative ciphertext in a dedicated, isolated vault JetStream account/stream from v1; never ordinary subjects or plaintext |
 | 4 | Runtime defaults | Superseded by ADR 0031 (superseding ADR 0030): trusted OCI containers for TerraBase and TerraScale APIs, unprivileged OCI containers for customer compute, and systemd only for admitted host-native roles | The former native-TerraBase/container split |
 | 5 | Elastic data cleanup | Never shrink; retain permanent disks; quarantine a removed elastic TerraBase disk for 7 days after verified backup | Immediately delete explicitly disposable elastic disks after safe topology removal |
-| 6 | Provider implementation timing | Finish OCI plus a provider-neutral contract first; OCI's catalog must expose at least 20 usable regions, while GRU/SFO/FRA are the first activated/qualified cells; add another adapter when needed | Require a second complete cloud adapter before the first production deployment |
 | 7 | CI/CD bootstrap exception | Keep one minimal independent Forgejo workflow/runner solely to build and recover the orchestrator; all product CI/CD is orchestrator-native | Require even orchestrator recovery CI to run inside the orchestrator, accepting the circular outage dependency |
 | 8 | “Dedicated NATS” meaning | Dedicated means independent clusters/processes/security/cgroups/stores; both planes may share benchmarked compact-profile hosts | “Dedicated” meant separate physical compute nodes for control NATS and product NATS, increasing the regional floor |
 | 9 | Telemetry during long GRU outage | Export all three OTel signals, spool to a fixed encrypted disk budget, then drop oldest/sample with explicit data-loss alerts; product traffic never blocks | Never drop telemetry, requiring another durable regional telemetry store and an explicit maximum outage/cost design |
@@ -122,7 +110,6 @@ explicit superseding decision and an architecture review.
 The following measurable qualification values remain to be derived and approved from Phase 0 evidence:
 
 - Team size and desired first-production date.
-- Maximum three-region pre-user cost. R$80/day is the historical pre-OKE-deletion baseline; Phase 0 must first measure the post-deletion residual OCI bill. Cost can constrain non-safety growth, but cannot reduce R3 state, one-node-failure tolerance, backup/recovery, storage integrity, or security floors.
 - Per-member storage SLO: minimum IOPS/throughput and acceptable p95/p99 read/write latency.
 - Regional RPO/RTO. SFO/FRA writes continue during a total GRU outage; acknowledged local writes must survive any single-host loss, while cross-region RPO and recovery time remain measured production gates rather than invented constants.
 
@@ -133,7 +120,6 @@ These IDs seed the implementation registry and prove that every request in the d
 | ID | Owner requirement | Specification disposition |
 |---|---|---|
 | `REQ-O001` | TerraScale—not Periscale—and a production/final platform rather than a toy | Title/scope, production HA, real-system gates, and definition of complete |
-| `REQ-O002` | Reduce the historical pre-OKE-deletion OCI cost of R$80/day while preserving future scale | Measure the post-deletion residual bill, then apply compact/growth profiles, budgets, scale-to-zero where safe, provider inventory, and a measured seven-day cost gate; final target still requested |
 | `REQ-O003` | Avoid Kubernetes memory overhead and pod limit | One lightweight C# process/host, no sidecars, measured RSS budgets, resource-based admission, and no fixed pod/allocation ceiling |
 | `REQ-O004` | Custom tailor-made orchestrator with no Nomad/Kubernetes dependency; later owner decisions add policy-admitted customer compute | Closed privileged first-party role catalog plus a separate unprivileged tenant-container customer contract; no arbitrary Linux process or privileged container API |
 | `REQ-O005` | C# self-contained single binary under systemd, including ARM64/A1 | One-binary roles, `linux-arm64` release gate, A1 real execution, bootstrap/self-upgrade, systemd packaging |
@@ -141,16 +127,12 @@ These IDs seed the implementation registry and prove that every request in the d
 | `REQ-O007` | Dedicated orchestrator NATS and separate TerraScale product NATS | Two R3 clusters per region; decision 8A permits benchmarked host sharing while disk layout remains qualification-selected |
 | `REQ-O008` | At least GRU/SFO/FRA; GRU global stack; SFO/FRA export OTel to GRU | Target topology, regional autonomy, GRU observability, edge collectors/spool/export |
 | `REQ-O009` | GRU remains operational after any one node fails | Explicit capability-by-capability HA/N+1 contract and sequential node-loss acceptance |
-| `REQ-O010` | Pulumi bootstraps; then each region creates/deletes/replaces its own nodes and expands storage | Ownership/handoff receipt, compartment-scoped actuator, survival bundle, compute/storage state machines |
 | `REQ-O011` | Automatic node and TerraBase storage scaling | Compute autoscaler, expand-only storage controller, TerraBase-specific policy, budget/performance gates |
 | `REQ-O012` | Manage containers and native systemd binaries; later owner decision selects containers for TerraBase and TerraScale APIs | containerd/runc for trusted services and tenant containers; systemd for admitted host-native roles |
 | `REQ-O013` | mTLS support, but only where it is actually needed | Selective mTLS decision, workload identity, NATS JWT authorization, rotation/revocation testing |
 | `REQ-O014` | Built-in native GitOps; remove Flux | Native GitOps source/reconciler, policy/child ownership, fresh typed manifests, and Flux non-goal |
-| `REQ-O015` | Built-in vault, CI and CD | Vault/PKI/policy service with OCI Vault/KMS root protection and immutable promotion/isolated runners with the decision 7A recovery exception |
 | `REQ-O016` | Web console without rebuilding Grafana | Read-only immutable/provisioned Grafana replicas plus exact sanitized state projection and audited API/CLI |
 | `REQ-O017` | Robust business-logic tests before the first deployment test | Literal whole-product pure Phase 1, requirement trace, exhaustive/model/fuzz/mutation tests, real-NATS L0C, signed evidence gate |
-| `REQ-O018` | New repository and reproducible test environment | Bounded in-process suites, targeted component fixtures, a three-region RF1 container lab, one-region R3 quorum tests, and real systemd/OCI gates |
-| `REQ-O019` | Cloud global reach of at least 20 regions; not Hetzner | Decision 6A: OCI-first dynamic region/provider contract, initial three active cells, no hard-coded trio, and another adapter only when needed |
 | `REQ-O020` | Database/storage performance is a primary constraint | Dedicated TerraBase volumes, IOPS/throughput/latency-aware scheduling/scaling, co-location rejection, destructive performance gates |
 | `REQ-O021` | Run complete GRU/FRA/SFO tests in isolated containers | Digest-pinned three-region RF1 topology, sequential regional faults, targeted R3 quorum tests, and separate production-boundary evidence |
 | `REQ-O022` | Implement the orchestrator in parallel with multiple sub-agents | Dependency DAG, exclusive workstream/path ownership, dedicated branches/worktrees, work-package manifests, independent verification, serialized merge train, and exact-tree integration evidence |
@@ -193,13 +175,11 @@ The orchestration logic is tailor-made. The primitives are not reimplemented.
 | Desired/observed-state engine | NATS/JetStream |
 | Regional scheduler and placement policy | systemd, cgroups v2, journald |
 | Node autoscaler and provider controllers | containerd, runc, OCI image format |
-| Volume lifecycle, expansion, and fencing controller | OCI Compute, Block Volume, KMS/Vault, Object Storage, LB APIs |
 | TerraBase lifecycle controller | TerraBase server and admin APIs |
 | Git/OCI source and reconciliation controllers | Git/Forgejo and OCI registries |
 | Release, deployment, and promotion state machines | BuildKit and existing language toolchains |
 | Workload identity, policy, PKI automation, and secret delivery | standard X.509/TLS and cloud KMS; no custom crypto |
 | Operator API/CLI and generated Grafana dashboards | Grafana/Prometheus/Loki/Tempo/Alertmanager/OTel |
-| Service registry, health model, and provider-neutral inventory | DNS, Cloudflare, OCI LB/NLB |
 | VPN peer/route policy controller | WireGuard/NetBird or another selected implementation |
 
 This boundary prevents replacing Kubernetes with a private, incomplete clone of every project in the cloud-native ecosystem.
@@ -213,7 +193,6 @@ The plan is based on the ten pre-existing TerraScale repositories beside this ne
 | `TerraBase` | Native Linux packaging, systemd unit behavior, storage signals, health, TLS/client-certificate behavior, backup/restore, admin APIs | Add an orchestrator-facing typed admin client/contract; do not fork its storage engine into the orchestrator |
 | `TerraScale.Internals` | Platform/Auth/Dashboard runtime graph, health endpoints, project placement, release manifests, region headers, OTel contract | Add native workload descriptors; fix the missing Auth build target; keep project placement separate from machine scheduling |
 | `TerraScale.DotNet` | Public API and queue SDK compatibility, idempotency, preferred-region behavior, errors and receipts | No operator/host APIs in the customer SDK; create a separate operator client if needed |
-| `TerraScale.TypeScript` | Public API contract, OpenAPI/route drift tests, Dashboard runtime | Replace hard-coded OCI-specific three-region constants with discovered provider-neutral data without breaking clients |
 | `TerraScale.Infrastructure` | Region catalog, VCN/DRG, IAM, KMS/Vault, object storage, Cloudflare, base images, durable-routing patterns | Reuse reviewed source patterns only; create a new Pulumi stack/state and entirely new network, IAM, KMS/Vault, storage, DNS/LB, seed, and orchestrator resources; delete obsolete OKE/CNI/CSI/admission/cert-manager/external-secrets/Kubernetes definitions after behavior gates |
 | `TerraScale.Deploy` | Dependency graph, build-once candidates, promotion leases, exact digests, cross-region verification, failure reporting | Move generic release logic into reusable libraries or the new repo; replace Flux/Kubernetes evaluators and shell rollout guards |
 | `TerraScale.DevHost` | Local dependency graph, PID/session validation, orphan cleanup, health-driven startup | Keep local-only; do not promote it into the production agent |
@@ -229,7 +208,6 @@ The workspace-level `CI_REFACTOR_PLAN.md` and repository-owned `.terrascale/depl
 - Historical Flux configuration has `wait: false`, webhook-plus-forced-reconcile, one-writer suspension, and shell rollout guards to work around controller races and ambiguous acknowledgement.
 - Checked-in documentation, HPA manifests, and verifiers disagree about pool and replica counts.
 - The historical edge observability configuration uses one shared client certificate rather than a unique workload identity.
-- Historical OCI instance-principal secret and autoscaler policies are broader than a workload-aware orchestrator should receive.
 - Production VPN routing/ACL/secret lifecycle is not actually implemented, despite assumptions in documents.
 - TerraBase automatic PVC expansion is documented, but the checked-in operator does not perform the cloud-volume and filesystem resize.
 - The historical operator's checked-in Kubernetes bootstrap and certificate scripts download/use `kubectl`, execute inside pods, and mutate trust on startup. These are not acceptable native-host patterns.
@@ -250,13 +228,10 @@ The initial seed ledger is:
 | `WRK-004` | ImageUpdateAutomation writer suspension and `terrascale-rollout-guard` shell/controller coordination | One fenced release writer, immutable candidate and promotion lease; concurrent-publisher/adversarial rollback tests |
 | `WRK-005` | `kubectl` rollout guards, polling, shell phase recovery and Kubernetes-context fan-out in `TerraScale.Deploy` | Typed regional deployment operations, explicit checkpoints, idempotent resume and same-digest barrier |
 | `WRK-007` | cert-manager/cainjector and shared edge OTLP client certificate | Regional PKI, unique workload identity, dual-bundle rotation/revocation; captured-output and mTLS identity tests |
-| `WRK-008` | external-secrets and broad instance-principal secret access | Closed vault policy/lease delivery and compartment/workload-scoped identities; denial and stolen-node tests |
 | `WRK-009` | Kyverno/admission policies used to constrain generic Kubernetes objects | Closed C# role catalog/schema/compiler; invalid role/capability/host-path manifests fail before persistence |
 | `WRK-011` | HPA plus Cluster Autoscaler and contradictory pool/replica minima | One scheduler/provider autoscaler with resource/SLO/budget inputs and explicit R3 floors; oscillation/orphan/cost tests |
 | `WRK-012` | ServiceMonitor/PodMonitor/kube-state/pod-label discovery and Kubernetes observability glue | Host agent + OTel discovery, stable TerraScale labels, generated targets/dashboards/alerts; full server inventory/cardinality tests |
 | `WRK-013` | Kubernetes-local Grafana provisioning/persistence assumptions and dashboard state inferred only from metrics | Immutable replicated Grafana provisioning plus mandatory exact read-only operator projection/data source; one-node-loss and stale-state tests |
-| `WRK-014` | Assumed but incomplete production VPN/route/ACL/secret lifecycle | Selected WireGuard implementation plus TerraScale route-policy controller; GRU-control-loss and real OCI UDP/route tests |
-| `WRK-015` | Hard-coded OCI three-region constants and inconsistent public/runtime catalogs | Signed provider-discovered region catalog with stable aliases and >=20 eligible-region matrix; SDK/docs compatibility tests |
 | `WRK-016` | Missing Authentication build target and conflicting feature/develop/main CI behavior | Exhaustive role/build inventory and one native pipeline graph; affected-change and immutable promotion tests |
 | `WRK-017` | Documentation/HPA/verifier disagreement about RF1/RF3, node minima and storage behavior | Generate schemas/docs/dashboards/fixtures from the canonical contract registry; drift becomes a failing test |
 | `WRK-018` | Deleted OKE/Flux residual configuration, IAM policies/dynamic groups, webhook tokens, DNS records, load balancers, volumes, public IPs, docs, and runbooks | Outside the new ownership graph, inventory provider and repository truth; remove only a positively identified stale remnant under explicit approval, quarantine unknown ownership, preserve unrelated resources, and prove the new runtime has no Kubernetes parser, credential, endpoint, or compatibility path |
@@ -267,48 +242,21 @@ Cleanup across the existing repositories is its own parallel workstream, not an 
 
 ### Provider selection and lowest-cost proof
 
-OCI is the mandatory first adapter because TerraScale currently uses OCI/A1 and the orchestrator must create and manage the new regional estate there. It is **not** called the cheapest provider without evidence. Phase 0 repeats a normalized provider/TCO and database-performance evaluation across OCI and every serious eligible alternative—including AWS, Google Cloud, and Azure—using current public/negotiated prices and the same production contract. Hetzner is excluded.
+It is **not** called the cheapest provider without evidence. Hetzner is excluded.
 
 Eligibility requires at least twenty usable provider regions, ARM64 compute, API-driven instance lifecycle, performant online-expandable encrypted block storage, object storage, KMS/secrets, load balancing, IAM/workload identity, quotas, billing export, and contractual/operational fit. The comparison models the exact GRU/SFO/FRA topology and includes compute, boot/data/NATS/observability volumes and provisioned IOPS/throughput, snapshots/backups, inter-region and internet egress, public IPv4, NAT/gateways, load balancers, object requests/storage, KMS/secrets, logs/metrics, artifact storage, support, taxes, FX sensitivity, discounts/commitments, idle floor, burst cost, and engineer/operational cost.
 
-For OCI, Phase 0 emits an evidence-backed eligible-region matrix and fails the >=20 claim unless at least twenty rows qualify. Each row records public region/realm, subscription enabled, home/paired geography, availability/fault domains, A1 availability and approved ARM fallback/capacity probe, images, Block Volume size/VPU/IOPS/throughput/online-resize support and benchmark status, Object Storage/KMS/Vault/LB/IAM/DNS/billing API availability, service limits/quota request, inter-region paths/latency/egress price, data-residency constraints, current normalized BRL floor, and qualification timestamp. “Listed on a cloud marketing page” is not a qualified TerraScale region.
+Each row records public region/realm, subscription enabled, home/paired geography, availability/fault domains, A1 availability and approved ARM fallback/capacity probe, images, Block Volume size/VPU/IOPS/throughput/online-resize support and benchmark status, Object Storage/KMS/Vault/LB/IAM/DNS/billing API availability, service limits/quota request, inter-region paths/latency/egress price, data-residency constraints, current normalized BRL floor, and qualification timestamp. “Listed on a cloud marketing page” is not a qualified TerraScale region.
 
-Price alone cannot win. The same ARM64 TerraBase/`fio` workload measures p50/p95/p99 read/write latency, fsync tail, IOPS, throughput, noisy-neighbor behavior, online expansion, attach/detach/replacement time, regional capacity failure, and recovery under the compact colocated load. The decision report publishes raw scripts/results, normalized BRL/day and BRL per sustained database transaction/IOPS, assumptions, and sensitivity ranges. OCI remains production-first only if it meets the approved storage/HA SLO and the measured greenfield pre-user TCO is acceptable; the provider-neutral contract preserves a later adapter without weakening OCI-specific correctness.
+Price alone cannot win. The same ARM64 TerraBase/`fio` workload measures p50/p95/p99 read/write latency, fsync tail, IOPS, throughput, noisy-neighbor behavior, online expansion, attach/detach/replacement time, regional capacity failure, and recovery under the compact colocated load. The decision report publishes raw scripts/results, normalized BRL/day and BRL per sustained database transaction/IOPS, assumptions, and sensitivity ranges.
 
 ## Target topology
-
-```text
-                            Forgejo / OCIR / Object Storage
-                                         |
-                                  signed revisions
-                                         |
-                +------------------------v-------------------------+
-                | GRU global authority                             |
-                | global controller, operator API, CI/CD, policy  |
-                | Grafana + Prometheus + Loki + Tempo + alerts     |
-                | VPN coordination and regional telemetry ingest   |
-                +------------------------+-------------------------+
-                                         |
-                    mTLS control-NATS federation / signed CellSpec handoff
-                    +--------------------+--------------------+
-                    |                                         |
-          +---------v----------+                    +---------v----------+
-          | SFO regional cell  |                    | FRA regional cell  |
-          | control+product    |                    | control+product    |
-          | NATS R3 clusters   |                    | NATS R3 clusters   |
-          | cell controllers   |                    | cell controllers   |
-          | host agents        |                    | host agents        |
-          | Platform/Auth/Dashboard |                    | Platform/Auth/Dashboard |
-          | TerraBase R3       |                    | TerraBase R3       |
-          | OTel spool/export  |                    | OTel spool/export  |
-          +--------------------+                    +--------------------+
-```
 
 GRU also contains the same regional Platform/Auth/Dashboard, local product NATS, TerraBase R3, and regional OTel collection as SFO/FRA. Global responsibilities are an additional role, not a replacement for the GRU data cell.
 
 ### GRU single-node-failure HA contract
 
-GRU runs at least three seed/control/data hosts, spread across distinct OCI fault domains or the strongest independent failure domains available. Extra app/observability nodes may be added, but adding them must not move a critical role onto a new singleton.
+Extra app/observability nodes may be added, but adding them must not move a critical role onto a new singleton.
 
 | GRU capability | Required topology and one-node failure behavior |
 |---|---|
@@ -327,7 +275,6 @@ GRU runs at least three seed/control/data hosts, spread across distinct OCI faul
 | Metrics/log/trace backends | Replicated service or redundant query/ingest replicas with durable object/replicated storage appropriate to the selected backend; a node-local TSDB may not be the only copy needed for operations |
 | Alerting | A tested three-peer Alertmanager HA topology or an equivalent redundant design; one host loss still evaluates and routes critical alerts |
 | VPN coordination/relay | At least two coordination/API endpoints and two independently placed relays where relays are required; established WireGuard sessions survive coordinator loss |
-| Ingress and service discovery | OCI/Cloudflare health checks plus multiple backends; regional registry/DNS data derives from R3 state and remains answerable after one host loss |
 | CI/CD | Coordinator remains available; workers are replaceable and carry no unique release state |
 
 GRU uses N+1 capacity planning, not merely replicated process counts. Before production, the surviving nodes must have enough reserved CPU, memory, ports, and network capacity to carry required traffic and control work after the largest single GRU node is lost. Normal placement therefore leaves one-node-equivalent headroom for critical stateless services. The autoscaler replaces capacity, but successful replacement is not required to preserve the initial one-node-failure availability window.
@@ -360,18 +307,6 @@ The cloud must offer at least twenty usable regions; that does not mean TerraSca
 
 One source tree produces the same signed binary for every role. A host normally runs one process with multiple enabled capabilities so shared clients, caches, telemetry, and configuration do not consume memory repeatedly.
 
-```text
-terrascale-orchestrator server    # global/regional controller roles
-terrascale-orchestrator agent     # host agent; normally combined with server on eligible hosts
-terrascale-orchestrator runner    # isolated CI job worker mode
-terrascale-orchestrator ctl       # operator CLI
-terrascale-orchestrator doctor    # non-mutating diagnostics
-terrascale-orchestrator bootstrap # explicit seed/enrollment workflow
-terrascale-orchestrator backup    # control-state backup/export
-terrascale-orchestrator restore   # guarded control-state recovery
-terrascale-orchestrator lab       # deterministic local/OCI test lab lifecycle
-```
-
 The systemd unit selects roles through a small local bootstrap file. Desired workload configuration still comes from the accepted regional state.
 
 Publishing requirements:
@@ -379,7 +314,6 @@ Publishing requirements:
 - `PublishSingleFile=true`, self-contained `linux-arm64` and `linux-x64` artifacts.
 - `linux-arm64` is the primary production RID and a release-blocking lane. `linux-x64` provides development/provider portability, not permission to ship an ARM-untested production release.
 - Reproducible, signed build with SBOM, provenance, exact Git tree, and SHA-256 digest.
-- Trimming and Native AOT are performance optimizations only after ASP.NET, gRPC, NATS, OCI SDK, systemd, operator-API, and dashboard-provisioning compatibility tests pass. The initial production artifact must not trade recoverability for a smaller headline size.
 - The repository may contain many projects and assemblies. “Single binary” is an operational artifact constraint, not permission to create one untestable source project.
 
 ### ARM64/Ampere contract
@@ -469,7 +403,7 @@ Admission uses a closed, versioned C# discriminated role catalog, not an arbitra
 
 Each role maps to a built-in descriptor schema, permitted runtimes, artifacts, ports, identities, secrets, capabilities, mounts, probes, network policy, and resource bounds. A manifest may choose only permitted parameters; it cannot supply an arbitrary executable, privileged container, host path, systemd directive, Linux capability, or NATS permission. Adding a role is an owner-approved specification/ADR change with threat-model, resource, ARM64, HA, first-deployment, and test updates.
 
-Payment providers remain external and are exercised through Platform's production adapters. Billing/email/background responsibilities already hosted within `Platform` or `Authentication` remain part of those processes. `Terrascale.Landingpage`, Forgejo, OCIR, OCI Object Storage/KMS/Vault/LB, Cloudflare, and operator identity providers remain external dependencies and are not admitted workloads.
+Payment providers remain external and are exercised through Platform's production adapters. Billing/email/background responsibilities already hosted within `Platform` or `Authentication` remain part of those processes.
 
 ## NATS and state correctness
 
@@ -542,7 +476,7 @@ failure is reported and retried without stopping regional control.
 | System account, `$SYS`, advisories, and monitoring endpoints | Server/account/connection/consumer health, auth failures, slow consumers, quorum/leader changes, and Grafana/alert inputs |
 | Configuration reload and lame-duck/rolling behavior | Safe certificate/account/config rotation and NATS server maintenance under orchestrator supervision |
 
-NATS Object Store is not the build registry or backup system. Large OCI images/native artifacts remain in OCIR/Forgejo packages; TerraBase backups remain in Object Storage; secret values remain in the vault path. Grafana reads sanitized metrics/logs/traces, and `ctl` talks to the authenticated operator API. Neither receives broad NATS credentials.
+NATS Object Store is not the build registry or backup system. Grafana reads sanitized metrics/logs/traces, and `ctl` talks to the authenticated operator API. Neither receives broad NATS credentials.
 
 ### Regional NATS layout
 
@@ -686,7 +620,6 @@ The orchestrator must create, enroll, drain, and terminate VPS/VM nodes automati
 Pulumi creates and versions:
 
 - VCNs, subnets, DRG/RPC/gateways, route/security policy, IAM/dynamic groups, KMS/Vault, Object Storage, DNS/LB foundation;
-- golden images or image-selection policy, cloud-init template, node-class launch templates, regional OCI identities/policies, quotas/caps, and the initial three seed hosts per active cell;
 - initial independent control-NATS and product-NATS stores/filesystems, selected physical volume layout, configuration, and certificates required to establish the first quorum;
 - a versioned, signed `BootstrapBundle` containing region identity, expected bootstrap generation, provider resource IDs, trust roots, node templates, ownership tags, and recovery policy.
 
@@ -698,9 +631,9 @@ After handoff, each regional orchestrator creates and owns:
 
 Resources are tagged with owner, cell, node class, immutable template generation, operation ID, lease/fence, retention policy, and cost center. A controller refuses to mutate an unowned or mismatched resource.
 
-Tags are inventory and reconciliation evidence, never authorization to terminate, detach, delete, format, or take ownership. Only the compartment-scoped regional provider-actuator capability receives OCI mutation authority. Every call is derived from an authoritative persisted `Operation` containing the exact operation ID, target OCID (or idempotent create key), compartment, expected observation/generation, desired terminal state, current controller epoch, approvals, and permitted compensations.
+Tags are inventory and reconciliation evidence, never authorization to terminate, detach, delete, format, or take ownership.
 
-Provider correctness assumes crash-stop failures of trusted, signed orchestrator code—not Byzantine execution by a root-compromised host. OCI cannot enforce a NATS lease or fencing token, and delayed IAM/dynamic-group propagation is not a leader-failover fence. Therefore, once a destructive provider step is durably authorized it is irrevocable in the control model: a new leader resumes/re-observes that same operation and terminal target instead of superseding it with a conflicting action. The actuator rechecks authority immediately before a call, uses provider idempotency/work-request identifiers where available, persists the request result, and always reconciles provider truth after timeout. Tests force leadership loss between the last check and the OCI request and prove the late call is either absent or still a safe completion of the already-authorized operation.
+Provider correctness assumes crash-stop failures of trusted, signed orchestrator code—not Byzantine execution by a root-compromised host. Therefore, once a destructive provider step is durably authorized it is irrevocable in the control model: a new leader resumes/re-observes that same operation and terminal target instead of superseding it with a conflicting action. The actuator rechecks authority immediately before a call, uses provider idempotency/work-request identifiers where available, persists the request result, and always reconciles provider truth after timeout.
 
 Pulumi does not continuously reconcile a regional instance count after handoff. Doing so would create two autoscalers. It continues to version durable foundation, allowed templates, IAM, caps, and bootstrap/recovery generations.
 
@@ -721,7 +654,6 @@ The implementation must use a deliberate Pulumi retain/unmanage mechanism or equ
 
 After handoff:
 
-- GRU, SFO, and FRA each use their own compartment-scoped OCI provider identity and make local capacity/storage decisions from local state.
 - GRU may distribute signed global policy, allowed templates, release intent, and budget ceilings, but it does not perform ordinary SFO/FRA node or volume mutations.
 - Each region creates capacity, deletes unused elastic capacity, replaces failed controller/NATS/TerraBase hosts, rotates node generations, expands storage, and audits orphans even while GRU is unavailable.
 - The floor remains three healthy controller candidates, three control-NATS servers, three product-NATS servers, and three TerraBase members per active cell. Self-management cannot reduce any R3 membership below three or remove permanent TerraBase `a/b/c`.
@@ -731,9 +663,6 @@ After handoff:
 
 Before regional autonomy is marked ready, each cell durably verifies a signed, encrypted, versioned `RegionalSurvivalBundle` containing or referencing everything needed to create and enroll a completely new node without GRU, Git, or the central observability path:
 
-- accepted `CellSpec`, approved node templates/images, bootstrap generation, compatibility window, budgets, and provider OCIDs;
-- regional OCI actuator identity path, DNS/LB configuration, NATS routes/accounts/signing capability, regional intermediate issuer, trust bundles, and revocation generation;
-- the exact encrypted secret versions required by the accepted and rollback workload generations, with regional decrypt/lease policy and OCI Vault/KMS root protection under decision 3A;
 - regionally available, digest-pinned current and rollback orchestrator/native/container artifacts; a GRU-only Forgejo or registry endpoint is insufficient;
 - local control/product NATS snapshots, operation journal position, backup locations, runbook generation, and expiry/renewal limits.
 
@@ -743,7 +672,7 @@ Disaster re-bootstrap is a separate, explicit Pulumi mode with a higher `bootstr
 
 ### Provider interface
 
-Every mutating provider call requires a `ProviderOperationContext` containing the authoritative operation ID, cell/compartment, controller epoch, target OCID or idempotent create key, expected observation/generation, desired terminal state, approvals, deadline, and idempotency/work-request key. The provider-neutral contract includes:
+The provider-neutral contract includes:
 
 ```text
 ResolveCapacity(NodeClass, count)
@@ -758,7 +687,7 @@ ReadLimits / ReadPrices / ReadWorkRequest
 ListCompartmentResources(discoveryFilters)
 ```
 
-OCI is the first complete adapter. Stateful scale-in should use explicitly owned instances rather than blind instance-pool count reduction, because provider-selected termination can choose the wrong data member. Instance pools may be used for truly stateless CI/app classes after their termination behavior is proven.
+Stateful scale-in should use explicitly owned instances rather than blind instance-pool count reduction, because provider-selected termination can choose the wrong data member. Instance pools may be used for truly stateless CI/app classes after their termination behavior is proven.
 
 ### Scale-out state machine
 
@@ -777,7 +706,7 @@ DemandObserved
   -> OperationCompleted
 ```
 
-The provider request is recorded before mutation and uses the provider idempotency token where available. After restart, the actuator resumes the authoritative operation through its recorded work-request/idempotency key and exact OCID, then reconciles provider inventory; tags help discover evidence but cannot establish ownership by themselves. It never issues a second VM because it lost an HTTP response.
+The provider request is recorded before mutation and uses the provider idempotency token where available. It never issues a second VM because it lost an HTTP response.
 
 Triggers include unschedulable allocations, utilization windows, queue backlog/latency, request concurrency, explicit database-member demand, rollout surge, and predictive warm capacity. Missing or stale metrics hold scale-in and may permit bounded scale-out if demand is otherwise proven.
 
@@ -810,7 +739,7 @@ Scale-in requires sustained low use, replacement capacity, disruption-budget hea
 - A cost anomaly controller compares desired owned resources, provider inventory, and billing export; unattached volumes and orphaned boot volumes alert immediately.
 - A global emergency budget can stop new non-safety scale-out. It must not terminate healthy stateful members or block a storage expansion needed to prevent data loss.
 
-Phase 0 first records the actual post-OKE-deletion residual OCI bill. The first cost release gate then uses a seven-day three-region billing measurement against the owner-approved target, reporting both incremental cost over that residual bill and comparison with the historical R$80/day pre-deletion baseline. Estimated list prices are not acceptance evidence.
+The first cost release gate then uses a seven-day three-region billing measurement against the owner-approved target, reporting both incremental cost over that residual bill and comparison with the historical R$80/day pre-deletion baseline. Estimated list prices are not acceptance evidence.
 
 ## Storage controller and automatic storage scaling
 
@@ -869,8 +798,6 @@ ThresholdSustained
 ```
 
 Every step is independently observable and restartable. A crash after the provider grows a volume but before `xfs_growfs`/`resize2fs` resumes at guest discovery; it never requests a duplicate growth or reports success from provider size alone. Because expansion cannot be undone, failure produces a held operation and guided recovery, not an attempted rollback.
-
-OCI supports online block-volume growth, but the guest must rescan the device and extend its partition/filesystem. The implementation must use OCI SDK APIs and native filesystem tools through a narrowly allowed agent operation, not shell text supplied by a workload.
 
 ### Performance is part of autoscaling
 
@@ -962,7 +889,6 @@ daemon/API boundary without making systemd unit generation the container API.
 
 ### Native binary driver
 
-- artifacts are stored as signed archives or OCI artifacts in Forgejo packages/OCIR and addressed by digest.
 - stage under `/opt/terrascale/artifacts/<digest>`; validate hash, signature, ownership, ELF architecture, and declared entrypoint.
 - activate through an atomic version symlink only after staging and preflight; preserve the prior version for rollback.
 - create systemd units/transient units through D-Bus from an allowlisted typed policy, not arbitrary unit text from Git.
@@ -982,7 +908,6 @@ the production default.
 
 - The regional controller maintains a strongly versioned registry from healthy allocations; agents do not self-publish arbitrary endpoints.
 - Stable service names resolve through a lightweight regional DNS service or generated CoreDNS configuration, backed by the registry.
-- OCI NLB/LB and Cloudflare remain provider/edge data planes. The orchestrator reconciles backend membership and health.
 - Preserve `X-TerraScale-Forwarded-Region`, preferred/target/serving/edge region headers, trace context, request IDs, client IP policy, retry behavior, and routing loop guards.
 - No built-in general service mesh in v1. mTLS-capable services obtain identity directly; a proven proxy is allowed only where an application cannot terminate mTLS itself.
 
@@ -1025,13 +950,13 @@ The integrated vault surface must support:
 - sealed local cache for last-known-valid operation during bounded backend outage;
 - backup, restore, anti-rollback, split-brain behavior, and break-glass recovery.
 
-Recommended v1 keeps root and key-wrapping protection in OCI Vault/KMS while the orchestrator owns policy, identity, leases, PKI, rotation, and delivery. Infisical is the direct external adapter for operator-managed static secrets and startup configuration: Universal Auth credentials enter only through owner-private files, current v4 API reads may populate missing settings, existing `TS_ORCH_*_FILE` values are materialized owner-privately for the process lifetime, and value-changing CLI operations never accept or print secret values. Infisical values are not Git/NATS state and do not bypass the orchestrator authorization and lease decisions. A cloud-neutral `IKeyEncryptionKeyProvider` and `ISecretCiphertextStore` permit later providers or a portable sealed backend. Building a new authoritative secret database before the scheduler is proven would put the highest-risk subsystem on the critical path.
+Infisical is the direct external adapter for operator-managed static secrets and startup configuration: Universal Auth credentials enter only through owner-private files, current v4 API reads may populate missing settings, existing `TS_ORCH_*_FILE` values are materialized owner-privately for the process lifetime, and value-changing CLI operations never accept or print secret values. Infisical values are not Git/NATS state and do not bypass the orchestrator authorization and lease decisions. A cloud-neutral `IKeyEncryptionKeyProvider` and `ISecretCiphertextStore` permit later providers or a portable sealed backend. Building a new authoritative secret database before the scheduler is proven would put the highest-risk subsystem on the critical path.
 
 No custom cipher or certificate parser is permitted. Use supported .NET cryptography/X.509 APIs and provider KMS operations, with independent security review and fuzzing.
 
 ## Native GitOps
 
-Flux is removed. GitOps reconciliation is a native orchestrator subsystem over TerraScale's typed resources, NATS journals, systemd/containerd executors, OCI provider operations, and regional health gates. It does not expose Flux APIs or carry Flux controllers into the new platform.
+Flux is removed. It does not expose Flux APIs or carry Flux controllers into the new platform.
 
 Required source/reconciliation capabilities:
 
@@ -1197,7 +1122,7 @@ Dashboards and alerts are generated/provisioned from the same typed contracts an
 
 The default control boundary is read-only Grafana plus an authenticated operator API and `ctl` for mutations. This avoids disguising Grafana as a transactional control plane. `ctl` provides plan/diff/apply, explicit approvals, watch, JSON output, diagnostics, drain/scale, deployment/rollback, certificate operations, backup/restore, and emergency regional endpoints. Every mutation records actor, plan, safety/budget gates, operation ID, and irreversibility.
 
-If browser-based mutations are later required, implement a small, separately reviewed control surface or tightly scoped Grafana app plugin that calls the same operator API. It must not grant Grafana direct OCI, Vault, or control-NATS credentials. An arbitrary browser shell remains out of scope.
+If browser-based mutations are later required, implement a small, separately reviewed control surface or tightly scoped Grafana app plugin that calls the same operator API. An arbitrary browser shell remains out of scope.
 
 Grafana and the operator API may federate with the established external identity-provider product if suitable, but the greenfield platform creates a new OIDC application/client, credentials, redirect URIs, role mappings, sessions, and offline audited break-glass identities. No prior orchestrator client or secret is reused. Private VPN access, MFA/JIT role mapping, RBAC/ABAC, and rate limits remain mandatory. Optional operator client certificates protect CLI/emergency access.
 
@@ -1223,13 +1148,13 @@ Testing must exercise actual Linux, systemd, cgroups, filesystems, NATS, and fai
 
 No orchestrator commit may start a **system-under-test/server** container, systemd, containerd, disposable-cloud, or regional deployment test until the exact source tree and binary have passed the zero-deployment business-logic gate. L0/L0C run in a credential-free, digest-pinned rootless toolchain container that receives no production or lab mutation credentials and runs no orchestrator server. This is enforced by CI and by `terrascale-orchestrator lab/deploy`; there is no routine `--skip-tests` bypass.
 
-This requirement is interpreted literally: Phase 1 implements the complete pure decision core for **every** scoped domain—control, scheduling, both NATS policies, compute/Pulumi handoff, storage, TerraBase, identity/vault, GitOps, CI/release, Grafana projection, networking policy, budgets, greenfield provisioning/ownership, and self-upgrade—before L1S starts. Later phases add real adapters and integration; they may not hide business decisions inside OCI, NATS, filesystem, systemd, containerd, Git, clock, or network adapters. Any later business-rule change invalidates the evidence and must pass the same L0 gate before the affected adapter may perform a side effect.
+This requirement is interpreted literally: Phase 1 implements the complete pure decision core for **every** scoped domain—control, scheduling, both NATS policies, compute/Pulumi handoff, storage, TerraBase, identity/vault, GitOps, CI/release, Grafana projection, networking policy, budgets, greenfield provisioning/ownership, and self-upgrade—before L1S starts. Any later business-rule change invalidates the evidence and must pass the same L0 gate before the affected adapter may perform a side effect.
 
-“Catch all errors and business logic” means every declared requirement, invariant, branch, transition, error code, recovery checkpoint, and known failure class is traceable and tested before deployment. It cannot mean proving that the Linux kernel, OCI, NATS, filesystems, firmware, or the network contain no defect; hermetic dependency conformance and L1S–L5 real-system/chaos gates cover those boundaries and remain mandatory.
+“Catch all errors and business logic” means every declared requirement, invariant, branch, transition, error code, recovery checkpoint, and known failure class is traceable and tested before deployment.
 
 The repository has one canonical requirement registry with stable IDs (for example `REQ-`, `INV-`, `ERR-`, `SM-`, and `SEC-`). Source state machines, schemas, decisions, errors, tests, generated documentation, and acceptance evidence reference those IDs. CI generates a bidirectional traceability report and fails on an untested requirement/invariant/error, an orphan test assertion, an undocumented externally visible error, or a requirement that lacks an owner and acceptance layer.
 
-The zero-deployment suite runs inside its toolchain container without OCI mutations, remote hosts, systemd units, server containers, or a live production-like cluster. It must cover:
+It must cover:
 
 - every resource-schema validation rule, default, version conversion, unknown-field behavior, and incompatible-version rejection;
 - every declared state-machine transition, hold, timeout, cancellation, retry, compensation, terminal result, and recovery checkpoint;
@@ -1257,7 +1182,7 @@ Required techniques:
 - deterministic replay of every discovered failure seed, checked into a regression corpus;
 - static analysis, nullable and warnings-as-errors, dependency/vulnerability/license checks, secret scanning, and architecture-boundary tests.
 
-Pure domain/state-machine methods consume immutable state plus an explicit input and return new state, typed decisions, emitted events, and side-effect intents. They receive virtual clock/ID/randomness and observation interfaces; they cannot reference NATS, OCI SDK, D-Bus, containerd, filesystem, sockets, environment, or wall clock. Adapters execute persisted intents and return typed observations. Architecture tests enforce this dependency direction.
+Pure domain/state-machine methods consume immutable state plus an explicit input and return new state, typed decisions, emitted events, and side-effect intents. Adapters execute persisted intents and return typed observations. Architecture tests enforce this dependency direction.
 
 After pure L0 passes, but still before any VM deployment, an unprivileged hermetic conformance lane starts pinned real `nats-server` processes on loopback/temp directories. It validates the generated operator/account JWTs, permissions, imports/exports, gateway mesh, JetStream domains, retention, deduplication, redelivery/backoff, KV CAS/watch, Object Store, advisories, monitoring isolation, snapshots, peer loss/replacement, and N/N-1 client/server compatibility. Fakes model failure schedules; this lane proves the configuration against NATS itself. Its result is part of the pre-deployment evidence.
 
@@ -1284,7 +1209,7 @@ The right-hand column runs for **every exact source tree that will receive any V
 
 Generated code, generated schema constants, immutable DTO property accessors, and the composition root may be excluded from branch/mutation percentages only through a checked-in exclusion with generated-code or trivial-wiring proof. State transitions, validators, authorization, ownership, fencing, deletion, retry, compensation, and adapter result classification can never be excluded. Phase 0 pins the .NET test/property/model/fuzz/mutation toolchain and versions in `Directory.Packages.props`; tool changes invalidate baseline evidence.
 
-CI wraps `pre-deployment-evidence.json` in a signed DSSE/in-toto-style attestation bound to the exact Git tree, dependency lock, generated schemas, test binaries, both architecture artifact digests, test counts, requirement trace, transition coverage, branch coverage, mutation results, fuzz corpus, model-check seeds, NATS conformance, analyzer results, and approver. The signing identity/key technology is selected in the Phase 0 supply-chain ADR and protected by KMS or an equivalently isolated CI identity. The first L1S server lab and every later lane verify this attestation before receiving short-lived lab/OCI mutation credentials. Forgejo protected environments and provider IAM enforce the gate, so invoking the CLI directly cannot bypass it. A source, dependency, generated contract, test, or binary change invalidates it.
+CI wraps `pre-deployment-evidence.json` in a signed DSSE/in-toto-style attestation bound to the exact Git tree, dependency lock, generated schemas, test binaries, both architecture artifact digests, test counts, requirement trace, transition coverage, branch coverage, mutation results, fuzz corpus, model-check seeds, NATS conformance, analyzer results, and approver. The signing identity/key technology is selected in the Phase 0 supply-chain ADR and protected by KMS or an equivalently isolated CI identity. Forgejo protected environments and provider IAM enforce the gate, so invoking the CLI directly cannot bypass it. A source, dependency, generated contract, test, or binary change invalidates it.
 
 ### Test layers
 
@@ -1296,7 +1221,6 @@ CI wraps `pre-deployment-evidence.json` in a signed DSSE/in-toto-style attestati
 | L2S | one-region R3 component topology | real quorum behavior for only the NATS or TerraBase component under test; never a complete production cell | quorum component gate |
 | L3S | **GRU/FRA/SFO with one instance per regional role (RF=1)** | regional composition, routing, identity, messaging, persistence, health, restart, reconciliation, and sequential regional faults | mandatory regional-development gate; no production HA authority |
 | L1R | full Linux host with systemd as PID 1 | real systemd D-Bus/credentials/cgroups/journald, containerd, loop ext4/XFS | production-runtime boundary gate |
-| L4 | disposable OCI A1 Ampere SUT, driven by an isolated rootless-container test coordinator | real ARM64 binary/images and instance/volume/LB/KMS/Vault/IAM/work-request APIs; targeted 1/3-node tests and final multi-region boundary smoke | mandatory provider/ARM/destructive gate |
 | L5 | staged first-production deployment and canary | actual telemetry/cost/storage, SFO then FRA then GRU | production gate |
 
 `terrascale-orchestrator lab` creates bounded test topologies through rootless Podman using digest-pinned images; it never uses Kubernetes. Local fidelity routes are:
@@ -1305,14 +1229,12 @@ CI wraps `pre-deployment-evidence.json` in a signed DSSE/in-toto-style attestati
 - Targeted dependency/runtime fixture: one L0C or L1S boundary at a time.
 - One-region R3 component fixture: L2S quorum semantics without unrelated product roles.
 - Development runtime: the 21-container GRU/SFO/FRA RF1 regional product slice. It has no reduced or selectable runtime profile.
-- `oci-cell`: disposable three-node OCI region.
-- `oci-boundary`: targeted real OCI/A1/storage tests and the final minimum multi-region production boundary.
 
 The container supervisor owns create/start/status/exec/log/copy/stop/delete, deterministic names/ports/directories, deadlines, crash recovery, and unconditional orphan cleanup. Ownership and topology labels prevent one run from removing foreign pods or containers. Images are selected from a closed digest-pinned catalog; workloads cannot request arbitrary images, mounts, capabilities, privileges, or host networking. A repository-wide lease permits only one test or lab workload at a time. The aggregate local ceiling is 24 GiB: 20 GiB for the active validation process or owned pod and 4 GiB reserved for the host. Declared container limits are summed before startup and admission fails closed above 20 GiB; the 21-resource topology plans 15,936 MiB. Test modules run sequentially, TUnit concurrency is four, and evidence records module counts plus observed peak memory and process counts.
 
 Phase 0 records the Podman version, image manifest digests, host kernel/cgroup capabilities, rootless status, network backend, storage driver, and conformance result. Upgrades require a reviewed pin change and a cold sequential L0/L0C/L3S run. Matching-host containers cannot qualify `linux-arm64`; real A1 remains the mandatory ARM boundary.
 
-Container namespaces and overlay storage are deliberate limitations in the evidence model. L3S proves processes, protocols, identities, topology, persistence, restart, and failure logic, but never claims to prove systemd unit semantics, OCI attachment/online expansion, block durability/performance, or A1 behavior. Those claims belong only to L1R/L4.
+Container namespaces and overlay storage are deliberate limitations in the evidence model. Those claims belong only to L1R/L4.
 
 The DevHost graph becomes the first product fixture: three TerraBase processes, local JetStream, Auth, API, and Dashboard, with the current dependency and health ordering. No email server runs in the lab: Platform and Authentication use `Email:Provider=Disabled` and `Auth:AutoVerifyEmail`, so messages render and log instead of sending and signup/login never wait on email verification. Payment testing calls provider sandbox/test endpoints through Platform's production adapters. DevHost tests remain fast product-contract tests; they do not replace the Linux lab.
 
@@ -1330,7 +1252,7 @@ The lab uses a rootless Podman pod only after conformance proves isolation, port
 
 The L3S inventory is exact and closed: one controller, control NATS, product NATS, TerraBase, Auth, API, and Dashboard in each of GRU/SFO/FRA. A declared resource fails the gate if it is absent, uses an unpinned image, lacks its implemented health/readiness check, has the wrong configuration generation, or cannot serve its protocol. Production-only roles are tested in-process until their targeted boundary lane exists; they are not added speculatively to make the local lab resemble production.
 
-Every integration candidate runs all implemented pure suites first, then only the affected targeted fixtures, then the applicable RF1 regional scenarios. No local validation workloads run concurrently. A healthy L3S lab is reused across sequential faults; it is recreated only when bootstrap, persistence recovery, or cleanup isolation is the behavior under test. Production systemd, containerd, block storage, ARM, OCI, destructive operations, multi-host clocks, and HA remain L1R/L4/L5 evidence.
+Every integration candidate runs all implemented pure suites first, then only the affected targeted fixtures, then the applicable RF1 regional scenarios. No local validation workloads run concurrently. A healthy L3S lab is reused across sequential faults; it is recreated only when bootstrap, persistence recovery, or cleanup isolation is the behavior under test.
 
 Mandatory scenario groups are:
 
@@ -1349,7 +1271,6 @@ Pre-lab evidence contains the exact tree/artifact digest, authorized regional to
 - fake NATS delivery wrapper capable of loss, duplication, reordering, delay, redelivery, and stale consumers;
 - fake cloud provider with asynchronous work requests, timeouts, quota/capacity failures, duplicate responses, and inventory drift;
 - fake executor and real containerd/systemd contract suites;
-- fake KMS/Vault plus real OCI integration lane;
 - filesystem/block-device harness with loop devices, ext4, XFS, read-only, full disk, latency, detach, and wrong-volume injection;
 - TerraBase admin fake for model tests plus a targeted one-region three-member integration lane and real production-boundary release gates;
 - fake repository/provider remnant inventory for deleted OKE/Flux resources, including stale IAM, DNS, secret, load-balancer, volume, public-IP, webhook-token, and configuration findings; cleanup dry-run/apply/retry proves idempotent absence for positively identified approved remnants and proves unrelated, retained, or unknown-ownership resources are never removed, without becoming a runtime compatibility adapter.
@@ -1365,7 +1286,6 @@ At minimum, automate:
 - NATS leader loss, one server loss, quorum loss, stream restore, backlog recovery, and full regional partition;
 - GRU global outage while SFO/FRA serve, heal, scale within policy, renew identities, and spool telemetry;
 - duplicate, expired, reordered, delayed, and conflicting commands; stale leader/agent fencing;
-- leadership loss at every provider-actuator checkpoint, especially after final lease check but before OCI request; late work-request completion and new-leader resume of the same irreversible operation;
 - node crash/reboot, cloud API timeout, quota exhaustion, no regional A1 capacity, wrong image, failed enrollment, and orphan VM;
 - GRU/Git/central-vault/central-registry outage followed by complete loss and A1 replacement of one regional host using only the regional survival bundle;
 - orchestrator N/N-1 mixed-version operation, A/B self-upgrade failure before/after restart, rollback-timer expiry, controller handoff, and one-failure-domain rolling upgrade;
@@ -1449,54 +1369,13 @@ Contracts <- pure domain/state machines <- application coordinators <- adapters
 single executable composition root -> wires every implementation; contains no policy
 ```
 
-Contracts and pure domains do not use infrastructure namespaces or types. Application coordinators may persist/dispatch typed intents through abstractions but cannot call concrete adapters. OCI/NATS/systemd/containerd/Git/filesystem/crypto-provider/Grafana adapters translate intent and observation only.
+Contracts and pure domains do not use infrastructure namespaces or types. Application coordinators may persist/dispatch typed intents through abstractions but cannot call concrete adapters.
 
 ## Parallel multi-agent implementation model
 
 Implementation is organized for independent sub-agents, not as many agents editing one checkout. The root/integration agent is the contract steward. With the current four-agent concurrency limit, it coordinates up to three active implementation/verification agents at once; additional lanes rotate in dependency waves. If more slots are available later, the ownership model scales without changing boundaries.
 
 ### Dependency and integration DAG
-
-```text
-G0 owner decisions + SLOs + tool/artifact pins + historical-workaround ledger
- |
- v
-F1 contracts + protocols + requirement/error registry + evidence schemas
- |
- +---------------------+----------------------+----------------------+
- v                     v                      v
-P1 Core              P1 Messaging          P1 Cloud/Data
-authority/ops/       NATS/identity/        provider/handoff/
-scheduler/budgets    vault/PKI             storage/TerraBase rules
- |                     |                      |
- +-----------+---------+----------+-----------+
-             |                    |
-             v                    v
-       P1 Delivery             P1 Ops
-       GitOps/CI/release       Grafana/OTel/network/operations
-             \                    /
-              +--------+---------+
-                       v
-              P1 Verification models
-                       |
-                       v
-              G1 cold full L0 + L0C
-                       |
-        +--------------+-------------------+
-        v                                  v
-P2–P5 runtime/NATS/OCI/storage       container supervisor/network/scenarios
-        \                                  /
-         +--------- per-phase L3S --------+
-                       |
-        +--------------+-------------------+
-        v                                  v
-P6–P8 GitOps/CI                  Grafana/OTel/VPN/operator API
-        \                                  /
-         +------ bounded L3S + real L4 ----+
-                       |
-                       v
-       P9 qualification -> P10 greenfield regional bring-up
-```
 
 `F1` freezes only the next compatible contract tranche; it does not block every domain until the entire product is written. After a tranche merges, pure domain agents and an independent verification agent work concurrently. No adapter may boot a server or mutate an external system before the aggregate G1 evidence gate.
 
@@ -1508,7 +1387,6 @@ P6–P8 GitOps/CI                  Grafana/OTel/VPN/operator API
 | Core | control plane, operation engine, scheduler, budgets/cost decisions | unit/property/model/concurrency tests and placement/operation traces |
 | Messaging/security | NATS, identity, Vault, PKI/mTLS, regional trust/survival material | permission/conformance fixtures, revocation, peer recovery, security/fuzz tests |
 | Runtime | agent, trusted-role admission, tenant-container admission, systemd/containerd adapters, bootstrap/self-upgrade | fake executors plus lifecycle, isolation, resource-exhaustion, A/B rollback, L1S/L1R contract tests |
-| Cloud | provider abstractions, OCI/Pulumi handoff, actuator, compute autoscaler | provider model/fake, fencing race suite, L4 adapter evidence |
 | Storage | generic volume lifecycle/expansion/fencing and filesystem adapters | block model/harness, irreversible-step recovery, L4 destructive evidence |
 | TerraBase | TerraBase topology, upgrade, replication, backup/restore/autoscaling | independent admin fake plus real three-member L2S and L4 scenarios |
 | Delivery | native GitOps, CI/CD, release and artifact promotion | source/reconcile/pipeline models, trust-zone and interruption tests |
@@ -1561,9 +1439,6 @@ Phases are integration gates, not instructions for one agent to work serially. A
 Deliver:
 
 - resolve the owner decisions in this document;
-- inventory live OCI instances, volumes, attachments, backups, buckets, LBs, public IPs, IAM, Vault, NATS streams/consumers, certificates, workloads, and seven-day utilization/cost; establish the actual post-OKE-deletion residual bill, explicitly prove OKE clusters/node pools are absent, and identify any stale Kubernetes/Flux IAM, DNS, secret, volume, public-IP, load-balancer, webhook, or configuration remnants;
-- run the normalized eligible-provider TCO/ARM64/block-storage/TerraBase benchmark and record why OCI remains first or which second adapter is prioritized;
-- generate the >=20-row OCI eligible-region matrix and exhaustive cross-repository `WRK-*` retirement ledger with owners/tests/removal phases;
 - pin Podman and every image by immutable manifest digest; run bounded 21-container RF1 start, persistence, port, resource-admission, process-crash, cleanup, rootless-isolation, and matching-architecture conformance before accepting the lab backend;
 - define storage, availability, RPO/RTO, security, memory, scale, and cost SLOs;
 - ADRs for authority, NATS isolation/topology, provider ownership, runtime drivers, Vault scope, compact profile, networking/VPN, and project-placement boundary;
@@ -1585,7 +1460,7 @@ Deliver:
 - complete business-rule/state-transition/error matrices, fakes, property/model/concurrency/fuzz/mutation/replay suites, and regression corpus;
 - hermetic real-NATS L0C conformance and signed `pre-deployment-evidence.json` attestation production/verification.
 
-Exit gate: the hard pre-deployment thresholds pass for the exact binary; every registered requirement/invariant/error is traced; property/model tests cannot produce two accepted writers, a stale successful mutation, an unsafe deletion, a quorum-floor violation, or an unauthorized action under explored loss/duplication/reordering/partition/crash scenarios; restored state reaches the same digest. L0C validates the generated NATS contract. No server container, systemd/containerd, or OCI deployment test starts before this gate; only the credential-free L0/L0C toolchain container exists.
+Exit gate: the hard pre-deployment thresholds pass for the exact binary; every registered requirement/invariant/error is traced; property/model tests cannot produce two accepted writers, a stale successful mutation, an unsafe deletion, a quorum-floor violation, or an unauthorized action under explored loss/duplication/reordering/partition/crash scenarios; restored state reaches the same digest. L0C validates the generated NATS contract.
 
 ### Phase 2 — secure seed, identity/vault foundation, dual NATS, and self-upgrade
 
@@ -1620,15 +1495,10 @@ stale commands/orphans are rejected/reclaimed; running services survive control
 loss; rollout/rollback are exact-digest and health-gated; compact trusted-role
 and separate tenant-worker density gates pass.
 
-### Phase 4 — OCI/Pulumi handoff, compute autoscaling, and cost control
-
 Deliver:
 
-- provider abstraction and OCI Compute/network/LB/limits/pricing/work-request adapter with isolated regional actuator;
 - Pulumi `BootstrapBundle`, exact signed inventory handoff of freshly created resources, deliberate retain/unmanage transition, and disaster re-bootstrap fencing;
 - approved ARM64 A1 templates, instance lifecycle/enrollment, node classes, regional self-management, scale decisions, budgets, quotas, approved capacity fallback, and orphan audit;
-- production OCI KMS/Vault integration, regionally available artifacts/survival bundle, trusted-service and tenant-worker scale-from-zero, failed compute/controller/NATS-host replacement, and safe node-generation rotation. If that host carried TerraBase, its data volume remains fenced/held and the member is not started until Phase 5 owns the storage/TerraBase recovery adapter;
-- provider fake plus real disposable OCI A1 tests.
 
 Exit gate: crash/retry and leadership loss at every provider/handoff checkpoint creates exactly one owned terminal outcome; a new leader resumes authorized destructive work; tags never authorize it; Pulumi cannot fight the post-handoff autoscaler; scale out/in, compute/control/NATS replacement, survival-bundle replacement during GRU/Git outage, and A1 generation rotation pass while any TerraBase disk/member stays safely held; unauthorized/unowned resources are never mutated.
 
@@ -1636,7 +1506,6 @@ Exit gate: crash/retry and leadership loss at every provider/handoff checkpoint 
 
 Deliver:
 
-- volume claims, OCI block adapter, single-writer fencing, create/attach/classify/format/mount/detach/retain/delete;
 - real ext4/XFS expansion, performance-tier policy, forecast/cost limits, backup interlocks;
 - typed TerraBase bootstrap/topology/certificate/upgrade/replication/backup/restore/scaling controller;
 - the signed OCI container TerraBase descriptor and migration from the Debian
@@ -1681,7 +1550,6 @@ Exit gate: sequential loss of either of two Grafana instances and every observab
 
 Deliver:
 
-- full GRU/SFO/FRA RF1 L3S composition, targeted one-region R3 component lanes, and disposable OCI A1 L4 environments with the real multi-host NATS/TerraBase topology, endpoints, survival bundles, and selected HA backends;
 - a from-zero rehearsal of Pulumi foundation creation, nine-seed bootstrap, signed regional handoff, native desired state, product-data initialization, regional replication, staged release, rebuild, and orchestrator-generation rollback without any Kubernetes endpoint or credential;
 - sequential RF1 regional fault coverage locally, followed by GRU/WAN/Git/Vault/registry outages, every-GRU-node sequential failure, capacity/volume autoscaling, backup/restore, cost, and storage performance qualification at the real L4 boundary;
 - a provider/repository audit rehearsal that treats any OKE/Flux remnant as an orphan requiring explicit disposition, never as a source to adopt;
@@ -1691,7 +1559,7 @@ Exit gate: the clean-room deployment is reproducible; the real multi-host chaos 
 
 The L4 production-shaped matrix includes sequential failure of every GRU host while the full global and regional workload is active. Phase 9 cannot pass if any critical GRU service is singleton, loses its only durable state, requires manual promotion, or lacks one-node-equivalent capacity headroom.
 
-L3S remains the bounded three-region RF1 development topology. Production HA/chaos authority comes only from mandatory L1R/L4 systemd and OCI A1/IAM/storage plus multi-region evidence. The exact nine-node, three-region OCI topology is first assembled in Phase 10 with public ingress disabled and is not duplicated locally. Those resources remain an unexposed qualification environment until the full cloud soak and production gates pass. A boundary failure tears down or repairs the affected new generation and repeats the gate before exposure; it never turns untested resources public.
+L3S remains the bounded three-region RF1 development topology. Those resources remain an unexposed qualification environment until the full cloud soak and production gates pass. A boundary failure tears down or repairs the affected new generation and repeats the gate before exposure; it never turns untested resources public.
 
 ### Phase 10 — greenfield three-region production bring-up
 
@@ -1701,7 +1569,6 @@ Pulumi operations may prepare the three durable regional foundations concurrentl
 
 Order:
 
-1. Re-run the OCI account inventory and prove there are no OKE clusters or node pools. Mark every pre-existing instance, volume, attachment, backup, bucket, load balancer, public IP, IAM/dynamic-group policy, Vault secret, DNS record, certificate, and Flux webhook token as outside the new greenfield ownership graph. Classify it only as unrelated/quarantined or a positively identified cleanup candidate; there is no “adopt” or “retained foundation” outcome.
 2. Generate a cleanup-only plan for positively identified stale resources, show every destructive action, receive explicit approval, apply it, then re-inventory. Unknown ownership stays quarantined and the new design selects collision-free names/routes; unrelated resources are untouched. Cleanup receipts are separate from the new Pulumi stack and cannot seed it.
 3. Review the exact Pulumi preview, cost forecast, quota/capacity probes, networking/peering plan, destructive actions, and signed `BootstrapBundle` for GRU, SFO, and FRA. Apply only the durable foundation under explicit production approval.
 4. Create three A1 seed hosts in each region, establish identity and both regional NATS R3 planes, write and restore-test initial control-state backups/survival bundles, then complete the signed Pulumi-to-regional-controller handoff independently for each cell.
@@ -1721,13 +1588,11 @@ Order:
 - Three controllers/cell, R3 critical state, independent cell operation, signed snapshot/restore, no split writer.
 - Every resource in the new platform was created by the greenfield Pulumi/orchestrator flow, has exactly one mutation owner and a signed ownership generation, and is traceable to the new stack. No pre-existing resource may enter that graph; an unknown or stale account resource stays outside it and is quarantined rather than adopted or deleted.
 - Failure/restart at every first-creation and Pulumi-handoff checkpoint resumes idempotently, including independent partial success by region, without duplicate resources, trust roots, NATS identities, streams, volumes, or ownership epochs.
-- Two consecutive clean RF1 L3S bootstraps from the same signed contracts/artifacts converge to equivalent declared state, and the closed-ingress Phase 10 cloud assembly separately matches that contract. A fresh environment depends on no historical OCID, certificate root, Kubernetes secret, NATS cluster/server identity, stream position, or hidden manual state.
 - Public DNS and ingress are default-deny until the signed enablement action after all gates; premature enablement is rejected, and tested emergency withdrawal closes traffic without destroying state.
 - The exact `linux-arm64` release and every selected platform image pass real A1 Ampere execution, failure, storage, and performance gates; no x64-only production dependency remains.
 - GRU passes one-at-a-time failure of every node with global control, regional product traffic, both NATS planes, TerraBase, vault/PKI, GitOps, operator API, Grafana/query/ingest/alerting, and VPN coordination still usable; the failed capacity is recreated automatically.
 - Every external mutation has persisted intent, idempotency, fencing, timeout, evidence, and restart recovery.
 - Both execution drivers support the same resource, identity, health, rollout, logging, volume, and rollback contract.
-- Compute scale-out/in, quota/capacity failure, node generation, LB registration, and orphan audit pass in real OCI.
 - mTLS and least-privilege NATS subjects are mandatory for production control traffic.
 - Memory/CPU and seven-day cost gates pass without reducing declared safety margins.
 
@@ -1767,7 +1632,6 @@ Order:
 | Scheduler bug damages a database | TerraBase controller veto/reservation, one member per host, real destructive tests, SFO->FRA->GRU rollout |
 | Volume is double-attached/formatted/deleted | Stable identity, provider tags, filesystem UUID, single-writer fence, known-volume no-format rule, quarantine and multi-step approval |
 | Auto-expansion creates uncontrolled cost | forecast, max size, technical/monetary bands, performance SLO, alerts, audit and hard account cap |
-| Built-in vault weakens security | decision 3A external OCI KMS/Vault root protection, no custom crypto, security epic/gate, short-lived identities, independent review and recovery drill |
 | CI executes hostile code near production | ephemeral isolated workers, separate network/identity/cache, no production metadata/secrets, signed phase-scoped publishing |
 | Single binary becomes a monolith | strict project/module boundaries, state-machine interfaces, one composition root, contract and architecture tests |
 | Self-hosted CI cannot repair itself | decision 7A independent signed bootstrap/recovery workflow, minimal privileges, and regular recovery exercise |
@@ -1790,7 +1654,6 @@ Order:
 - Automatic database storage shrink.
 - Automatic deletion of permanent database volumes.
 - Treating systemd active state as application readiness.
-- Putting plaintext secret values/private keys in Git or ordinary NATS subjects/streams. Decision 3A keeps authoritative ciphertext/root protection in OCI Vault/KMS; ordinary subjects and streams never contain secret values.
 - Exposing internal operator capabilities through TerraScale's customer SDKs.
 - Replacing Grafana or the customer Dashboard.
 
@@ -1800,7 +1663,6 @@ Order:
 2. Dual dedicated regional NATS topology, host co-location isolation, bootstrap, upgrade, and recovery.
 3. JetStream streams, KV CAS, snapshot/restore, fencing, and audit retention.
 4. Pulumi/provider ownership and exact resource tags/IAM.
-5. Direct OCI instances versus instance pools by node class.
 6. Separate trusted-role and tenant-container schemas plus the safe shared
    lifecycle contract across systemd and containerd/runc.
 7. Host network/port allocation versus namespaced network roadmap.
@@ -1816,18 +1678,15 @@ Order:
 17. Operator OIDC/RBAC/break-glass/API and Grafana threat model.
 18. Project placement versus host scheduling boundary.
 19. Three-region cost/SLO target and provider portability contract.
-20. Provider-actuator crash-stop threat model, irreversible-operation fencing/resume, and OCI credential boundary.
 21. Regional survival bundle, artifact/secret availability, disconnected node replacement, and maximum survival window.
 22. Golden-image bootstrap, N/N-1 compatibility, and A/B orchestrator self-upgrade/rollback.
 23. Requirement/error registry, pure decision dependency rules, test toolchain, evidence attestation, and deployment-credential gate.
-24. Greenfield OCI inventory, stale-resource quarantine/approved cleanup, partial-create recovery, initial trust/NATS/TerraBase seeding, independent regional partial success, Pulumi handoff, cleanup-PR sequencing, ingress activation/withdrawal, and first-production rollback boundaries.
 
 ## Definition of complete
 
 The orchestrator is ready for its first production deployment only when:
 
 - GRU, SFO, and FRA run production workloads from the same signed single binary and native schema;
-- the primary production artifact and every managed workload are qualified on real OCI A1 Ampere ARM64 hosts, with architecture-specific digests preserved through GitOps and promotion;
 - GRU has no critical single-node dependency and passes failure of every node in turn while serving product and operator traffic; automatic replacement returns it to full redundancy;
 - each cell is autonomous under the documented failure policy and has tested state backup/restore;
 - compute and storage scale automatically within approved safety/cost limits;
@@ -1840,9 +1699,7 @@ The orchestrator is ready for its first production deployment only when:
 - mTLS identities, NATS authorization, secret policy/delivery, rotation, revocation, and audit pass security review;
 - GitOps and CI/CD preserve build-once, immutable promotion, staged regional verification, rollback, and interruption recovery;
 - the operator API/CLI, Grafana, OTel, VPN, alerts, and runbooks support normal and emergency operation;
-- two consecutive from-zero RF1 L3S bootstraps and the separate closed-ingress OCI assembly reproducibly converge from the same contracts/artifacts, recover every applicable partial-bootstrap checkpoint, and depend on no historical OCID, identity root, Kubernetes secret, NATS ID/position, or hidden manual state;
 - public DNS/ingress remains closed until a signed post-soak owner action, and emergency traffic withdrawal is proven before enablement;
-- all production gates pass on real Linux and OCI, not only mocks;
 - the measured three-region cost meets the approved target while database performance meets the approved SLO;
 - provider inventory proves OKE remains absent, no Flux/Kubernetes runtime credential or compatibility path exists, and no stale infrastructure resource is silently owned by the orchestrator;
 - every `WRK-*` cleanup item is either closed by its separately reviewed repository/provider cleanup evidence or has an explicit owner-approved risk acceptance and expiry.
@@ -1852,8 +1709,6 @@ The orchestrator is ready for its first production deployment only when:
 These files are the starting executable specifications. Paths are relative to this repository in the current workspace.
 
 - Regional topology and ownership: `../TerraScale.Infrastructure/infra/regions/regions.yaml`, `../TerraScale.Infrastructure/docs/cluster-map.md`, `../TerraScale.Infrastructure/AGENTS.md`.
-- Historical checked-in NATS/storage/observability behavior: `../TerraScale.Infrastructure/gitops/platform/nats/base/nats.yaml`, `../TerraScale.Infrastructure/gitops/platform/storage/oci/`, `../TerraScale.Infrastructure/gitops/observability/` and regional cluster overlays.
-- Historical OCI node-generation/autoscaling/IAM behavior and workaround evidence: `../TerraScale.Infrastructure/src/TerraScale.Infrastructure/OkeResources.cs`, `InfrastructureSettings.cs`, and CLI/verifier projects.
 - Historical checked-in mTLS ingest behavior: `../TerraScale.Infrastructure/src/TerraScale.Infrastructure/ObservabilityIngestTls.cs` and GRU regional ingest manifests.
 - Release semantics: `../TerraScale.Deploy/src/TerraScale.Deploy.Cli/Services/ServiceReleasePipeline.cs`, `../TerraScale.Deploy/src/TerraScale.Deploy.Cli/Services/FluxNotificationBarrier.cs`, tests, and every `.terrascale/deploy.json`.
 - Local runtime graph: `../TerraScale.DevHost/src/TerraScale.DevHost/DevStack.cs`, `../TerraScale.DevHost/src/TerraScale.DevHost/DevStackEnvironment.cs`, and `../TerraScale.Internals/docs/DevHost.md`.
@@ -1863,13 +1718,10 @@ These files are the starting executable specifications. Paths are relative to th
 - Native TerraBase unit: `../TerraBase/scripts/linux/pkg/deb/assets/terrabase/debian/terrabase.service` and `../TerraBase/docs/linux.md`.
 - Public compatibility: `../TerraScale.DotNet/src/`, `../TerraScale.TypeScript/src/`, their E2E tests, and `../Terrascale.Documentation/src/content/docs/`.
 
-External implementation references must use primary documentation, including NATS TLS/JWT/JetStream behavior, systemd D-Bus/credentials/cgroup semantics, containerd APIs, OCI Compute/Block Volume/KMS/Vault APIs, OpenTelemetry protocol/security, and the selected VPN implementation.
-
 Initial primary external anchors:
 
 - NATS [JWT/operator security](https://docs.nats.io/running-a-nats-service/nats_admin/security/jwt), [gateway topology](https://docs.nats.io/running-a-nats-service/configuration/gateways), [JetStream administration](https://docs.nats.io/running-a-nats-service/configuration/clustering/jetstream_clustering/administration), and [monitoring security warning](https://docs.nats.io/running-a-nats-service/configuration/monitoring).
 - Pulumi [`retainOnDelete`](https://www.pulumi.com/docs/iac/concepts/resources/options/retainondelete/) as one primitive when transferring freshly bootstrapped resources from Pulumi to the regional controller—not as sufficient handoff correctness by itself and never as a path to adopt an old resource.
 - Grafana [high-availability setup](https://grafana.com/docs/grafana/latest/setup-grafana/set-up-for-high-availability/) and [provisioning](https://grafana.com/docs/grafana/latest/administration/provisioning/); TerraScale deliberately uses multiple immutable/read-only provisioned replicas to avoid a new mutable metadata database while keeping dashboards reachable after one node loss.
-- OCI [Ampere A1 Compute](https://docs.oracle.com/en-us/iaas/Content/Compute/References/arm.htm) and [dynamic-group propagation behavior](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingdynamicgroups.htm); IAM propagation is never used as a leader fence.
 - [Podman](https://docs.podman.io/) provides the rootless local container runtime. TerraScale pins every workload image by manifest digest, permits only a closed catalog, records runtime/network/storage-driver identity in evidence, and never grants privileged mode, host networking, or arbitrary host mounts.
 - Infisical [Universal Auth](https://infisical.com/docs/documentation/platform/identities/universal-auth) and the current [v4 Secrets API](https://infisical.com/docs/api-reference/endpoints/secrets/list) define the external static-secret adapter boundary.

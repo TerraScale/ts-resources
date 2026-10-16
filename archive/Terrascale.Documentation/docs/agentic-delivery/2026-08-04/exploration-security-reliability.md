@@ -2,7 +2,7 @@
 
 ## Confirmed production blockers
 
-The Orchestrator production-readiness audit blocks deployment on unqualified real OCI compute, storage, runtime, NATS, PKI, restore, and DR adapters. Local development evidence and pure state-machine tests do not establish production recovery, availability, or destructive-operation safety.
+The Orchestrator production-readiness audit blocks deployment on unqualified storage, runtime, NATS, PKI, restore, and DR adapters. Local development evidence and pure state-machine tests do not establish production recovery, availability, or destructive-operation safety.
 
 Internals review identified these delivery risks:
 
@@ -25,6 +25,6 @@ Public keys are scoped, provider webhooks are signed, and the internal-RPC desig
 | Recovery uncertainty | Approve measurable RPO/RTO, retention, and recovery-workspace objectives, then automate restore and regional DR drills. | Signed drill record includes source, target, elapsed recovery, recovered consistency checks, owner, and result. |
 | Mutable deletion audit | Make deletion audit entries append-only and link corrections or redactions as new records. | Authorization and tamper tests prove actors cannot alter historical deletion facts. |
 | Internal gRPC size | Set explicit request and response message ceilings, validate payload sizes before allocation, and paginate or stream approved large reads. | Boundary tests reject oversized payloads and demonstrate normal operations within the published limits. |
-| Control-plane qualification | Implement and qualify real OCI, storage, runtime, NATS, PKI, backup/restore, and DR adapters. | Environment-specific, retained evidence proves fencing, recovery, mTLS identity, fault handling, and restore behavior. |
+| Control-plane qualification | Implement and qualify storage, runtime, NATS, PKI, backup/restore, and DR adapters. | Environment-specific, retained evidence proves fencing, recovery, mTLS identity, fault handling, and restore behavior. |
 
 No security or reliability claim should be promoted from this exploration until the corresponding gate has reproducible evidence.

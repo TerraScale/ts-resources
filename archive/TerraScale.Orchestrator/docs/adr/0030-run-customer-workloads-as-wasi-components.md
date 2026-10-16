@@ -18,8 +18,7 @@ roles. TerraBase remains the only platform-managed stateful workload and runs
 as a trusted OCI container under its specialized storage, topology, backup,
 restore, upgrade, and recovery controller.
 
-The public artifact and WIT contracts do not name runwasi, Wasmtime, Spin,
-wasmCloud, Oracle Cloud Infrastructure, or a host CPU architecture. The first
+The first
 runtime implementation may use containerd, runwasi, and Wasmtime. Existing
 Linux OCI images, native executables, privileged processes, host devices,
 arbitrary POSIX applications, GPUs, and unrestricted networking are outside

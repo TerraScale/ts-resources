@@ -36,8 +36,6 @@ the following against the exact integration tree and candidate:
 - a production-shaped GRU/SFO/FRA rehearsal, including partial activation and
   exact-byte rollback;
 - DNS, TLS, global endpoint, and strict-regional endpoint probes;
-- real OCI A1, provider, systemd, containerd, network, storage, and R3 journal
-  restart/member-loss drills;
 - the same live customer journey through raw API, .NET, TypeScript, and MCP;
 - tenant isolation, metering/billing, replication, monitoring, registration,
   payment, manual QA, and named final-launch approval;

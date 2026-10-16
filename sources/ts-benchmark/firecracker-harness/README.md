@@ -12,9 +12,8 @@ The initial local image lock is in `pins.toml`:
 | Guest kernel | SHA-256 `e20e46d0c36c55c0d1014eb20576171b3f3d922260d9f792017aeff53af3d4f2`, Linux 6.1.155+ | `/tmp/vm-inputs/vmlinux` |
 | Guest root filesystem | SHA-256 `dd49aee1d9c28f8e781a627bec744db3a961ce4402950130ff9268504c551314`, Ubuntu 24.04.3 | `/tmp/vm-inputs/rootfs.ext4` |
 
-The kernel and root filesystem hashes were recorded in
-`/tmp/ts-oci-readiness-20260921/vm-inputs-v1/MANIFEST.txt`. That manifest does
-not identify the upstream artifact URLs or build recipe. The harness verifies
+The recorded kernel and root filesystem hashes do not identify the upstream
+artifact URLs or build recipe. The harness verifies
 the exact local bytes and reports their upstream provenance as unqualified; it
 never downloads or silently substitutes another image.
 

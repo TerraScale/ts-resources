@@ -18,10 +18,8 @@ scheduler shards long product packages and runs every test, example, and
 fuzz seed once. Forgejo uses the same tests through `make ci-verify`, together
 with static release-binary checks.
 
-Deployment, OCI admission, CI, runtime-priority, and Firecracker driver
-contracts are ordinary Go packages. They call native feature APIs or `ts-orch`
-and inject cloud, filesystem, transport, and process boundaries where needed.
-Expected results and assertions belong in Go. First-party tools and tests
+They call native feature APIs or `ts-orch`
+and inject cloud, filesystem, transport, and process boundaries where needed. Expected results and assertions belong in Go. First-party tools and tests
 require no Python interpreter. New tests must not use Python test frameworks
 or wrap a separate test runner.
 

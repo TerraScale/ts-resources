@@ -249,30 +249,14 @@ Organization-scoped directories affect membership only, and an admin ban
 remains an independent denial. Reactivation can make an existing, unexpired
 session usable again; deactivation does not itself revoke sessions.
 
-### Email delivery (OCI)
+### Email delivery
 
 Without `TS_AUTH_SMTP_*` configuration ts-auth uses the logging sender: nothing
 is delivered, and each message logs a warning with its sizes only, never the
 recipient or the content (the dev/test default). With SMTP configured, STARTTLS
 and a valid server certificate are mandatory; a relay that offers no TLS never
 receives the credentials or the message. Delivery failures are logged and never
-fail the request that sent the mail. For real delivery via OCI
-Email Delivery, set the five variables above; fetch the credentials from the
-ts-infra state:
-
-```sh
-cd ts-infra && export TF_VAR_state_passphrase=...
-tofu output -raw smtp_username   # full string incl. the @oci suffix
-tofu output -raw smtp_password
-```
-
-DNS prerequisites (terrascale.tech is hosted at Purelymail — not editable from
-this repo):
-
-- SPF: the domain TXT record must include `include:rp.oracleemaildelivery.com`
-  (Americas) or deliverability suffers.
-- DKIM: the OCI managed-DKIM records are output by ts-infra once applied;
-  publish the CNAMEs in the zone. DKIM stays `PENDING` until they resolve.
+fail the request that sent the mail.
 
 ### Local development against a real TerraBase member
 

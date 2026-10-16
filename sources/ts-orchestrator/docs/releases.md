@@ -210,16 +210,6 @@ runs locally) finds its candidate by source revision:
   module digests, run identity and binary digest to match, the pinned `fj
   actions run-detail` readback to show the successful job, and the job log to
   carry the exact `TS_RELEASE_QUALIFICATION_V1` marker for the manifest bytes;
-- every other input is data in `deploy/image/image-inputs.json`: the base
-  QCOW2 and Ubuntu checksum files retained once on the
-  `image-base-noble-arm64-20260926` release (pinned by size and SHA-256, the
-  checksum signature verified against the pinned signer, the QCOW2 against
-  the signed checksum), the base OCID and kernel release, the trust root and
-  timesyncd config checked in under `deploy/image/inputs`, the priority
-  profile, and the TerraBase artifact pin. `ts-orch image inputs`
-  validates the file; its `pin-terrabase` command rewrites only the TerraBase
-  pin from a published, Fast-qualified release, and the build re-derives that
-  pin from the release to prove it.
 
 The build checks the binary with `ts-orch release binary-candidate` (static ARM64
 ELF, Go toolchain, clean embedded revision, size and digest against the
@@ -244,9 +234,7 @@ passed.
 
 ### Image promotion
 
-`ts-orch image promote` turns a retained image release (or a local
-`make image` directory) into a signed OCI image in one command and writes
-one `promotion-receipt.json`. It stops at the first failed gate:
+It stops at the first failed gate:
 
 1. it downloads the four image assets, checks `SHA256SUMS`, and for a CI
    image requires the completed `image.yml` run and job attempt to have
@@ -255,24 +243,11 @@ one `promotion-receipt.json`. It stops at the first failed gate:
    base QCOW2 and checks them against the image manifest;
 3. it builds `ts-orch` from the image's clean source revision and runs
    `release verify-binary` on the signed binary receipt;
-4. it imports the QCOW2 with `ts-orch oci-region import-image` (UEFI and
-   paravirtualized capability schema, A1-only shapes; idempotent);
-5. it runs `image-candidate` for the imported OCID, then, given the
-   root-signed delegation extended to that OCID (`--image-delegation`),
-   `sign-image` (which again checks the `ci.yml` run and qualification marker
-   through the pinned `fj` and compares the binary extracted from the QCOW2
-   with `virt-cat`) and `verify-image`.
 
-The root owner can extend a delegation to an image only once its OCID exists
-(`ts-orch release sign-delegation --previous-delegation ... --image-cell GRU
---image-ocid ...`). A first run without `--image-delegation` therefore stops
-after the import and prints that command for the imported OCID; the rerun
-with the extended delegation repeats every gate, finds the same image, and
-signs it. `--sign-binary` signs the binary receipt with the leaf key when the
+`--sign-binary` signs the binary receipt with the leaf key when the
 candidate's CI release has none.
 
-`--dry-run` runs every read-only gate and builds the image candidate against
-a placeholder OCID without importing or signing. The command re-executes
+The command re-executes
 itself under `deploy/image/tools.sh` for `virt-cat`, and requires the pinned
 `fj` with `actions run-detail` and `actions logs` (`--fj`, `TS_FJ`, or the
 admission build under `~/.local/share/terrascale-controller-bootstrap-20260927`);
@@ -283,9 +258,7 @@ promotion command's and are recorded in its receipt.
 `internal/release` owns the v2 binary and image receipt wire types, scope rules,
 and current and historical verification. Each receipt requires the SHA-256 of
 the exact qualification manifest. Binary receipts bind that manifest to the
-source revision and retained static executable. Image receipts bind it to the
-same qualified binary, the candidate QCOW2, its base image and kernel, and the
-asserted custom-image OCID and region. Current verification requires a live
+source revision and retained static executable. Current verification requires a live
 root-signed release delegation with a maximum 365-day lifetime and a receipt
 with its separately defined 365-day maximum. Signing applies the same limits
 and caps receipt expiry at the remaining delegation lifetime. Historical
@@ -293,22 +266,9 @@ verification returns a distinct audit-only proof and cannot serve as current
 authorization. The verified image proof exposes SHA-256 of the exact canonical
 envelope wire; this is the digest pinned by
 `Manifest.ReleaseReceiptSHA256`, not a payload-only digest.
-The accepted bootstrap wire direction carries the public image-receipt
-envelope and release-delegation envelope in the root-signed manifest after OCI
-image import; the runtime checks the envelope digest against this pin and
-checks the receipt's environment, region, image OCID, and architecture against
-the signed manifest before trusting the receipt. Neither image-candidate nor
-sign-image reads image bytes back from OCI: they inspect the supplied local
-QCOW2 and accept the imported image OCID and region as inputs. OCI read-back and
-deployed-image execution therefore remain separate evidence.
 
 `internal/release/cli` checks static ELF and embedded Go build metadata and consumes
-the shared verifier for binary and image promotion receipts. OCI object upload
-is bounded to 512 MiB, streams from disk, uses conditional create, and accepts
-an existing object only after a matching streamed SHA-256/size read-back. Image
-receipts bind the base and custom image OCID to the logical region and compare
-the signed binary with bytes extracted from the final QCOW2 by `virt-cat`.
-The controller's bootstrap oneshot now verifies the baked identity and anchor,
+the shared verifier for binary and image promotion receipts. The controller's bootstrap oneshot now verifies the baked identity and anchor,
 current image receipt, instance receipt, and current regional grant before the
 controller service starts. The host service still starts independently from
 its role config and does not run this image admission path; host startup
@@ -325,13 +285,9 @@ unit metadata. It stages account creation with host `systemd-sysusers
 and symlinks are written and read back offline, and a second, read-only
 appliance reads the orchestrator binary, native verifier and kernel back from
 the finished QCOW2. A scoped container runner can be supplied as
-`TS_OFFLINE_GUESTFS_RUNNER` when guestfish is unavailable on the build host.
-The image is deployment-neutral: the only deployment-related inputs are one
+`TS_OFFLINE_GUESTFS_RUNNER` when guestfish is unavailable on the build host. The image is deployment-neutral: the only deployment-related inputs are one
 or more public bootstrap root PEMs (1 through 16 files, each bounded to 16
-KiB and 64 KiB total). The deployment identity, signed anchor and host
-enrollment bundle arrive in OCI launch metadata and are verified against
-these roots on the instance; the builder rejects flags for them and fails if
-the base image already contains any of them.
+KiB and 64 KiB total).
 
 The same image build now requires the exact qualified ARM64 TerraBase
 `tb-server-linux-arm64` artifact as `--native-verifier-binary` and its
@@ -413,9 +369,7 @@ and controller startup, while the controller still applies the runtime
 kernel-clock check before broker effects. The builder enables the time
 services, controller, and host units. Each orchestrator service has a
 `ConditionPathExists` for its role config, so an unprovisioned image leaves the
-controller and host inactive. The builder makes no OCI calls. A future image
-receipt can only be made after a custom image has been imported and its OCI
-image OCID is known. This workflow has not been run because the pinned base
+controller and host inactive. This workflow has not been run because the pinned base
 image, signer, and image-import authorization are not yet approved.
 
 Every image can run the managed host, so the offline builder also checks that the base guest

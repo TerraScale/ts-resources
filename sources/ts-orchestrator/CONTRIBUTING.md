@@ -41,8 +41,7 @@ subprocess operations. Local signing and verification commands must work
 without starting NATS or loading a controller configuration.
 
 Use the authenticated regional operator path for an established cell so that
-the controller owns mutation authority and reconciliation. Initial bootstrap
-supports explicit direct OCI operations before the cluster exists. Preserve
+the controller owns mutation authority and reconciliation. Preserve
 reviewed inputs, signed object validation, file permissions, and overwrite
 checks when moving operations into the CLI.
 
@@ -78,7 +77,6 @@ a tier is chosen with `-short` and `TS_TEST_TIER`, never with build tags, and
 
 | Tier | Runs | Command | Contains |
 |---|---|---|---|
-| T0, fast | every pull request | `TS_TEST_TIER=pr make ci-verify` (race tests with `-short`); `make test-fast` locally | Unit tests and the single-process safety invariants: fencing, lease reserves, authority epochs, CAS, signed configuration, idempotent journaled OCI operations, and one case of every image-builder rejection family. |
 | T1, integration | every push to `develop` and `main` | `make ci-verify` (`TS_TEST_TIER=full`, the default) | T0, plus tests that call `tier.Integration(t)`, plus `make fixturetest-check` (`go vet` and the fixturegen tests with `-tags fixturetest`). |
 | T2, qualification | `image.yml`, before the image is built, where the runner supplies fixtures | `scripts/ci/qualify-image.sh` with `TS_TEST_TIER=qualification` | Tests that call `tier.Qualification(t, envs...)`: real TerraBase members, cross-language packets and rendered enrollment bundles. Firecracker VMs qualify through `ts-orch qualification firecracker ...`. |
 

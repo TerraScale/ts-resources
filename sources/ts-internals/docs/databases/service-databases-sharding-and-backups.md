@@ -38,7 +38,7 @@ scatter and gather across key ranges through the routing layer.
 
 ## Backup and PITR
 
-Litestream continuously ships each encrypted SQLite file to OCI Object Storage
+Litestream continuously ships each encrypted SQLite file to object storage
 for backup and PITR. It is not a replication or failover mechanism.
 
 Restore creates a new database and replays through the normal system Project

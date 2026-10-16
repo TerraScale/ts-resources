@@ -29,7 +29,7 @@ Absence statements are bounded to the reviewed source and current public surface
 
 1. **Contract foundation**: define public branch, recovery-workspace, operation, audit, capability, and scoped-authorization contracts. Add TypeScript and .NET SDK parity rules before UI, CLI, or MCP work.
 2. **Engine and lifecycle**: implement managed branch semantics above TerraBase, including immutable source point, TTL, quotas, cleanup, and restore-to-isolated-workspace. Do not present engine backups as managed branches.
-3. **Production substrate**: qualify the real OCI, runtime, NATS, storage, TerraBase-admin, telemetry, and DR adapters needed to execute lifecycle operations safely.
+3. **Production substrate**: qualify the real runtime, NATS, storage, TerraBase-admin, telemetry, and DR adapters needed to execute lifecycle operations safely.
 4. **Product experience**: compose the new public contracts in Dashboard and CLI. Add deep tenant, project, database, branch, operation, and recovery observability.
 5. **MCP**: ship read-first tools, resources, and prompts as a typed-SDK adapter; add mutations only with explicit confirmation, idempotency, audit, and capability checks.
 6. **Reliability release**: rehearse point-in-time recovery and regional DR, publish evidence, then enable production lifecycle and mutation capabilities by policy.

@@ -93,9 +93,7 @@ Paths inside the archive preserve `docs/work-packages/**` and `docs/work-package
 | `phase0-draft-cloud-adrs` | phase0-evidence | Phase 0 work package: draft cloud ownership ADRs 4 and 20 | no |
 | `phase0-draft-delivery-placement-adrs` | phase0-evidence | Phase 0 work package: draft GitOps and placement ADRs 13 and 18 | no |
 | `phase0-nats-readiness` | phase0-evidence | Phase 0 work package: NATS pins, compatibility, and L0C readiness | yes |
-| `phase0-oci-readonly-inventory` | phase0-evidence | Phase 0 work package: read-only OCI residual inventory | no |
 | `phase0-owner-decision-packet` | phase0-evidence | Phase 0 work package: owner decision and SLO freeze packet | yes |
-| `phase0-provider-qualification-schema` | phase0-evidence | Phase 0 work package: provider/TCO and OCI region qualification schema | yes |
 | `phase0-registry-coverage-audit` | phase0-evidence | Phase 0 work package: requirement and state-machine coverage audit | no |
 | `phase0-registry-v2-review` | phase0-evidence | Phase 0 work package: independent semantic registry v2 review | no |
 | `phase0-source-contract-audit` | phase0-evidence | Phase 0 work package: product contract source audit | no |

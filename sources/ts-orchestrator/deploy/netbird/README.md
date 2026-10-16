@@ -48,7 +48,6 @@ OpenTofu manages infrastructure only, and HomeLab no longer owns NetBird.
 | Groups, policies, network, DNS zone and records, DNS and account settings | Desired state embedded in the `ts-orch` binary; [reconciliation](#desired-state-and-reconciliation) |
 | Manager host bundle: Quadlets, systemd units, installers, backup, firewall, Caddy block | [`manager/`](manager), staged at `/opt/ts-ops/netbird` |
 | Server client install and automatic enrollment | [Server enrollment](#server-enrollment), `deploy/systemd`, image inputs |
-| OCI side: LPG pair, routes, cell NSG rules | [Operator gateway peering](../../docs/region-bootstrap.md#operator-gateway-peering) |
 | ts-ops host (Forgejo, Caddy, ports, backups) | ts-ops host runbook |
 
 Do not edit groups, policies, networks or settings in the dashboard. A
@@ -86,31 +85,18 @@ policies and defers the network, its resource and router and the policy
 targeting the resource with a warning; the next sync after the routing peer
 joins creates them. An existing network without its router peer is refused.
 
-The cell's leader controller reconciles automatically when an admin PAT
-secret is configured and its `netbird.json` belongs to cell `gru-1`: region
-`sa-saopaulo-1` and `peer_names` equal to the desired state. Any other cell's
+Any other cell's
 controller logs `NetBird manager reconciliation disabled: …` instead of
 reconciling, or pruning, `gru-1`. It runs `sync --apply` and prunes replaced servers' peers
 on a loop. Every controller runs the loop but only the authority lease holder
 (`CanMutate`) acts: first pass about 30 s after start, then every 5 min ±20%,
 backing off from 30 s to 30 min after failures. NetBird errors are logged and
-never block the controller. The PAT's OCI Vault secret OCID is the optional
-`admin_pat_secret_id` field of `netbird.json`; the controller reads the current
-secret version every cycle, so rotating the secret needs no restart. When the
+never block the controller. When the
 field is absent the controller logs `NetBird manager reconciliation disabled`
-once and operators run the commands by hand. Only controllers may read the
-secret, through a separate policy (the oci-region live check expects the
-existing NetBird policy's statements verbatim):
+once and operators run the commands by hand.
 
-```text
-Allow dynamic-group terrascale-orchestrator to read secret-bundles in compartment id <secret_compartment_id> where target.secret.id = '<admin PAT secret OCID>'
-```
+Enable it:
 
-If the secret lives in the control compartment, the existing broad
-`read secret-bundles` grant already covers it. Enable it:
-
-1. Store the `ts-orchestrator` service user's PAT (below) as an OCI Vault
-   secret and add the policy.
 2. Run `ts-orch netbird sync`, review, then `sync --apply`; a second `sync`
    must print no changes. Do the same with `prune-peers`.
 3. Set `admin_pat_secret_id` in `deploy/image/inputs/netbird-gru.json`, update
@@ -203,12 +189,6 @@ because Caddy routes by Host; over NetBird, pin the name to ts-ops' NetBird IP
 
 ### Stable peer names
 
-Servers enroll under their [static names](../../docs/region-bootstrap.md#static-names)
-`<region>-<index>-<role>-<n>`: controllers `gru-1-ctl-1`..`3` and TerraBase
-members `gru-1-db-1`..`2`, taken from the `peer_names` map in `netbird.json`
-(private IP → name), read from the primary VNIC's private IPv4 in OCI
-instance metadata:
-
 ```json
 "peer_names": {
   "10.251.0.11": "gru-1-ctl-1",
@@ -259,8 +239,7 @@ Add dashboard users through an invite (`POST /api/users/invites`, then
 NetBird is TerraScale's access network and Tailscale is the homelab's; one
 device can run both. NetBird's default peer range lies inside Tailscale's
 `100.64.0.0/10`, and `tailscaled` drops that source range on every interface
-except `tailscale0`. The account therefore uses `10.200.0.0/16`, clear of the
-homelab LANs, the Incus and Podman bridges, and both OCI VCNs. A range change
+except `tailscale0`. A range change
 reallocates every peer address, but a connected client keeps its old address
 until it reconnects (`netbird down && netbird up` keeps its identity).
 
@@ -302,19 +281,10 @@ Tailscale keeps name resolution; they reach cell hosts by private IP.
 
 ## Secrets and tokens
 
-OpenBao renders `/etc/netbird/config.yaml` (root `0600`) from
-[`manager/templates/config.yaml.tmpl`](manager/templates/config.yaml.tmpl)
-through `oci-materialize-map.json` target `forgejo-oci-netbird`. The source
-object `/external/ts-forgejo-oci/static/netbird` holds three keys of 32 random
-bytes in base64 (`openssl rand -base64 32`): `NETBIRD_DATASTORE_ENCRYPTION_KEY`,
-`NETBIRD_RELAY_AUTH_SECRET`, `NETBIRD_SESSION_COOKIE_ENCRYPTION_KEY`.
-
 | Secret | Where | Use |
 | --- | --- | --- |
 | Owner login `mariogk@terrascale.tech` | OpenBao `/infra/netbird/owner` (`NETBIRD_OWNER_EMAIL`, `NETBIRD_OWNER_PASSWORD`) | Dashboard only; automation never uses a human login |
 | Operator automation PAT | OpenBao `/infra/netbird/automation` (`NETBIRD_AUTOMATION_USER_ID`, `_PAT`, `_PAT_ID`, `_PAT_EXPIRES`) | Operator API calls and `ts-orch netbird` by hand |
-| Controller admin PAT | Service user `ts-orchestrator` (role `admin`: `network_admin` cannot rename or delete peers or change account settings). OCI Vault secret referenced by `admin_pat_secret_id` | Leader controller reconciliation |
-| Server setup key | OpenBao `/infra/netbird/servers-gru`, mirrored to the OCI Vault secret named by `setup_key_secret_id` in `deploy/image/inputs/netbird-gru.json`. The reset invalidated the pinned `…zsrdta`; [Fresh cell enrollment](#fresh-cell-enrollment) replaces it | Server enrollment through instance principals |
 
 ### PATs
 
@@ -326,9 +296,6 @@ last 365 days, the NetBird maximum. The operator automation PAT was created
    `POST /api/users/$NETBIRD_AUTOMATION_USER_ID/tokens` with
    `{"name": "<PAT name>", "expires_in": 365}`. Keep the response in memory
    or a protected `0600` file.
-2. Write the token, its ID and expiry to its secret (OpenBao, or a new OCI
-   Vault version for the controller PAT) and confirm `ts-orch netbird
-   inventory` works with it.
 3. Revoke the old token:
    `DELETE /api/users/$NETBIRD_AUTOMATION_USER_ID/tokens/<old PAT ID>`.
    Shred any file from step 1.
@@ -355,11 +322,6 @@ Create or rotate it:
 1. `ts-orch netbird setup-key --pat-file PAT --out /root/netbird-gru-servers.key`,
    review the plan, then rerun with `--apply`. The value goes only to the new
    `0600` file; the command fails before creating a key if the file exists.
-2. Write it to `/infra/netbird/servers-gru` and to OCI Vault
-   ([Fresh cell enrollment](#fresh-cell-enrollment) step 3; for a rotation
-   use `oci vault secret update-base64 --secret-id <ID>` with the same
-   `--from-json` file), verify `CURRENT` decrypts to the new key, and shred
-   both files.
 3. Enroll one test server with the Vault key, then revoke the old key
    (`PUT /api/setup-keys/<old ID>` with `"revoked": true`). Until then `sync`
    warns that two valid keys carry the name.
@@ -435,8 +397,7 @@ sudo shred -u /root/netbird-gateway.key
 The script verifies the NetBird apt key fingerprint, installs and holds
 `netbird=0.79.0`, enables IPv4 forwarding, and opens UDP 51820 with
 `netbird-peer-firewall.service`. DNS, client routes and its SSH server stay
-off. The peer reaches its manager through the public name (OCI hairpins this
-VM's public IP). Re-runs with saved client state log in without the key and
+off. Re-runs with saved client state log in without the key and
 use it only if NetBird reports NeedsLogin or SessionExpired. Run
 `ts-orch netbird sync --apply` again to create the deferred GRU network. The
 routing peer's nftables table owns the
@@ -519,16 +480,10 @@ sessions, `netbird.service` runs unconfined like `ssh.service`. Sessions run
 in their own logind scopes, and `KillMode=process` lets a `systemctl restart
 netbird` issued from a session finish.
 
-The public `/etc/terrascale-orchestrator/netbird.json` identifies the
-management HTTPS origin, its private OCI IP, OCI region, the setup-key secret
-OCID and the `peer_names` slot map. `config.example.json` shows the fields.
-The production GRU input is `deploy/image/inputs/netbird-gru.json`; changes
+`config.example.json` shows the fields. The production GRU input is `deploy/image/inputs/netbird-gru.json`; changes
 must update its SHA-256 in the image inputs. The IP pins the management
 hostname in `/etc/hosts`, preserving the HTTPS hostname and certificate
-verification when private servers cannot reach the public address. The
-enrollment command reads the setup key with the server's OCI instance
-principal; the instance's dynamic group must have read access to that Vault
-secret. Setup keys and API tokens are never image inputs.
+verification when private servers cannot reach the public address. Setup keys and API tokens are never image inputs.
 
 The routing peer on ts-ops keeps its separate routing-enabled client
 ([Routing peer](#routing-peer)).
@@ -574,9 +529,7 @@ The procedure for a rebuilt cell, first the wiped GRU cell rebuilt as
 `gru-1`: the manager, the `ts-ops` routing peer and operator devices exist;
 GRU's group, policies, network, zone, setup key and server peers do not. If
 `ts-orch netbird inventory` still lists server peers of the wiped cell, remove
-them first ([decommission](#decommission)). Every step that
-changes the manager, OpenBao, OCI or an image is a live action that needs the
-owner's approval. Keep the automation PAT in a root-owned `0600` file `$PAT`.
+them first ([decommission](#decommission)). Keep the automation PAT in a root-owned `0600` file `$PAT`.
 
 1. Reconcile the manager objects:
    `ts-orch netbird sync --pat-file "$PAT"`. The plan creates `gru-servers`,
@@ -595,39 +548,10 @@ owner's approval. Keep the automation PAT in a root-owned `0600` file `$PAT`.
    ts-orch netbird setup-key --pat-file "$PAT" --out netbird-gru-servers.key --apply
    ```
 
-3. For the TS-470 GRU rebuild, COS's 2026-10-04 instruction overrides the
-   OpenBao write below: leave `secret/homelab/infra/netbird/servers-gru`
-   unchanged. Keep the new key in its owner-only local file until it is
-   mirrored into a freshly approved OCI secret, then remove the local copies.
-   Use the [rebuild proposal](../../docs/evidence/gru-rebuild-plan-20261004.md)
-   and its unbound NetBird template; the checked-in image's old secret OCID
-   must not be reused. For other runs, store it in OpenBao `/infra/netbird/servers-gru` and in a new OCI Vault
-   secret in `sa-saopaulo-1` (the old one went with the reset), never on a
-   command line, then shred both files:
-
-   ```sh
-   # First write netbird-gru-servers.key to OpenBao /infra/netbird/servers-gru.
-   jq -n --rawfile key netbird-gru-servers.key \
-     '{secretContentContent: ($key | rtrimstr("\n") | @base64)}' > netbird-gru-servers.json
-   oci vault secret create-base64 --compartment-id "$SECRET_COMPARTMENT" \
-     --vault-id "$VAULT" --key-id "$VAULT_KEY" --secret-name netbird-gru-servers \
-     --from-json file://netbird-gru-servers.json --wait-for-state ACTIVE \
-     --query data.id --raw-output
-   shred -u netbird-gru-servers.json netbird-gru-servers.key
-   ```
-
 4. After the [operator gateway peering](../../docs/region-bootstrap.md#operator-gateway-peering),
    grant the cell's controller and host dynamic groups read access to exactly
    that secret and record it in `plan.netbird`
    ([automatic server enrollment](../../docs/region-bootstrap.md#automatic-server-enrollment)).
-5. Set the secret OCID as `setup_key_secret_id` in
-   `deploy/image/inputs/netbird-gru.json`, and the controller admin PAT secret
-   as `admin_pat_secret_id` ([Desired state and reconciliation](#desired-state-and-reconciliation)
-   step 1) so one image enables controller reconciliation; update its SHA-256
-   (`sha256sum deploy/image/inputs/netbird-gru.json`) in
-   `deploy/image/image-inputs.json`, run
-   `go test ./internal/netbird/... ./tests/deploy/`, and build the image.
-   Keep `peer_names`: the test checks them against the desired state.
 6. Launch the cell from that image. Each controller and host enrolls through
    `terrascale-netbird-enroll.service` under its slot name
    (`gru-1-ctl-1`..`3`, `gru-1-db-1`..`2`); NetBird SSH works once it

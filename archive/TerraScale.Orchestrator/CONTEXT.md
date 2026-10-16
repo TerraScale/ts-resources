@@ -24,8 +24,7 @@ digest-pinned OCI container and bound to an admitted TerraScale interface set.
 _Avoid_: Arbitrary container, customer image, Docker workload
 
 **Infrastructure provider**:
-A supported supplier of compute, network, and storage capacity. Provider choice must not change the workload's product-level identity or desired behavior.
-_Avoid_: Cloud-specific workload, OCI workload
+A supported supplier of compute, network, and storage capacity.
 
 **Tenant allocation**:
 One active execution-capacity unit for a tenant workload. It may disappear

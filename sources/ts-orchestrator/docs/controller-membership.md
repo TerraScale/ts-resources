@@ -25,10 +25,6 @@ With `controller.membership.route_to_seed: true` (requires `replace`):
   - It accepts a request only while the durable R3 lease names exactly
     that term. `authority.VerifyLeaseHolder` checks this with a read-only
     read: it never appends a lease record and never takes authority.
-  - It runs the same check right before every durable or OCI mutation of
-    the replacement, and polls it while the replacement runs. When the
-    term ends, the replacement is cancelled.
-  - It checks for itself that the prior instance is TERMINATED in OCI.
   - Its founder verifies the root signature of the retirement and the
     exact prior ledger attempt before it changes any HEAD, as before.
   - It runs one replacement at a time. Its own reconciler and routed
@@ -94,5 +90,3 @@ back.
 - A long-lived, root-signed, slot-scoped replacement authorization that does
   not depend on the founding plan's `LaunchDeadline` (finding 11704), and a
   seed-handoff path when the seed slot itself is lost.
-- A production `placement.LostMemberEvidence` source from `oci.Fleet`
-  writer-stop and detach proof.

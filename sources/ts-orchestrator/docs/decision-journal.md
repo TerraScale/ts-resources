@@ -99,14 +99,11 @@ chain's status).
 | Staged rollouts | `release_admitted` (chain root, correlated on `release:<digest>`), `upgrade_started`, `canary_promoted`, `batch_promoted`, `rollout_completed`, `rollback`, `frozen`, `held` (aborted) | `rollout.Store.Begin` / `rollout.Store.Commit`, after the KV write |
 | Self-update activations | `upgrade_started` (activated, then succeeded when confirmed), `rollback` | `selfupdate.Activate`, `selfupdate.Watch` |
 | Workload autoscaling | `scale_up`, `scale_down` with every policy signal and its target | `workload.Reconciler`, after the desired-state writes succeeded |
-| Volume backups | `backup_taken` | `backup.Runner.RunOnce`, after OCI accepted the create |
 | Volume reattach on host loss | `volume_reattached` | `failover.Reattacher.Step`, after the replacement attach |
 | Volume auto-grow | `volume_resized` | `placement.Controller.growVolume`, after the journaled resize |
 | Controller slot replacement | `controller_replaced` | `membership.Reconciler`, after the founder (or the seed, when routed) accepted the replacement; `membership.SeedServer` on the seed when a routed replacement finishes or fails (rule `membership.seed_routed`) |
 | Region proposals | `region_proposed` | `regionplanner.Submit`, after the lifecycle record was stored |
 | Region admissions | `region_admitted` (admitted or readmitted, with the estimate and committed spend), `held` (refused by the region maximum, the ceiling or the approval; once per cell and reason) | `regionops.Loop`, after the lifecycle record was stored |
-| Region lifecycle steps | `region_step` (in progress, succeeded, or failed when held), `held` (waiting for an approval, a fresh admission, an effector or an OCI effect in progress; once per cell and reason) | `regionops.Loop`, after `Driver.Advance` or an observed resume |
-| OCI declarative reconcile | `oci_desired_published`, `oci_drift_corrected`, `oci_resource_deleted`, `oci_resource_released` | `app.desiredPass` after the KV writes; `ociresource.Controller` after the cloud write or the purge |
 
 ### Providers of the other slices
 
@@ -126,8 +123,6 @@ chain's status).
 | rollout | `release_admitted`, `upgrade_started`, `canary_promoted`, `batch_promoted`, `rollout_completed`, `rollback`, `held`, `frozen` | Correlate on `release:<digest>`; record the health gates as `Signals` with thresholds and `Passed`. Implement `insights.RolloutProvider` for the deadline rule. |
 | selfupdate | `upgrade_started`, `controller_replaced`, `rollback` | Subject `member/<name>`; the new version in `Attrs["version"]`. |
 | autoscale | `scale_up`, `scale_down`, `held` | Record the metric that crossed its target. Implement `insights.AutoscalerProvider`. |
-| storage | `volume_resized`, `volume_reattached`, `backup_taken` | Subject `volume/<ocid>`. Implement `insights.VolumeProvider`. |
-| membership | `member_replaced`, `controller_replaced`, `host_reclaimed` | Subject `member/<name>` or `host/<ocid>`. |
 | regionplanner | `region_proposed` | Region in `Region`; implement `insights.BudgetProvider` for budgets. |
 | regionops | `region_admitted`, `region_step`, `held` | Region in `Region`, subject `region/<cell>`; proposal, phases, step and create key in `Attrs`. |
 
@@ -164,12 +159,7 @@ subscription grant.
 
 `observability.History` keeps every series at three resolutions: raw
 samples for one hour, one-minute rollups for six hours and five-minute
-rollups for 24 hours (average, min and max per step). The sampler reads the
-cell-wide snapshot every 10 seconds (`SnapshotSampler` lists the series
-names: members, CPU, memory, filesystems, NATS, JetStream streams and
-consumers, OCI calls/errors/429s, TerraBase seats and rollout progress) and
-saves the rollups to the `TS_METRIC_HISTORY` KV bucket every five minutes,
-so charts survive a restart. Query with `History.Range` or
+rollups for 24 hours (average, min and max per step). Query with `History.Range` or
 `GET /v1/history?metric=&label.member=&range=6h&rate=1`.
 
 ## Insights and summaries

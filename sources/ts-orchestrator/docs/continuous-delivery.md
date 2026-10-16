@@ -27,16 +27,11 @@ placement/seat pins and serving proofs. Hosts accept the signed desired
 state. The operator-host journal prevents release switching and repeated
 automatic attempts; controller state remains the authority for seat progress.
 
-For ts-orchestrator, use **rolling replacement from signed images**. The
-existing trust chain qualifies the binary, then binds its signed receipt to
-an image, base, kernel, region and exact OCI image OCID. A binary receipt alone
+For ts-orchestrator, use **rolling replacement from signed images**. A binary receipt alone
 does not authorize overwriting a running installation. Replacement preserves
-that chain and the image's systemd, enrollment and volume-init environment.
-There is currently no supported running-cell *replacement* executor (the
+that chain and the image's systemd, enrollment and volume-init environment. There is currently no supported running-cell *replacement* executor (the
 binary-only self-update below replaces the executable, not the image):
 
-- `ts-orch oci-region attempt` signs new deployment manifests, founder plans and selections;
-  it is a bootstrap tool, not an upgrade tool.
 - Founder install continuity authorizes read-only restart of an **exact
   accepted install**. It cannot authorize another image, instance or manifest.
 - Managed TerraBase placement holds a lost host without replacing it
@@ -52,7 +47,6 @@ binary-only self-update below replaces the executable, not the image):
 | TerraBase per-seat Prepare | Online update key and independent compatibility key on the operator host, only after the approved compatibility policy has been satisfied. Existing `terrabase-update` signs both statements. |
 | Orchestrator binary receipt | Human reviews exact qualified main source/run/job attempt and bytes; offline root issues source/architecture/environment-scoped delegation; local leaf owner runs `ts-orch release sign-binary`. |
 | Orchestrator binary update receipt (opt-in) | Offline root issues a time-bounded (at most 31 days) binary update delegation scoped to environment, cells, architectures and descendants of a reviewed main revision (`ts-orch release sign-update-delegation`). The online leaf then signs any `ci.yml`-qualified descendant automatically (`ts-orch release sign-binary-update`). Nodes accept these receipts only with `--allow-scoped-auto-sign`. |
-| Orchestrator image receipt | Existing image workflow builds and qualifies; authorized operator imports; offline root narrows the delegation to the cell/image OCID; local leaf owner signs and verifies the image receipt (`ts-orch image promote`). |
 | Running-cell replacement plan | Proposed new offline-root-signed authorization pins predecessor install/instance, successor manifest/image receipt, same cell/deployment/slot, increasing generation, credentials/config digests, validity, resource budget and explicit rollback target. Existing continuity does not supply this authority. Root private keys stay offline. |
 
 Forgejo has no authenticated protected-environment reviewer gate here
@@ -166,16 +160,12 @@ values. Never lower a selector floor. NATS/state-format changes require tested
 mixed-version support and a proven rollback window; otherwise halt for a
 reviewed migration. TerraBase and orchestrator rollouts must not overlap.
 
-This executor requires changes to bootstrap admission/founder state, controller
-host replacement and OCI fencing/volume handoff. None is implemented yet;
-`internal/bootstrapstart`, `internal/oci`, the image-installed
-`deploy/systemd` units and `deploy/oci-region` are unchanged. The ordering,
+The ordering,
 soak and rollback logic it needs exists in `internal/rollout` (below).
 
 ## Binary-only self-update (opt-in)
 
-Most orchestrator changes touch only the binary, so they do not need a new
-image, an OCI import or a re-bootstrap. `internal/selfupdate` replaces the
+`internal/selfupdate` replaces the
 executable on a running node with an A/B layout:
 
 ```text
@@ -424,22 +414,13 @@ supplies the program.
 
 `ts-orch image promote --resume` continues in an existing `--out` directory
 that `promotion-state.json` pins to the same image release (or directory) and
-image digest. It always refreshes `SHA256SUMS` and small metadata, reuses the
-qcow2, kernel, manifest, binary, qualification and base image only when their
-SHA-256 matches the pinned digest, reuses the release tool built into `--out`
-when its recorded digest and clean `vcs.revision` still match, reuses the
-earlier signed binary receipt for `verify-binary`, and skips the upload and
-import when `oci-import.json` records this image digest. Rerunning after the
+image digest. Rerunning after the
 image delegation is signed therefore no longer downloads or imports again.
 
 ### Independent managed-host image
 
 By default the managed fleet's `image_id` must equal the controller's own
-accepted boot image. With `controller.managed_host_image_receipt_file` and
-`controller.managed_host_image_delegation_file`, the fleet instead qualifies
-its configured image from that image's own root-delegated receipt (baked
-roots, cell environment, exact OCID, region and shape architecture), plus the
-existing OCI readback on every use. Changing `image_id` still makes hosts
+accepted boot image. Changing `image_id` still makes hosts
 launched from the previous image foreign to the fleet; an allow-list of
 current and previous qualified images is a follow-up.
 

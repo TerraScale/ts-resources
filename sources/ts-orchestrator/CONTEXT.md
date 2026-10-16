@@ -26,10 +26,7 @@ through `ts-orch`; tests exercise those APIs or the CLI. Do not add Python test 
 
 One Go executable for regional control, host convergence, signed artifact
 admission, and generic native-workload rollout. Forgejo Actions builds and
-tests repository source. Managed OCI placement can provision a host and
-retained volume and, after confirmed attachment, publish signed TerraBase
-desired state; it then holds at `awaiting-healthy` and never reports a serving
-TerraBase member.
+tests repository source.
 
 **Regional cell**
 
@@ -56,8 +53,7 @@ recovers; the old operation is not replayed automatically.
 **Global authority**
 
 The cross-region policy and lease boundary planned around GRU and regional
-autonomy. Package-level authority state exists, while production controller
-election and OCI mutation remain unqualified.
+autonomy.
 
 ## Hosts and workloads
 
@@ -102,10 +98,7 @@ v2 subtree. Recovery examines that subtree before accepting new desired state.
 
 **Static names**
 
-A cell server's one name, from `internal/naming`: `<region>-<index>-<role>-<n>`
-with role `ctl`, `db` or `gw` (`gru-1-ctl-1`, `gru-1-db-2`), used for OCI
-display names, NATS server names and NetBird peers; cell DNS records use the
-role and number (`ctl-1.gru.ts.internal`). It never carries
+It never carries
 a release, deployment ID, date or digest; those live in tags and launch
 metadata.
 
@@ -139,21 +132,14 @@ fenced after its durable claim. Some desired-state writes may have succeeded
 before fencing; operators must inspect host state and submit a new intent with
 a new operation identity and generation under the current epoch.
 
-## OCI and readiness
-
-**OCI provider**
-
-The provider seam behind regional control. Current tests use fakes; no live OCI
-account mutation, automatic regional first boot, or production capacity
-convergence has been qualified.
+The provider seam behind regional control.
 
 **Operator gateway**
 
 The NetBird routing peer on the ts-ops host (`10.250.10.155`), reached from the
-cell through one local peering gateway pair and source-NATed to that address.
-The cell admits it only on TCP 22 (every server), 4222 (controllers), and 9465
+cell through one local peering gateway pair and source-NATed to that address. The cell admits it only on TCP 22 (every server), 4222 (controllers), and 9465
 (members), never on 8443. The private subnet keeps no internet route, NAT, or
-public IP. The OCI Bastion remains the break-glass operator path. NetBird's
+public IP. NetBird's
 manager, routing peer and configuration (groups, policies, DNS) are owned by
 ts-orchestrator; see `deploy/netbird/README.md`.
 
@@ -162,9 +148,7 @@ ts-orchestrator; see `deploy/netbird/README.md`.
 Two independent SSH paths into every controller and managed host. NetBird SSH
 listens on the server's NetBird address (`gru-1-ctl-1.nb.ts.internal`)
 and requires the operator's NetBird identity-provider login and the
-`operators-to-gru-servers-ssh` policy. OpenSSH listens on the private
-IP and accepts the owner's Ed25519 key, which controller A receives in OCI
-`ssh_authorized_keys` launch metadata and forwards to every server it launches.
+`operators-to-gru-servers-ssh` policy.
 
 **Production readiness**
 
@@ -184,13 +168,9 @@ can leave quota-consuming chunks; the current store has no repository-managed
 cleanup path, automatic garbage collection, or admitted-object eviction. Once
 the quota is full, new uploads fail with `ErrArtifactStoreFull`.
 
-## Managed OCI placement
-
 The placement file accepts `environment`, `member_role`, `resources`, and
 optional `tick_millis`. Unknown fields are rejected. A zero tick selects the
-five-second default; configured ticks must be between 100 ms and five minutes.
-OCI intent, region configuration, and placement configuration must be
-configured together. The host image, bootstrap, and signed host enrollment
+five-second default; configured ticks must be between 100 ms and five minutes. The host image, bootstrap, and signed host enrollment
 remain operator-provided. After the retained volume is observed as attached
 (`awaiting-runtime-contract`), the controller waits for the admitted runtime
 artifact and a safe managed mount path, then publishes signed TerraBase host
@@ -199,7 +179,6 @@ filesystem and member material, launches TerraBase, and reports local process
 and mount status. The controller then holds the member at `awaiting-healthy`
 because no independent serving proof exists. It does not discover, format, or
 mount the guest block device, claim health or serving, scale in, or
-decommission a region. If OCI accepts a create but its
-recovery result is lost before durable journaling, later matching tags alone
-do not authorize adoption. The resource remains unowned and requires manual
+decommission a region. The resource remains unowned and requires manual
 inspection and reconciliation.
+

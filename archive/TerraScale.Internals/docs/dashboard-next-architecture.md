@@ -186,9 +186,8 @@ Configuration must come from environment variables or secret storage. Do not
 hard-code API URLs, credentials, owner identities, project IDs, database IDs, or
 region assumptions in source.
 
-Production images are owned by the app repository/workflow that builds this app
-and must publish runtime images to OCI Container Registry only. Do not publish
-TerraScale runtime images to Forgejo packages. Controlled production promotion
+Production images are owned by the app repository/workflow that builds this app.
+Do not publish TerraScale runtime images to Forgejo packages. Controlled production promotion
 must use the immutable candidate from the protected `develop` to `main` release
 workflow. TerraScale.Orchestrator owns delivery of its exact digest.
 

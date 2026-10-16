@@ -20,10 +20,6 @@ and systemd service commands therefore keep their existing names.
 | `python3 deploy/image/promote-image.py ...` | `ts-orch image promote ...` |
 | `python3 deploy/netbird/client.py ...` | `ts-orch netbird client ...` |
 | `python3 deploy/netbird/install-client.py ...` | `ts-orch netbird install ...` |
-| `python3 deploy/oci-region/preview.py ...` | `ts-orch oci-region preview ...` |
-| `python3 deploy/oci-region/attempt.py ...` | `ts-orch oci-region attempt ...` |
-| `python3 deploy/oci-region/import-image.py ...` | `ts-orch oci-region import-image ...` |
-| `python3 deploy/oci-region/public-api.py ...` | `ts-orch oci-region public-api ...` |
 | `python3 tests/runtime_priority/qualify.py ...` | `ts-orch runtime-priority qualify ...` |
 | `python3 tests/runtime_priority/pressure.py ...` | `ts-orch runtime-priority pressure ...` |
 | `python3 tests/runtime_priority/alpha_runner.py ...` | `ts-orch runtime-priority pressure ...` |
@@ -44,10 +40,7 @@ file permissions, and overwrite checks are preserved. Group help is available
 through `ts-orch bootstrap --help` and `ts-orch release --help`.
 
 The deployment scripts' `--bootstrap-tool` and `--release-tool` arguments
-default to the unified interface; both may point to the same executable.
-For historical standalone tools, `ts-orch oci-region preview` requires explicit
-`--legacy-bootstrap-tool` and `--legacy-release-tool` flags for their respective
-arguments. Regional bootstrap attempts inspect their retained, pinned source
+default to the unified interface; both may point to the same executable. Regional bootstrap attempts inspect their retained, pinned source
 layout when building tools and on resume: sources containing
 `cmd/ts-bootstrap/main.go` keep standalone `ts-bootstrap` and `ts-release`
 tools and pass those explicit preview flags. Current sources build one
@@ -56,9 +49,7 @@ also builds the source-specific standalone release tool when promoting a
 pinned image from a revision predating this migration. Historical qualification
 records retain the names and hashes of the binaries actually tested.
 
-The M0 OCI real-caller qualification script accepts the unified executable as
-`--bootstrap`, with a retained local-build receipt identifying `ts-orch`,
-`terrascale-orchestrator`, or `terrascale-orchestrator-linux-amd64`. It invokes
+It invokes
 `bootstrap open-customer-material`. Historical receipts identifying
 `ts-bootstrap` retain the standalone invocation. The verified receipt identity
 selects the interface, so renaming the executable does not change it. Both
@@ -101,13 +92,10 @@ contracts call native Go feature APIs or the unified CLI; Go owns their
 fixtures, provider substitutions, assertions, and lifecycle.
 See [Go testing](testing.md) for verification and feature-local fixtures.
 
-Bootstrap and release commands retain normal SIGINT/SIGTERM termination in the
-executable, including during synchronous OCI credential setup. Their Go `Run`
+Their Go `Run`
 APIs accept caller cancellation and return cancellation and output-write errors.
 
-Local signing and verification need no runtime role configuration. Publishing
-and provisioning commands retain their explicit OCI credentials and reviewed
-input requirements. Offline root keys are supplied only to the commands that
+Local signing and verification need no runtime role configuration. Offline root keys are supplied only to the commands that
 need them; controller and host startup do not load them.
 
 ## Operational dependencies
@@ -130,5 +118,4 @@ publication evidence. Historical qualification records retain the paths,
 hashes, and interpreter commands actually used at their recorded revision.
 
 Operations against an established cell should use the authenticated operator
-path and controller-owned reconciliation. Initial bootstrap must support direct
-OCI operations before the regional cluster exists.
+path and controller-owned reconciliation.

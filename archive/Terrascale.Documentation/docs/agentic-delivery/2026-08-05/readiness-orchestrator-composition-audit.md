@@ -19,7 +19,7 @@ Do not enable a public `CreateNode` endpoint, Dashboard workflow, or agent tool 
 | Identity and deployment | Development PKI and fail-closed NATS/GitOps validation. | Runtime options validation, key/receipt/recovery services, signed reply verification, and restricted mutation authority. | KMS/Vault, PKI, account bootstrap, revocation, workload mTLS, and production GitOps trust. |
 | Agent admission | MCP remains read-only and public lifecycle mutation admission is not delivered. | Public contract and SDK support only after the capability exists, then prepare-confirm-execute and audit tests. | Genuine non-agent-controlled approval authority and live public-boundary authorization evidence. |
 
-No row above authorizes an OCI claim, an R3 claim, or a production-readiness claim. Repository work can supply code and test harnesses; security, platform operations, SRE, and TerraBase owners must qualify their real boundaries and approve enablement.
+No row above authorizes an R3 claim, or a production-readiness claim. Repository work can supply code and test harnesses; security, platform operations, SRE, and TerraBase owners must qualify their real boundaries and approve enablement.
 
 ## Next minimal slice: `ProductionCreateNodeComposition`
 
@@ -29,7 +29,7 @@ Keep the scope to composition, not provider creation or public exposure:
 2. In `Program` and runtime configuration, compose the private `NatsCreateNodeOperationJournal`, key lifecycle, signed handoff and recovery lookup, restricted mutation client, and reply verification. Because `CreateNodeCoordinator` requires a non-null `ICreateNodeProvider`, either defer its construction until an approved enabled adapter exists, or inject an explicitly non-mutating, fail-closed disabled provider whose only result is an audited unavailable outcome. Do not register a public route in this slice.
 3. Add control-plane composition tests that prove disabled default, invalid configuration denial, duplicate replay, forged reply denial, key or receipt absence, CAS conflict, and restart recovery. Tests must assert that no provider mutation occurs.
 
-The exit condition is a reviewed, secret-free, disabled composition with reproducible tests. Production capability remains unavailable until a reviewed enabled provider and authenticated journal dependencies are present. This is not a node creation, provider integration, production deployment, OCI exercise, or R3 qualification.
+The exit condition is a reviewed, secret-free, disabled composition with reproducible tests. Production capability remains unavailable until a reviewed enabled provider and authenticated journal dependencies are present. This is not a node creation, provider integration, production deployment, or R3 qualification.
 
 ## Evidence provenance
 

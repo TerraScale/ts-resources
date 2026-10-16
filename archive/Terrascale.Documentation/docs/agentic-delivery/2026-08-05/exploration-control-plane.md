@@ -8,7 +8,7 @@ Status: planning and evidence record, not production-ready.
 
 ## Unmet production gates
 
-The audited implementation lacks general OCI actuators, a TerraBase mTLS administrative adapter, application-consistent backup and object-store restore, a production GitOps apply path and artifact trust root, real containerd/systemd qualification, PKI/KMS/operator RBAC/audit, HA observability, and production network, DNS, and ingress qualification. The RF=1 lab is development evidence only.
+The audited implementation lacks a TerraBase mTLS administrative adapter, application-consistent backup and object-store restore, a production GitOps apply path and artifact trust root, real containerd/systemd qualification, PKI/KMS/operator RBAC/audit, HA observability, and production network, DNS, and ingress qualification. The RF=1 lab is development evidence only.
 
 ## Delivery implication
 

@@ -43,7 +43,6 @@ SFO/FRA continue serving during GRU/WAN loss; global releases freeze (decision 2
 - Handoff: journaled signed `HandoffReceipt` + explicit retain/unmanage; only then regional self-management.
 - Regional actuator: replacement/elastic compute, post-handoff volumes, attachments, LB membership, drain/scale/terminate, expansion, orphan reconciliation.
 - Tags are inventory evidence, never mutation authority.
-- Historical OCI estate is not adopted (`REQ-O023`).
 
 ## ADR 0013 — Native GitOps / Flux removal (proposed)
 
@@ -82,7 +81,5 @@ Required at controller/agent, NATS client/route/gateway, secret retrieval, CI en
 | Desired/observed-state engine | NATS/JetStream |
 | Scheduler + placement policy | systemd, cgroups v2 |
 | Node autoscaler + provider controllers | containerd/runc |
-| Volume/TerraBase lifecycle | OCI APIs, TerraBase admin |
-| Native GitOps + release machines | Forgejo, BuildKit, OCIR |
 | Identity/PKI automation | X.509, cloud KMS |
 | Operator API/CLI + Grafana projection | Grafana/OTel stack |

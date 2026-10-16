@@ -1,22 +1,8 @@
 # Delivery pipeline
 
-How a merged change reaches the servers: merge → CI → retained artifacts →
-image → OCI import → rollout. Every stage finds its input from the previous
+Every stage finds its input from the previous
 stage's retained record by source revision; nothing is copied by hand except
 the signing and authorization decisions policy requires.
-
-```text
-ts-orchestrator main push ──► ci.yml (one job) ──► ci-<sha>-run-<id> release ──dispatch──► image.yml
-                                                    binaries + qualification.json           │
-TerraBase main push ──► fast.yml: fast ∥ release ──► publish ──pin bump──► image-inputs.json │
-                                     (retained bytes)  (promotes, no rebuild)                ▼
-                                                            image-<sha>-run-<id>-attempt-<n> release
-                                                                                             │
-                                  ts-orch image promote (operator, one command) ◄────┘
-                                  verify ─► OCI import ─► sign-image ─► verify-image ─► receipt
-                                                                                             │
-                                  launch / rollout through signed desired state ◄────────────┘
-```
 
 ## Stages
 
@@ -67,43 +53,15 @@ build on a developer machine from the same retained release.
 
 ### 4. Promotion (`ts-orch image promote`)
 
-One operator command per image: it verifies the image release (digests,
-successful image run and job attempt, log marker), the candidate binary and
-base image, and the signed binary receipt; imports the QCOW2 with
-`ts-orch oci-region import-image`; creates, signs and verifies the image
-receipt with `ts-orch release`; and writes `promotion-receipt.json`. `--dry-run`
+`--dry-run`
 runs every read-only gate without importing or signing.
 
 ### 5. Rollout
 
-A signed image OCID is what the bootstrap runbook
-([region-bootstrap.md](region-bootstrap.md)) launches: the image receipt
-travels in the root-signed manifest and each instance verifies it before its
-controller starts. TerraBase binary updates do not need a new image: they
+TerraBase binary updates do not need a new image: they
 roll out through the managed update path and signed desired state.
 
 ## Operator commands
-
-```sh
-# Build the image for a CI-qualified main revision on this machine.
-make image SOURCE=<full sha> [IMAGE_OUT=/tmp/ts-image-<sha>]
-
-# Every read-only promotion gate, no OCI writes and no signing.
-ts-orch image promote --image-release image-<sha>-run-<id>-attempt-<n> \
-  --out /tmp/promote-<sha> --delegation delegation.json --root-key root.pub --dry-run
-
-# Import (idempotent); stops and prints the sign-delegation command for the OCID.
-ts-orch image promote --image-release ... --out /tmp/promote-<sha>-import \
-  --delegation delegation.json --root-key root.pub \
-  --compartment-id <ocid> --namespace <ns> --bucket <bucket>
-
-# Same command again with the image-scoped delegation and the leaf key signs it.
-ts-orch image promote ... --out /tmp/promote-<sha>-sign \
-  --image-delegation image-delegation.json --signing-key leaf.pem
-
-# Pin a TerraBase release by hand (pinned fj on PATH).
-scripts/ci/pin-terrabase.sh ci-<terrabase sha>-run-<run id>
-```
 
 To rebuild a named revision in CI, run the "Qualified GRU ARM64 image"
 workflow on `main` from the Forgejo Actions page with `source_revision` set;
@@ -120,7 +78,6 @@ promoted with `--image-dir`.
 | TerraBase checks, tested-bytes publication | push to TerraBase `main` | none |
 | TerraBase pin bump into the image inputs | end of TerraBase `publish` | `TS_PIN_BUMP_TOKEN` secret (decision 2) |
 | Local image build | `make image SOURCE=<sha>` | revision |
-| Verification, OCI import, image signing, receipt | `ts-orch image promote` | leaf signing key, root-signed delegation, OCI target |
 
 ## Measured (Forgejo runs, 2026-09-29)
 
@@ -138,14 +95,6 @@ promoted with `--image-dir`.
 
 ## Open decisions
 
-1. **OCI credentials for automatic import.** Import still needs a person
-   with OCI access. Least privilege: a dedicated IAM user (or, better, a
-   runner instance principal if the runner moves to OCI) in a group whose
-   policy allows only `manage objects` in the image bucket, `manage
-   instance-images` and `read compartments` in the image compartment — no
-   instance, network or IAM rights — with its API key stored as a
-   `main`-only Actions secret. Image *signing* stays manual until OD-1 is
-   decided; import without signing yields an image nothing will launch.
 2. **Cross-repository pin bump token.** The Actions token cannot write to
    another repository. A `TS_PIN_BUMP_TOKEN` for `terrascale-bot` scoped to
    `write:repository` on ts-orchestrator, stored as a TerraBase secret,

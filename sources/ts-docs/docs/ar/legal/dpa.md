@@ -17,7 +17,7 @@ govern your use of TerraScale.
 ::: danger
 DRAFT — not legal advice, not published. Blocked on owner action O-5 (legal entity name + jurisdiction).
 
-[PLACEHOLDER — OCI and Cloudflare written provider confirmations (including
+[PLACEHOLDER — Cloudflare written provider confirmations (including
 processing terms, locations, and CDN/cache terms) and the Stripe Tax
 configuration confirmation are not on file (O-4). Do not publish until these
 items and the controller's legal review are complete.]
@@ -39,7 +39,6 @@ Stripe Tax account/configuration and provider confirmation pending O-4.]
 
 | Sub-processor | Processing | Locations |
 | --- | --- | --- |
-| Oracle Cloud Infrastructure | Compute hosts, block storage, object storage (backups), and email delivery | [Hosting and storage locations pending written confirmation (O-4)] |
 | Cloudflare | Edge network: DNS, TLS termination, WAF, CDN cache and delivery of authorized reactive data; edge decryption at the PoP nearest the reader worldwide | Global edge network; [written CDN/cache terms and processing confirmation pending O-4] |
 | Stripe | Billing, invoicing, and intended Stripe Tax processing; no customer database content | [PLACEHOLDER — Stripe account/configuration and processing locations pending confirmation] |
 | [IDENTITY PROVIDER — placeholder] | Account authentication and identity data | [PLACEHOLDER — provider, role, locations, and written terms pending confirmation] |

@@ -51,7 +51,7 @@ Service databases use logical **`BackupType.Backup`** so incremental chains work
 | Full | `0 0 * * *` (daily 00:00 UTC) |
 | Incremental | `0 * * * *` (hourly) |
 | Retention | **7 days only** |
-| Destination | LocalFolder (dev/launch) or OCI Object Storage S3-compat (production durable path) |
+| Destination | LocalFolder (dev/launch) or S3-compatible object storage (production durable path) |
 
 Configured on bootstrap by `DatabaseBackupOrchestrationService.EnsureServiceDatabaseBackupPolicyAsync`.
 

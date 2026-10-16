@@ -6,21 +6,19 @@ evaluation:
 
 - add a node (scale out);
 - drain and remove a node (scale in);
-- resize the OCI flex shape of every node, one node at a time;
 - move a tenant between nodes (rebalance).
 
 Every action and every refusal is journaled. `ts-orch cell-autoscaler` runs
 the loop and is a dry run unless `--live` is given.
 
-Status: tests use fakes. No live OCI action has been run. TerraBase does not
+Status: tests use fakes. TerraBase does not
 serve the pressure endpoint or the join, drain and move hooks yet.
 
 ## Cells, nodes and tenants
 
 Names come from `internal/naming`. A cell is named `<region>-<index>`, for
 example `gru-1`, and its db nodes are `<cell>-db-<n>`; the autoscaler uses
-`n` from 1 to 64. That name is also the OCI display name and the VNIC
-hostname label. A scale out takes the lowest free `n`; a scale in removes
+`n` from 1 to 64. A scale out takes the lowest free `n`; a scale in removes
 the highest. The autoscaler only manages instances that carry the freeform
 tags `ts-cell=<cell>` and `ts-role=db`, and it sets those tags on every node
 it launches. An instance with a db node name but without those tags is
@@ -38,35 +36,10 @@ move only when no hobby or pro tenant fits elsewhere.
 Every db node serves `GET /v1/node/pressure` and answers with one JSON object
 of at most 64 KiB:
 
-```json
-{
-  "schema": 1,
-  "node": "gru-1-db-2",
-  "instance_id": "ocid1.instance.oc1.sa-saopaulo-1.example2",
-  "state": "ready",
-  "sampled_at": "2026-10-04T12:00:00Z",
-  "process_id": "start-42a091",
-  "release": "sha256:3f1c…",
-  "cpu_util": 0.42,
-  "mem_util": 0.61,
-  "disk_used_bytes": 107374182400,
-  "disk_total_bytes": 536870912000,
-  "disk_iops": 1800,
-  "request_rate": 1450,
-  "io_queue_depth": 2.5,
-  "p95_latency_ms": 14,
-  "load": {"connections": 310, "storage_bytes": 98784247808, "replication_lag_seq": 12, "write_qps": 240},
-  "top_tenants": [
-    {"org": "acme", "plan": "pro", "request_rate": 620, "cpu_share": 0.4}
-  ]
-}
-```
-
 | Field | Meaning | Bounds |
 | --- | --- | --- |
 | `schema` | contract version | exactly 1 |
 | `node` | the node's static name; must equal the node asked | `<cell>-db-<n>` |
-| `instance_id` | OCI instance OCID; must equal the instance observed in OCI | required, 1–128 of `[A-Za-z0-9._:+-]` |
 | `state` | `joining`, `ready`, `draining` or `drained`; only `ready` serves and has caught up | one of the four |
 | `sampled_at` | when the node measured the whole report, never when it was fetched | RFC 3339; at most 2 minutes old, at most 5 seconds ahead |
 | `process_id` | opaque identity of this TerraBase process start; changes on every process restart/reboot and is never reused | 1–128 of `[A-Za-z0-9._:+-]` |
@@ -85,28 +58,16 @@ are required. Explicit zero utilizations, rates and counters are valid;
 omission never means zero.
 
 A report that fails validation, is stale, names another node, or does not arrive
-counts as an unreadable node. That holds the whole cell.
-`cellscale.HTTPSource` reads the contract. The tests use an in-memory fake
+counts as an unreadable node. That holds the whole cell. `cellscale.HTTPSource` reads the contract. The tests use an in-memory fake
 cell instead. Freshness is checked after the HTTP response completes, at the
 decision, before each mutation and in readiness/drain waits. A cached `ready`
-or `drained` report cannot complete a wait or authorize an action.
-Launch, join and drain completion require a sample measured after the request
-began plus the allowed 5-second clock skew. Before attempting resize, the
-controller fences that node even if OCI loses its response or readiness times
-out. Recovery requires OCI to report the desired shape running, followed by a
-different `process_id` with a `ready` sample measured after that observation
-plus the allowed clock skew. Every valid observation advances that node's
+or `drained` report cannot complete a wait or authorize an action. Launch, join and drain completion require a sample measured after the request
+began plus the allowed 5-second clock skew. Every valid observation advances that node's
 sample floor, including unready states. Older readiness cannot overwrite a
 newer unready report. Conflicting reports at the same timestamp hold until
 strictly newer evidence arrives. A later process start with newer evidence
-remains valid.
-Only confirmed no-effect resize rejections clear an uncertain resize refusal.
-Identity transitions delete pending operational progress; an ambiguous resize
-on the same OCI instance retains a separate refusal-only barrier for its
-original identity until fresh shape, readiness and inventory converge.
-Rejections can retry, reach the failure pause, and
-recover after `Resume` without accepting uncertain restart readiness.
-After controller startup, all usable reports must be measured after startup
+remains valid. Only confirmed no-effect resize rejections clear an uncertain resize refusal. Rejections can retry, reach the failure pause, and
+recover after `Resume` without accepting uncertain restart readiness. After controller startup, all usable reports must be measured after startup
 plus the same clock-skew margin, even with zero configured cooldown. This
 rejects cached pre-start readiness when in-memory restart evidence is lost.
 
@@ -116,35 +77,14 @@ Before scale-in, the controller also reads `GET /v1/cell/replicas` from a
 ready member. This is a complete, authoritative cell inventory, independent
 of the top-tenants load list, with a 1 MiB response limit:
 
-```json
-{
-  "schema": 1,
-  "cell": "gru-1",
-  "sampled_at": "2026-10-04T12:00:00Z",
-  "complete": true,
-  "members": [
-    {"node": "gru-1-db-1", "instance_id": "ocid1.instance.oc1.sa-saopaulo-1.example1", "incarnation": "start-1"},
-    {"node": "gru-1-db-2", "instance_id": "ocid1.instance.oc1.sa-saopaulo-1.example2", "incarnation": "start-42a091"},
-    {"node": "gru-1-db-3", "instance_id": "ocid1.instance.oc1.sa-saopaulo-1.example3", "incarnation": "start-3"}
-  ],
-  "placements": [
-    {"org": "acme", "database": "orders", "shard": 1,
-     "live_replicas": ["gru-1-db-1", "gru-1-db-2", "gru-1-db-3"]}
-  ]
-}
-```
-
 Every field is required and non-null; only an explicit `placements: []`
 with `complete: true` means no placements. Each `(org, database, shard)`
 appears once. Organizations use the pressure contract's identifier; database
 identifiers are 1–128 characters from `[A-Za-z0-9._:+-]`, and shard IDs are
 positive integers. `live_replicas` names distinct nodes of this cell that
-currently serve a durable copy caught up to that shard's source frontier.
-Stopped, receiver-only, lagging and planned replicas are excluded. `members`
+currently serve a durable copy caught up to that shard's source frontier. Stopped, receiver-only, lagging and planned replicas are excluded. `members`
 contains every owned node, including draining nodes and nodes with no live
-placements. Each identity must equal the independently observed OCI instance
-and pressure incarnation; missing or mismatched membership holds action even
-when `placements` is empty.
+placements.
 
 The same 2-minute age and 5-second clock-skew limits apply. Scale-in has two
 separate gates:
@@ -169,48 +109,28 @@ Placement samples must also be measured after controller startup and the
 latest membership/restart convergence, plus the full 5-second clock-skew
 margin. Launch, join, drain, terminate and tenant moves fence prior inventory;
 rolling resize waits for post-restart placement before continuing. State or
-process changes and unreadable nodes also fence old placement evidence.
-The controller also fences the first discovered membership and every change
-to owned node names or OCI instance IDs, even if a new member first reports
-`ready`. A same-name replacement needs new placement evidence too. Stable
-membership and listing-order changes do not keep advancing this fence.
-The controller tries other ready members when one inventory endpoint fails or
+process changes and unreadable nodes also fence old placement evidence. A same-name replacement needs new placement evidence too. Stable
+membership and listing-order changes do not keep advancing this fence. The controller tries other ready members when one inventory endpoint fails or
 returns unusable evidence, including during convergence waits. A lower or
-conflicting timestamp never becomes usable merely by asking another peer.
-Every accepted inventory advances a sample high-water mark; older snapshots
+conflicting timestamp never becomes usable merely by asking another peer. Every accepted inventory advances a sample high-water mark; older snapshots
 cannot replace newer under-replicated evidence. Contradictory placement sets
 at the same timestamp hold until a strictly newer inventory arrives. Wire
-ordering of the same placements and replica names does not create a conflict.
-Discarding mismatched membership preserves the highest prior inventory or
+ordering of the same placements and replica names does not create a conflict. Discarding mismatched membership preserves the highest prior inventory or
 refusal timestamp; recovery requires inventory strictly after that bound.
 
-Each action retains the observed node names and OCI instance IDs through all
-steps and convergence waits. A same-name replacement aborts the action,
+A same-name replacement aborts the action,
 including when its readiness and replica inventory are fresh. Scale-out adds
 the ID returned by Launch; only the terminated target may disappear from the
-expected membership. Every OCI observation detects same-instance shape
-changes before pressure is read. It invalidates affected cached pressure,
-fences inventory and requires samples after discovery plus clock skew.
-Rechecks abort a shape change outside the controlled restart target, so
+expected membership. It invalidates affected cached pressure,
+fences inventory and requires samples after discovery plus clock skew. Rechecks abort a shape change outside the controlled restart target, so
 capacity decisions and later retries cannot use earlier utilization. A later
-tick can observe fresh evidence and plan against the new cell.
-All accepted per-node pressure, inventory and action progress is scoped to
-`(node name, OCI instance OCID, incarnation)`. The incarnation is `process_id`
+tick can observe fresh evidence and plan against the new cell. The incarnation is `process_id`
 in the pressure contract and is never reused. One identity transition
 invalidates the previous lifetime’s operational state atomically. Complete
 inventory lists every owned member with the same identity; name-only or
 predecessor inventory cannot authorize any action. Replacement evidence must
 follow discovery plus the clock-skew margin. Retired identities and monotonic
-time floors only refuse replay; they never supply readiness or progress.
-Controlled restarts bind a successor incarnation only after OCI confirms the
-same instance running at the desired shape and a new process supplies fresh
-ready evidence. An uncertain resize retains a refusal barrier for its original
-identity, never operational progress for a successor OCI instance.
-Rechecks and readiness/inventory waits validate freshness after their final
-identity read, so a slow OCI response cannot authorize expired evidence or
-release a restart fence with aged readiness.
-Final OCI reads also require every expected instance to be `RUNNING` before a
-mutation. Convergence may wait through the controlled target's transition;
+time floors only refuse replay; they never supply readiness or progress. Convergence may wait through the controlled target's transition;
 peers must stay running, and readiness cannot release a restart fence while
 the target or a peer is stopped.
 
@@ -248,8 +168,7 @@ URL, and both `200` and `202` count as accepted:
 | `/v1/node/drain` | the node being removed, after destination-fit and cell-floor checks | fresh `drained` report and a fresh complete inventory proving every placement's surviving replicas; only then is it terminated |
 | `/v1/tenants/<org>/move` with `{"to": "<node>", "expected": <source identity>, "expected_target": <destination identity>}` | the tenant's current node | the call returns (moves are hook only) |
 
-Join and drain send `{"expected": {"node": "<name>", "instance_id": "<OCID>",
-"incarnation": "<process_id>"}}`. Each receiver must atomically verify this
+Each receiver must atomically verify this
 precondition before effects and reject a changed identity (for example HTTP
 409). A move also verifies `expected_target` at its destination; the source
 and destination must retain those identities throughout the move. These
@@ -343,13 +262,10 @@ command's output, an alternative in the journal):
 | quorum | Drain begins only with enough surviving cell nodes and a destination that fits every target placement. Termination requires drain completion and fresh proof of the full replication factor and quorum on live, ready survivors for every database/shard. A rolling resize needs both `n−1` and `replication_factor−1` to be at least `replication_factor/2+1`. Factors 1 and 2 cannot restart safely without replica preparation even when the cell has spare nodes. |
 | recheck | An action waits minutes, so the controller observes the cell again right before each step that changes it: launch, join, drain, terminate, each node's restart and each move. It stops the action if the members changed, if any peer is not `ready` or lags beyond `max_replication_lag_seq`, or if a rollout started (by release skew or the gate). The joining node's release must match its peers. Before a terminate, the target must still report `drained` and every peer must serve. Before each restart, every shrinking resource must still fit each node's latest pressure at `scale_down_below`. `ReadyTimeout` reaches each polled request; a result arriving after the deadline cannot complete the wait. |
 | rollout | Hold while nodes report different releases, or while the rollout gate reports a rollout in flight. A gate that fails or answers anything but `{"in_flight": true\|false}` fails the tick. `--live` refuses to start without `--rollout-gate`. |
-| one at a time | A controller runs one tick at a time and holds while any instance is terminating. `run` opens a provisioned root-owned lock at `/run/lock/ts-orch-cell-autoscaler/<hash>.lock`, where the hash identifies OCI region and cell ID. The directory and file must not be group or world writable, so runner users cannot replace the inode. Different config paths, users, compartments, ADs, subnets and shapes share that cell's lock. Closing retains the inode. Coordination requires the same host and lock mount namespace. Run exactly one autoscaler per cell across hosts. |
 | cooldown | `cooldown_seconds` after any action before the next action that adds CPU or memory capacity or moves load. `scale_down_cooldown_seconds` before the next action that removes capacity. A controller start counts as an action. |
 | rate | At most `max_actions_per_hour` actions, counting a full rolling resize as one. |
 | budget | An action that raises the cell's monthly run rate above `monthly_budget` is refused. The run rate is nodes × (OCPUs × `ocpu_hour` + GB × `memory_gb_hour`) × 730 + `node_monthly`. Scale downs always pass. Validation rejects a policy whose floor (`nodes.min` at `min_ocpus`) exceeds the budget. |
-| failures | `max_failures` failed actions in a row pause the autoscaler. It journals a failed `held` decision with outcome `paused` and logs an `ALERT` line. Restart the command (or call `Controller.Resume`) after you have looked at the failures. `max_failures` ticks in a row that cannot list OCI or read the rollout gate raise the same alert with outcome `observation-failing`. Those ticks hold without pausing, because a blind cell cannot act anyway. |
 | audit | A decision that cannot be written to the audit stream stops `run` before the action's first effect. |
-| dry run | `dry_run`, or running without `--live`, journals each action as `pending` with `dry_run=true`. It still lists OCI instances and reads node pressure, but it changes nothing in OCI or TerraBase. Launch-intent reconciliation remains process-local and does not replace the durable launch journal. Cooldowns and rate limits still apply, so the dry run shows the real pace. |
 
 ## Audit and undo
 
@@ -374,23 +290,6 @@ action, and an `undo` attribute holding the reverse action as JSON:
 | resize | resize back to the previous shape |
 | rebalance | move the tenant back |
 | scale in | none: its data was drained, so scale out a fresh node instead |
-
-## OCI
-
-`cellscale.Cloud` is the four-call OCI boundary: `List`, `Launch`, `Resize`
-and `Terminate`. `OCICloud` implements it with the OCI Go SDK and the
-operator's `~/.oci/config` `DEFAULT` profile (`ociclient.OperatorConfig`).
-
-- **Launch** persists a generation's SDK retry token and exact request before
-  every POST, then reuses both after an ambiguous result or process restart.
-  It first reconciles existing instances by name. It uses the cell template's compartment, availability domain,
-  subnet (no public IP), image, optional boot volume size and cloud-init
-  `user_data`.
-- **Resize** updates `shapeConfig`, and OCI restarts the instance. The
-  controller waits until the instance runs at the new shape and reports
-  `ready` before it moves to the next node.
-- **Terminate** deletes the boot volume. A terminating instance stays listed
-  and keeps its name; the scale in finishes only once OCI has removed it.
 
 The launch journal is a cell/region-scoped file at
 `/var/lib/ts-orch/cell-autoscaler/<hash>/launches.json`. It retains at most 64
@@ -418,15 +317,6 @@ one runner per cell on a shared persistent state/lock namespace.
 
 ## Command
 
-```sh
-ts-orch cell-autoscaler check --config cell.json         # validate, print the cost range
-ts-orch cell-autoscaler check --config cell.json --oci   # also read OCI (see Preflight)
-ts-orch cell-autoscaler run --config cell.json     # dry run, one JSON action per line
-ts-orch cell-autoscaler run --config cell.json --once
-ts-orch cell-autoscaler run --config cell.json --live \
-  --rollout-gate https://ctl.example/rollout   # acts; needs operator confirmation
-```
-
 `check` prints `lock_file`, `launch_journal` and `initial_launch_journal`.
 Before starting a runner, an administrator must provision the root-owned lock
 directory/file and durable state parent. The per-cell state directory and
@@ -448,44 +338,11 @@ printf '%s' "$report" | jq -c .initial_launch_journal |
 ```
 
 The creation commands refuse existing files. Re-provision the runtime lock
-file after reboot before restarting the runner; preserve the durable journal.
-Missing, corrupt, wrong-scope or unsafe state, including a different runner
-UID, stops `run` before OCI setup. Configuration files must contain exactly one JSON
+file after reboot before restarting the runner; preserve the durable journal. Configuration files must contain exactly one JSON
 value; trailing whitespace is accepted, appended values or malformed data
 are rejected by both `check` and `run`.
 
 `endpoint` must be a non-opaque HTTP(S) URL with a hostname and `{node}`.
-Hostless forms such as `http:{node}` fail validation before OCI access.
-
-```json
-{
-  "cell": "gru-1",
-  "interval_seconds": 60,
-  "endpoint": "http://{node}.netbird.selfhosted:9440",
-  "policy": {
-    "nodes": {"min": 3, "max": 6}, "replication_factor": 3, "max_replication_lag_seq": 1000,
-    "shape": {"min_ocpus": 2, "max_ocpus": 8, "step_ocpus": 2, "memory_gb_per_ocpu": 6},
-    "targets": {"cpu_util": 0.7, "mem_util": 0.8, "disk_util": 0.75, "disk_iops": 3000,
-                "request_rate": 2000, "io_queue_depth": 8, "p95_latency_ms": 50},
-    "scale_down_below": 0.6,
-    "sustain_up_seconds": 300, "sustain_down_seconds": 1800,
-    "cooldown_seconds": 600, "scale_down_cooldown_seconds": 1800,
-    "max_actions_per_hour": 4, "monthly_budget": 500,
-    "prices": {"ocpu_hour": 0.01, "memory_gb_hour": 0.0015, "node_monthly": 10},
-    "max_failures": 3
-  },
-  "template": {
-    "region": "sa-saopaulo-1",
-    "compartment_id": "ocid1.compartment.oc1..…",
-    "availability_domain": "…:SA-SAOPAULO-1-AD-1",
-    "subnet_id": "ocid1.subnet.oc1.sa-saopaulo-1.…",
-    "image_id": "ocid1.image.oc1.sa-saopaulo-1.…",
-    "shape": "VM.Standard.A1.Flex",
-    "boot_volume_gb": 200,
-    "user_data": "<base64 cloud-init that enrolls the node>"
-  }
-}
-```
 
 The rollout gate is a `GET` URL that answers `{"in_flight": true}` or
 `{"in_flight": false}`. Point it at whatever owns TerraBase rollouts for the
@@ -497,54 +354,20 @@ in the process; a restart starts with a fresh cooldown.
 
 ## Preflight
 
-`check --oci`, and `OCICloud.Preflight`, only read OCI. They:
+They:
 
-- list cell instances and reserved names across the whole compartment,
-  including other availability domains; the template AD applies to new launches;
-  duplicate non-terminated node names fail the listing before reconciliation,
-  regardless of ownership, AD or page order. Every owned instance's actual OCI
-  shape name must match the template; missing or different shape families fail
-  listing before journal reconciliation and block actions. Different OCPU/memory
-  sizes within that flex shape are valid;
-- check that the template image and subnet are `AVAILABLE`, and that an
-  availability-domain-specific subnet matches the template's domain. The
-  subnet must have a DNS label to support the node hostname label; OCI permits
-  this only when the parent VCN also has a DNS label;
 - check that the shape is offered and flexible in every occupied AD and the
   launch AD, and that the policy's OCPU and memory ladder fits each domain's
   limits. Only the launch AD uses the template image compatibility filter;
-- read both availability-domain and regional quotas the shape names (for
-  A1, the core and memory counts in each scope) in the template compartment.
-  Each occupied AD must have enough headroom to grow its owned instances to
-  the policy maximum shape. New-node demand up to `nodes.max` belongs only to
-  the template AD; regional demand sums resize and launch demand across ADs.
-  Each node contributes only its positive CPU/memory growth, so an oversized
-  node cannot offset another node's resize. An owned node without an AD
-  fails the check. Foreign instances already consume quota and contribute
-  neither owned node count nor resize credit. Fractional
-  availability takes precedence over integer availability; if neither is
-  reported, the quota is unreadable and the check fails.
-  Missing core or memory quota coverage fails the check too. Existing
-  capacity already above the policy maximum cannot hide growth needed on
-  other nodes or in another AD.
 
 The JSON report includes each checked quota's domain, available headroom and
 required growth; an omitted domain identifies a regional quota.
-A problem is printed and fails the command; an OCI error fails it too.
 
 `TestOCIReadOnlyAgainstRealAPI` runs `List` and `Preflight` against a real
 tenancy with the DEFAULT profile, through a guard that fails the test on
-any launch, update or terminate. It is the `cellscale-oci-readonly`
-qualification suite:
+any launch, update or terminate.
 
-```sh
-TS_CELLSCALE_OCI_REGION=sa-saopaulo-1 TS_CELLSCALE_OCI_COMPARTMENT=ocid1.compartment.oc1..… \
-  go test -count=1 -run TestOCIReadOnlyAgainstRealAPI ./internal/cellscale
-```
-
-`TS_CELLSCALE_OCI_AD`, `_IMAGE` and `_SUBNET` are optional. Without them the
-test uses the tenancy's first AD, the newest Oracle Linux image for A1.Flex,
-and a subnet OCID that does not exist. It then expects exactly that subnet
+`TS_CELLSCALE_OCI_AD`, `_IMAGE` and `_SUBNET` are optional. It then expects exactly that subnet
 problem.
 
 ## Limits
