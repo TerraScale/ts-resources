@@ -5,6 +5,8 @@ Total output lines: 3151
 
 Status: open. This is a fail-closed planning baseline. It does not assert implementation, acceptance, production readiness, or P0 acceptance.
 
+Retired cloud records and clauses have been removed from this archived snapshot; remaining ContentLocator values may be shortened.
+
 ## Snapshot and record contract
 
 SnapshotDigest: `G0-20260805-0a2fe859ee1d8c6e345a10cb48be35e419978ebe8315d24a13515df8357c95b9`.
@@ -14505,50 +14507,6 @@ N/A: gap
 
 Work: `FW-REC-03`
 
-### REQ-P3-ROADMAP-HOST-OCI-OWNERSHIP-01
-
-SourceAnchor: `G0-20260805-0a2fe859ee1d8c6e345a10cb48be35e419978ebe8315d24a13515df8357c95b9 > # TerraScale Production DBaaS Goal > ## Critical-Path Delivery Roadmap > PhaseHeading[level=3; number=3; title=Real regional runtime, high availability, and recovery]`
-
-RequirementID: `REQ-P3-ROADMAP-HOST-OCI-OWNERSHIP-01`
-
-RequirementText: Deliver OCI network, compute, load-balancer, and block-volume ownership.
-
-ContentLocator: `OCI network/compute/load-balancer/block-volume ownership`
-
-Owner: Orchestrator runtime lead
-
-Life: gap
-
-REST: gap
-
-Stream: gap
-
-.NET: gap
-
-TS: gap
-
-Dashboard: gap
-
-MCP: gap
-
-Auth: gap
-
-AT: Planned artifact: Phase 3 production boundary host oci ownership 01 recovery, RPO-RTO, survival, no-RF1, no-dev-PKI, and no-lab receipt; Work contract: `FW-REC-03`; Evidence: gap.
-
-Evidence: gap
-
-Claim: gap
-
-Docs: gap
-
-Runbook: gap
-
-Risk: Runtime infrastructure ownership is ambiguous.
-
-N/A: gap
-
-Work: `FW-REC-03`
-
 ### REQ-P3-ROADMAP-HOST-PROVIDER-TRUTH-01
 
 SourceAnchor: `G0-20260805-0a2fe859ee1d8c6e345a10cb48be35e419978ebe8315d24a13515df8357c95b9 > # TerraScale Production DBaaS Goal > ## Critical-Path Delivery Roadmap > PhaseHeading[level=3; number=3; title=Real regional runtime, high availability, and recovery]`
@@ -22210,50 +22168,6 @@ N/A: gap
 
 Work: `P0-01V`
 
-### REQ-P0-02
-
-SourceAnchor: `G0-20260805-0a2fe859ee1d8c6e345a10cb48be35e419978ebe8315d24a13515df8357c95b9 > # TerraScale Production DBaaS Goal > ## Critical-Path Delivery Roadmap`
-
-RequirementID: `REQ-P0-02`
-
-ContentLocator: `| P0-02 | **Read-only OCI residual-estate and ownership classification.**`
-
-RequirementText: Complete the P0-02 read-only OCI residual-estate and ownership classification without cloud mutation.
-
-Owner: Cloud lane
-
-Life: gap
-
-REST: gap
-
-Stream: gap
-
-.NET: gap
-
-TS: gap
-
-Dashboard: gap
-
-MCP: gap
-
-Auth: Scoped read-only OCI authority.
-
-AT: Planned artifact: read-only residual-estate decision packet receipt; Work contract: `P0-02`; Evidence: gap.
-
-Evidence: gap
-
-Claim: gap
-
-Docs: gap
-
-Runbook: gap
-
-Risk: Unknown estate or unauthorized cloud mutation.
-
-N/A: gap
-
-Work: `P0-02`
-
 ### REQ-P0-03
 
 SourceAnchor: `G0-20260805-0a2fe859ee1d8c6e345a10cb48be35e419978ebe8315d24a13515df8357c95b9 > # TerraScale Production DBaaS Goal > ## Critical-Path Delivery Roadmap`
@@ -22306,7 +22220,7 @@ RequirementID: `REQ-P0-04A`
 
 ContentLocator: `| P0-04A | **Public provider/TCO and region research.**`
 
-RequirementText: Complete public provider, TCO, and region research without entering an A1 lab or asserting a performance baseline.
+RequirementText: Complete public provider, TCO, and region research without entering an ARM64 lab or asserting a performance baseline.
 
 Owner: Cloud research lane
 
@@ -22370,7 +22284,7 @@ MCP: gap
 
 Auth: Lab ownership and exclusive CPU allocation authority.
 
-AT: Planned artifact: A1 benchmark manifest with target identity, CPU isolation, method, timestamp, and digest receipt; Work contract: `P0-04B`; Evidence: gap.
+AT: Planned artifact: ARM64 benchmark manifest with target identity, CPU isolation, method, timestamp, and digest receipt; Work contract: `P0-04B`; Evidence: gap.
 
 Evidence: gap
 
@@ -22546,7 +22460,7 @@ MCP: gap
 
 Auth: API architecture steward.
 
-AT: Planned artifact: sanitized OCI inventory and private-transport exclusion receipt; Work contract: `P0-08`; Evidence: gap.
+AT: Planned artifact: public-contract inventory and private-transport exclusion receipt; Work contract: `P0-08`; Evidence: gap.
 
 Evidence: gap
 
@@ -22862,8 +22776,8 @@ Work: `P0-07`
 
 SourceAnchor: `G0-20260805-0a2fe859ee1d8c6e345a10cb48be35e419978ebe8315d24a13515df8357c95b9 > # TerraScale Production DBaaS Goal > ## Critical-Path Delivery Roadmap > PhaseHeading[level=3; number=0; title=Production truth, decisions, and measurable baselines]`
 RequirementID: `REQ-P0-ORCHESTRATOR-INPUTS-01`
-RequirementText: Close the cost and storage model; approved RPO/RTO, backup retention, security-token TTL, density, audit-retention, survival-window SLOs; provider residual inventory; supply-chain pins/mirrors/signing; ARM64/A1 qualification; DNS, VPN, IdP, regional mirror, and NATS dual-plane decisions.
-ContentLocator: `- Close Orchestrator Phase-0 inputs: cost and storage model; approved RPO/RTO, backup retention, security-token TTL, density, audit-retention, and survival-window SLOs; provider residual inventory; selected supply-chain pins/mirrors/signing; ARM64/A1 qualification; DNS, VPN, IdP, regional mirror, and NATS dual-plane decisions.`
+RequirementText: Close the cost and storage model; approved RPO/RTO, backup retention, security-token TTL, density, audit-retention, survival-window SLOs; provider residual inventory; supply-chain pins/mirrors/signing; ARM64 qualification; DNS, VPN, IdP, regional mirror, and NATS dual-plane decisions.
+ContentLocator: `- Close Orchestrator Phase-0 inputs: cost and storage model; approved RPO/RTO, backup retention, security-token TTL, density, audit-retention, and survival-window SLOs; provider residual inventory; selected supply-chain pins/mirrors/signing; ARM64 qualification; DNS, VPN, IdP, regional mirror, and NATS dual-plane decisions.`
 Owner: Integration and contract steward
 Life: gap
 REST: N/A[Orchestrator Phase 0 inputs;API architecture authority;no public REST contract;approved ADR and receipt]
@@ -22897,7 +22811,7 @@ TS: N/A[performance-lab baseline;SDK architecture authority;no SDK surface;CPU-i
 Dashboard: N/A[performance-lab baseline;Dashboard boundary authority;no Dashboard feature;CPU-isolation attestation]
 MCP: N/A[performance-lab baseline;MCP architecture authority;no MCP tool;CPU-isolation attestation]
 Auth: Positively owned isolated lab target and exclusive CPU allocation authority.
-AT: Planned artifact: A1 benchmark manifest with target identity, CPU isolation, method, timestamp, and digest receipt; Work contract: `P0-04B`; Evidence: gap.
+AT: Planned artifact: ARM64 benchmark manifest with target identity, CPU isolation, method, timestamp, and digest receipt; Work contract: `P0-04B`; Evidence: gap.
 Evidence: gap
 Claim: gap
 Docs: gap
@@ -23075,30 +22989,6 @@ Risk: A malformed, cyclic, or untraceable controlling input passes validation.
 N/A: gap
 Work: `P0-01V`
 
-### REQ-P0-CONTROL-02-12-01
-
-SourceAnchor: `G0-20260805-0a2fe859ee1d8c6e345a10cb48be35e419978ebe8315d24a13515df8357c95b9 > # TerraScale Production DBaaS Goal > ## Critical-Path Delivery Roadmap > ### Phase 0 Control Board`
-RequirementID: `REQ-P0-CONTROL-02-12-01`
-RequirementText: Execute each remaining P0 task only within its literal exclusive source/evidence scope, dependencies, external authority/access, and objective exit evidence.
-ContentLocator: | P0-02 | **Read-only OCI residual-estate and ownership classification.** Coordinator: Cloud lane. Owns only `TerraScale.Orchestrator/docs/evidence/phase0/oci-residual-inventory.yaml` and `TerraScale.Orchestrator/docs/adr/0024-greenfield-bringup.md`. | P0-01 | Scoped read-only OCI tenancy, IAM, billing, Vault, Object Storage, LB, networking, and cost visibility; named owner for each cleanup disposition. | Sanitized inventory covers instances, volumes/attachments, backups, buckets, LBs, public IPs, IAM, Vault, certificates, workloads, NATS, and seven-day cost; OKE/node-pool absence is positively established; every remnant is unrelated, quarantined, or approved for later cleanup. No cloud mutation occurs. |
-Owner: Cloud lane
-Life: gap
-REST: N/A[OCI residual inventory;API architecture authority;no public REST contract;sanitized read-only receipt]
-Stream: N/A[OCI residual inventory;API architecture authority;no public streaming contract;sanitized read-only receipt]
-.NET: N/A[OCI residual inventory;SDK architecture authority;no SDK surface;sanitized read-only receipt]
-TS: N/A[OCI residual inventory;SDK architecture authority;no SDK surface;sanitized read-only receipt]
-Dashboard: N/A[OCI residual inventory;Dashboard boundary authority;no Dashboard feature;sanitized read-only receipt]
-MCP: N/A[OCI residual inventory;MCP architecture authority;no MCP tool;sanitized read-only receipt]
-Auth: Scoped read-only OCI tenancy, IAM, billing, Vault, Object Storage, LB, networking, and cost access.
-AT: Planned artifact: trace matrix independent review, fail-closed validation, and immutable-index receipt; Work contract: `P0-02`; Evidence: gap.
-Evidence: gap
-Claim: gap
-Docs: gap
-Runbook: gap
-Risk: Unknown OCI estate, cleanup without disposition, or cloud mutation.
-N/A: gap
-Work: `P0-02`
-
 ### REQ-P0-07-SOLE-PRODUCT-01
 
 SourceAnchor: `G0-20260805-0a2fe859ee1d8c6e345a10cb48be35e419978ebe8315d24a13515df8357c95b9 > # TerraScale Production DBaaS Goal > ## Critical-Path Delivery Roadmap > ### Phase 0 Control Board`
@@ -23151,8 +23041,8 @@ Work: `P0-03`
 
 SourceAnchor: `G0-20260805-0a2fe859ee1d8c6e345a10cb48be35e419978ebe8315d24a13515df8357c95b9 > # TerraScale Production DBaaS Goal > ## Critical-Path Delivery Roadmap > ### Phase 0 Control Board`
 RequirementID: `REQ-P0-04A-ATOMIC-01`
-RequirementText: P0-04A, after P0-01, owns only `TerraScale.Orchestrator/docs/evidence/phase0/provider-tco-inputs.yaml` and `TerraScale.Orchestrator/docs/evidence/phase0/oci-eligible-region-matrix.yaml`; using public pricing and read-only billing data where available, it produces a normalized provider comparison, an eligible-region matrix with at least 20 qualified rows or a documented failed claim, and post-OKE residual bill, without entering an A1 lab or producing a performance baseline.
-ContentLocator: | P0-04A | **Public provider/TCO and region research.** Coordinator: Cloud research lane. Owns only `TerraScale.Orchestrator/docs/evidence/phase0/provider-tco-inputs.yaml` and `TerraScale.Orchestrator/docs/evidence/phase0/oci-eligible-region-matrix.yaml`. | P0-01 | Public pricing sources and read-only billing data where available. | Normalized provider comparison; eligible-region matrix with at least 20 qualified rows or a documented failed claim; post-OKE residual bill. This task does not enter an A1 lab or produce a performance baseline. |
+RequirementText: P0-04A, after P0-01, owns only `TerraScale.Orchestrator/docs/evidence/phase0/provider-tco-inputs.yaml`; using public pricing and read-only billing data where available, it produces a normalized provider comparison, an eligible-region matrix with at least 20 qualified rows or a documented failed claim, without entering an ARM64 lab or producing a performance baseline.
+ContentLocator: | P0-04A | **Public provider/TCO and region research.** Coordinator: Cloud research lane. Owns only `TerraScale.Orchestrator/docs/evidence/phase0/provider-tco-inputs.yaml`. | P0-01 | Public pricing sources and read-only billing data where available. | Normalized provider comparison; eligible-region matrix with at least 20 qualified rows or a documented failed claim. This task does not enter an ARM64 lab or produce a performance baseline. |
 Owner: Cloud research lane
 Life: gap
 REST: N/A[provider research;API architecture authority;no public REST contract;P0-04A receipt]
@@ -23175,8 +23065,8 @@ Work: `P0-04A`
 
 SourceAnchor: `G0-20260805-0a2fe859ee1d8c6e345a10cb48be35e419978ebe8315d24a13515df8357c95b9 > # TerraScale Production DBaaS Goal > ## Critical-Path Delivery Roadmap > ### Phase 0 Control Board`
 RequirementID: `REQ-P0-04B-ATOMIC-01`
-RequirementText: P0-04B, after P0-02, owns only `TerraBase.Benchmark/docs/phase0/arm64-storage-baseline.manifest.json` and `TerraBase.Benchmark/docs/phase0/arm64-storage-baseline.md`; with positively owned isolated target, A1 capacity/allocation, and exclusive CPU partition, capture raw ARM64 database/block-storage p50/p95/p99, fsync, IOPS, expansion, and recovery data with P0-02 target identity, methodology, and timestamp, excluding the non-exclusive 2026-07-27 self-test.
-ContentLocator: | P0-04B | **ARM64/TerraBase storage benchmark inputs.** Coordinator: Benchmark lane. Owns only `TerraBase.Benchmark/docs/phase0/arm64-storage-baseline.manifest.json` and `TerraBase.Benchmark/docs/phase0/arm64-storage-baseline.md`. | P0-02 | A positively owned isolated lab target, A1 capacity/allocation, and exclusive CPU partition. | Raw ARM64 database/block-storage p50/p95/p99, fsync, IOPS, expansion, and recovery data captured with the P0-02 target identity, methodology, and timestamp. The non-exclusive 2026-07-27 self-test is excluded from baseline evidence. |
+RequirementText: P0-04B owns only `TerraBase.Benchmark/docs/phase0/arm64-storage-baseline.manifest.json` and `TerraBase.Benchmark/docs/phase0/arm64-storage-baseline.md`; with positively owned isolated target and exclusive CPU partition, capture raw ARM64 database/block-storage p50/p95/p99, fsync, IOPS, expansion, and recovery data with approved target identity, methodology, and timestamp, excluding the non-exclusive 2026-07-27 self-test.
+ContentLocator: | P0-04B | **ARM64/TerraBase storage benchmark inputs.** Coordinator: Benchmark lane. Owns only `TerraBase.Benchmark/docs/phase0/arm64-storage-baseline.manifest.json` and `TerraBase.Benchmark/docs/phase0/arm64-storage-baseline.md`. | Approved lab target | A positively owned isolated lab target and exclusive CPU partition. | Raw ARM64 database/block-storage p50/p95/p99, fsync, IOPS, expansion, and recovery data captured with the approved target identity, methodology, and timestamp. The non-exclusive 2026-07-27 self-test is excluded from baseline evidence. |
 Owner: Benchmark lane
 Life: gap
 REST: N/A[ARM64 benchmark input;API architecture authority;no public REST contract;P0-04B receipt]
@@ -23185,8 +23075,8 @@ Stream: N/A[ARM64 benchmark input;API architecture authority;no public streaming
 TS: N/A[ARM64 benchmark input;SDK architecture authority;no SDK surface;P0-04B receipt]
 Dashboard: N/A[ARM64 benchmark input;Dashboard boundary authority;no Dashboard feature;P0-04B receipt]
 MCP: N/A[ARM64 benchmark input;MCP architecture authority;no MCP tool;P0-04B receipt]
-Auth: Positively owned lab, A1 allocation, and exclusive CPU authority.
-AT: Planned artifact: A1 benchmark manifest with target identity, CPU isolation, method, timestamp, and digest receipt; Work contract: `P0-04B`; Evidence: gap.
+Auth: Positively owned lab and exclusive CPU authority.
+AT: Planned artifact: ARM64 benchmark manifest with target identity, CPU isolation, method, timestamp, and digest receipt; Work contract: `P0-04B`; Evidence: gap.
 Evidence: gap
 Claim: gap
 Docs: gap
@@ -23199,7 +23089,7 @@ Work: `P0-04B`
 
 SourceAnchor: `G0-20260805-0a2fe859ee1d8c6e345a10cb48be35e419978ebe8315d24a13515df8357c95b9 > # TerraScale Production DBaaS Goal > ## Critical-Path Delivery Roadmap > ### Phase 0 Control Board`
 RequirementID: `REQ-P0-05-ATOMIC-01`
-RequirementText: P0-05, after P0-01, P0-02, P0-03, P0-04A, and P0-04B, owns only `TerraScale.Orchestrator/docs/adr/0001-global-regional-authority.md`, `docs/adr/0002-dual-regional-nats.md`, `docs/adr/0003-jetstream-correctness.md`, `docs/adr/0006-workload-runtime-contract.md`, `docs/adr/0008-compact-profile.md`, `docs/adr/0011-pki-workload-identity.md`, `docs/adr/0012-vault-backend.md`, `docs/adr/0016-vpn-connectivity.md`, `docs/adr/0018-placement-boundary.md`, `docs/adr/0019-cost-slo-portability.md`, and `docs/evidence/phase0/slo-and-risk-acceptance.md` within TerraScale.Orchestrator; approved values bind NATS durability, storage, PKI/Vault, host, provider, and regional-survival choices, and every ADR states authority, failure policy, fencing/one-writer implications, rejected alternatives, and residual risk.
+RequirementText: P0-05, after P0-01, P0-03, P0-04A, and P0-04B, owns only `TerraScale.Orchestrator/docs/adr/0001-global-regional-authority.md`, `docs/adr/0002-dual-regional-nats.md`, `docs/adr/0003-jetstream-correctness.md`, `docs/adr/0006-workload-runtime-contract.md`, `docs/adr/0008-compact-profile.md`, `docs/adr/0011-pki-workload-identity.md`, `docs/adr/0012-vault-backend.md`, `docs/adr/0016-vpn-connectivity.md`, `docs/adr/0018-placement-boundary.md`, `docs/adr/0019-cost-slo-portability.md`, and `docs/evidence/phase0/slo-and-risk-acceptance.md` within TerraScale.Orchestrator; approved values bind NATS durability, storage, PKI/Vault, host, provider, and regional-survival choices, and every ADR states authority, failure policy, fencing/one-writer implications, rejected alternatives, and residual risk.
 ContentLocator: `| P0-05 | **Measurable SLO approval and ADR tranche.** Coordinator: Integration/contract steward.`
 Owner: Integration/contract steward
 Life: gap
@@ -23258,7 +23148,7 @@ TS: N/A[contract inventory;SDK architecture authority;read-only SDK input;P0-08 
 Dashboard: N/A[contract inventory;Dashboard boundary authority;no Dashboard feature;P0-08 inventory receipt]
 MCP: N/A[contract inventory;MCP architecture authority;no MCP tool;P0-08 inventory receipt]
 Auth: API architecture steward.
-AT: Planned artifact: sanitized OCI inventory and private-transport exclusion receipt; Work contract: `P0-08`; Evidence: gap.
+AT: Planned artifact: public-contract inventory and private-transport exclusion receipt; Work contract: `P0-08`; Evidence: gap.
 Evidence: gap
 Claim: gap
 Docs: `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-0/p0-08-platform-openapi-inventory.md`
@@ -23343,7 +23233,7 @@ Work: `P0-11`
 
 SourceAnchor: `G0-20260805-0a2fe859ee1d8c6e345a10cb48be35e419978ebe8315d24a13515df8357c95b9 > # TerraScale Production DBaaS Goal > ## Critical-Path Delivery Roadmap > ### Phase 0 Control Board`
 RequirementID: `REQ-P0-12-ATOMIC-01`
-RequirementText: P0-12, after accepted P0-01, P0-01V, P0-02, P0-03, P0-04A, P0-04B, and P0-05 through P0-11, owns only `TerraScale.Orchestrator/docs/planning/phase-work-package-schema.json`, `TerraScale.Orchestrator/docs/planning/phase-work-package-register.yaml`, `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-0/p0-12-work-package-register-validation.md`, and `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-0/README.md`; fail closed on missing task/owner/scope/prerequisite/risk/real-boundary validation/exit evidence, cycles after closure-evidence separation, invalid controlling-input expansion, unleased writable overlap, or cross-repository item without owners/order/compatibility; final index uses immutable accepted reports and no parallel mutable matrix.
+RequirementText: P0-12, after accepted P0-01, P0-01V, P0-03, P0-04A, P0-04B, and P0-05 through P0-11, owns only `TerraScale.Orchestrator/docs/planning/phase-work-package-schema.json`, `TerraScale.Orchestrator/docs/planning/phase-work-package-register.yaml`, `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-0/p0-12-work-package-register-validation.md`, and `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-0/README.md`; fail closed on missing task/owner/scope/prerequisite/risk/real-boundary validation/exit evidence, cycles after closure-evidence separation, invalid controlling-input expansion, unleased writable overlap, or cross-repository item without owners/order/compatibility; final index uses immutable accepted reports and no parallel mutable matrix.
 ContentLocator: `| P0-12 | **Register and validate every later-phase work package.** Coordinator: Root integration coordinator.`
 Owner: Root integration coordinator
 Life: gap
@@ -23391,8 +23281,8 @@ Work: `P0-12`
 
 SourceAnchor: `G0-20260805-0a2fe859ee1d8c6e345a10cb48be35e419978ebe8315d24a13515df8357c95b9 > # TerraScale Production DBaaS Goal > ## Critical-Path Delivery Roadmap > ### Phase 0 Control Board > #### Phase 0 Report and Cross-Repository Integration Receipts`
 RequirementID: `REQ-P0-RECEIPT-SCHEDULE-01`
-RequirementText: Enforce the P0-01V draft/final rerun, P0-01 acceptance prerequisites, P0-02/P0-03 scheduling, P0-07 parallelism, P0-04A/P0-04B lab prerequisites, P0-05 decision freeze, P0-08 through P0-11 dependencies, P0-12 acceptance prerequisites, and final P0 completion conditions.
-ContentLocator: `P0-01V may begin once P0-01 has a draft packet/index, but it must rerun and pass against the exact final P0-01 commit digests before P0-01 is accepted. The coordinator may schedule P0-02 and P0-03 only after accepted P0-01, and P0-07 in parallel. P0-04A may run after P0-01 and alongside P0-02; P0-04B cannot start until P0-02 establishes a positively owned, isolated, approved lab target and exclusive CPU allocation. P0-05 is the control-plane decision freeze; P0-08 through P0-11 begin only after their stated contract dependencies; P0-12 begins only after P0-01, P0-01V, P0-02, P0-03, P0-04A, P0-04B, and P0-05 through P0-11 are accepted. P0 does not complete until every control-board item is independently reviewed and every remaining requirement has a validated later-phase task, exact ownership, dependency, risk disposition, integration sequence, compatibility evidence, and acceptance evidence.`
+RequirementText: Enforce the P0-01V draft/final rerun, P0-01 acceptance prerequisites, P0-03 scheduling, P0-07 parallelism, P0-04A/P0-04B lab prerequisites, P0-05 decision freeze, P0-08 through P0-11 dependencies, P0-12 acceptance prerequisites, and final P0 completion conditions.
+ContentLocator: `P0-01V may begin once P0-01 has a draft packet/index, but it must rerun and pass against the exact final P0-01 commit digests before P0-01 is accepted. The coordinator may schedule P0-03 only after accepted P0-01, and P0-07 in parallel. P0-04A may run after P0-01; P0-05 is the control-plane decision freeze; P0-08 through P0-11 begin only after their stated contract dependencies; P0-12 begins only after P0-01, P0-01V, P0-03, P0-04A, P0-04B, and P0-05 through P0-11 are accepted. P0 does not complete until every control-board item is independently reviewed and every remaining requirement has a validated later-phase task, exact ownership, dependency, risk disposition, integration sequence, compatibility evidence, and acceptance evidence.`
 Owner: Root integration coordinator
 Life: gap
 REST: N/A[Phase 0 scheduling;API architecture authority;no public REST contract;independent P0 completion review]
@@ -23438,7 +23328,7 @@ Every `gap` above delegates only to one of these stable work IDs. Each item must
 
 ### P0 work contracts
 
-The four contracts below are the resolvable targets for every `Work: P0-01`, `Work: P0-01V`, `Work: P0-02`, and `Work: P0-03` record in this report, including `REQ-P0-01`, `REQ-P0-01V`, `REQ-P0-02`, `REQ-P0-03`, and their scoped Control Board atoms. They are source-grounded in `REQ-P0-01-OWNERSHIP-01`, `REQ-P0-01-EXIT-01`, `REQ-P0-01V-VALIDATOR-01`, `REQ-P0-01V-INVARIANTS-01`, `REQ-P0-01V-REJECTIONS-01`, `REQ-P0-CONTROL-02-12-01`, `REQ-P0-03-ATOMIC-01`, and `REQ-P0-RECEIPT-RULE-01`. The underlying Goal locator for the task and receipt clauses is the real heading chain `# TerraScale Production DBaaS Goal > ## Critical-Path Delivery Roadmap > ### Phase 0 Control Board > #### Phase 0 Report and Cross-Repository Integration Receipts`; that heading text is represented structurally here and is not a synthetic heading ID. These are open work contracts, not acceptance evidence.
+The three contracts below are the resolvable targets for every `Work: P0-01`, `Work: P0-01V`, and `Work: P0-03` record in this report, including `REQ-P0-01`, `REQ-P0-01V`, `REQ-P0-03`, and their scoped Control Board atoms. They are source-grounded in `REQ-P0-01-OWNERSHIP-01`, `REQ-P0-01-EXIT-01`, `REQ-P0-01V-VALIDATOR-01`, `REQ-P0-01V-INVARIANTS-01`, `REQ-P0-01V-REJECTIONS-01`, `REQ-P0-03-ATOMIC-01`, and `REQ-P0-RECEIPT-RULE-01`. The underlying Goal locator for the task and receipt clauses is the real heading chain `# TerraScale Production DBaaS Goal > ## Critical-Path Delivery Roadmap > ### Phase 0 Control Board > #### Phase 0 Report and Cross-Repository Integration Receipts`; that heading text is represented structurally here and is not a synthetic heading ID. These are open work contracts, not acceptance evidence.
 
 #### Contract P0-01
 
@@ -23492,32 +23382,6 @@ Compatibility receipt: The P0-01V report records the matching final P0-01 digest
 
 Independent verifier: The independent report review required before P0-12 import. P0-01V itself is the independent verifier for P0-01 and is not self-verification for this contract.
 
-#### Contract P0-02
-
-ContractID: `P0-02`
-
-Target phase: `P0`
-
-Objective: Complete a read-only OCI residual-estate and ownership classification with a sanitized inventory and a cleanup disposition for every remnant.
-
-Non-goals: No cloud mutation. Do not classify a remnant without one of unrelated, quarantined, or approved-for-later-cleanup dispositions.
-
-Per-repository owners and exact allowed paths: TerraScale.Orchestrator, Cloud lane, only `TerraScale.Orchestrator/docs/evidence/phase0/oci-residual-inventory.yaml` and `TerraScale.Orchestrator/docs/adr/0024-greenfield-bringup.md`; Terrascale.Documentation, Cloud lane, only `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-0/p0-02-oci-residual-inventory.md`.
-
-Prohibited paths: All cloud mutation and every path other than the two Orchestrator paths and the report.
-
-Exclusive path lease, predecessor evidence, executable dependencies, and integration order: The coordinator grants an exclusive path lease only after the owning-repository rules are read and its `develop` checkout is refreshed. P0-01 is the predecessor. Its exact predecessor evidence or ADR identifier is `gap`, because the Control Board names only P0-01 at planning time. The sole executable dependency is P0-01, and no closure evidence is an executable prerequisite, so the dependency is acyclic if P0-01's required acyclic graph is retained. Commit and validate the Orchestrator inventory/ADR first, then commit the Documentation report.
-
-Authority and risk: Scoped read-only OCI tenancy, IAM, billing, Vault, Object Storage, LB, networking, and cost visibility are required, with a named owner for each cleanup disposition. Risks are unknown estate, cleanup without disposition, and unauthorized cloud mutation.
-
-Validation artifact and threshold: The sanitized inventory and associated ADR are the artifact. The inventory must cover instances, volumes/attachments, backups, buckets, LBs, public IPs, IAM, Vault, certificates, workloads, NATS, and seven-day cost; positively establish OKE/node-pool absence; assign every remnant an allowed disposition; and show that no cloud mutation occurred.
-
-Recovery or rollback: This is a read-only task, so its specified safety boundary is no cloud mutation. No further rollback or recovery procedure is specified in the Control Board; this remains `gap`.
-
-Compatibility receipt: The P0-02 report verifies sanitized scope, read-only evidence, and disposition coverage, and records the required exact commit or digest, command results, methodology/version inputs, residual risk, and compatibility result.
-
-Independent verifier: Independent report review before P0-12 import.
-
 #### Contract P0-03
 
 ContractID: `P0-03`
@@ -23550,21 +23414,21 @@ ContractID: `P0-04A`
 
 Target phase: `P0`
 
-Objective: Produce a normalized public provider comparison, an eligible-region matrix with at least 20 qualified rows or a documented failed claim, and a post-OKE residual bill.
+Objective: Produce a normalized public provider comparison, an eligible-region matrix with at least 20 qualified rows or a documented failed claim.
 
-Non-goals: Do not enter an A1 lab or produce a performance baseline.
+Non-goals: Do not enter an ARM64 lab or produce a performance baseline.
 
-Per-repository owners and exact allowed paths: TerraScale.Orchestrator, Cloud research lane, only `TerraScale.Orchestrator/docs/evidence/phase0/provider-tco-inputs.yaml` and `TerraScale.Orchestrator/docs/evidence/phase0/oci-eligible-region-matrix.yaml`; Terrascale.Documentation, Cloud research lane, only `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-0/p0-04a-provider-tco-and-region-research.md`.
+Per-repository owners and exact allowed paths: TerraScale.Orchestrator, Cloud research lane, only `TerraScale.Orchestrator/docs/evidence/phase0/provider-tco-inputs.yaml`; Terrascale.Documentation, Cloud research lane, only `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-0/p0-04a-provider-tco-and-region-research.md`.
 
-Prohibited paths: A1 lab and performance-baseline paths, and every path other than the two Orchestrator paths and the report.
+Prohibited paths: ARM64 lab and performance-baseline paths, and every path other than the Orchestrator path and the report.
 
-Exclusive path lease, predecessor evidence, executable dependencies, and integration order: The coordinator grants an exclusive path lease only after the owning-repository rules are read and its `develop` checkout is refreshed. P0-01 is the predecessor. Its exact predecessor evidence or ADR identifier is `gap`, because the Control Board names only P0-01 at planning time. The sole executable dependency is P0-01, and no closure evidence is an executable prerequisite, so the dependency is acyclic if P0-01's required acyclic graph is retained. P0-04A may run after P0-01 and alongside P0-02. Commit and validate the Orchestrator research first, then commit the Documentation report.
+Exclusive path lease, predecessor evidence, executable dependencies, and integration order: The coordinator grants an exclusive path lease only after the owning-repository rules are read and its `develop` checkout is refreshed. P0-01 is the predecessor. Its exact predecessor evidence or ADR identifier is `gap`, because the Control Board names only P0-01 at planning time. The sole executable dependency is P0-01, and no closure evidence is an executable prerequisite, so the dependency is acyclic if P0-01's required acyclic graph is retained. P0-04A may run after P0-01. Commit and validate the Orchestrator research first, then commit the Documentation report.
 
 Authority and risk: Public pricing sources and read-only billing data where available are required. The risk is an unsupported provider, region, or cost claim.
 
-Validation artifact and threshold: `provider-tco-inputs.yaml`, `oci-eligible-region-matrix.yaml`, and the report are the artifact. The threshold is a normalized provider comparison, an eligible-region matrix with at least 20 qualified rows or a documented failed claim, a post-OKE residual bill, and report verification of price-source date/currency and region-qualification criteria.
+Validation artifact and threshold: `provider-tco-inputs.yaml` and the report are the artifact. The threshold is a normalized provider comparison, an eligible-region matrix with at least 20 qualified rows or a documented failed claim, and report verification of price-source date/currency and region-qualification criteria.
 
-Recovery or rollback: No separate rollback or recovery procedure is specified in the Control Board. This remains `gap`; this research contract does not authorize an A1 lab or a performance baseline.
+Recovery or rollback: No separate rollback or recovery procedure is specified in the Control Board. This remains `gap`; this research contract does not authorize an ARM64 lab or a performance baseline.
 
 Compatibility receipt: The P0-04A report verifies price-source date/currency and region-qualification criteria and records the required exact commit or digest, command results, methodology/version inputs, residual risk, and compatibility result.
 
@@ -23576,23 +23440,23 @@ ContractID: `P0-04B`
 
 Target phase: `P0`
 
-Objective: Capture raw ARM64 database and block-storage p50/p95/p99, fsync, IOPS, expansion, and recovery data using the P0-02 target identity, methodology, and timestamp.
+Objective: Capture raw ARM64 database and block-storage p50/p95/p99, fsync, IOPS, expansion, and recovery data using the approved target identity, methodology, and timestamp.
 
-Non-goals: Do not use the non-exclusive 2026-07-27 self-test as baseline evidence. Do not begin until P0-02 establishes a positively owned, isolated, approved lab target and exclusive CPU allocation.
+Non-goals: Do not use the non-exclusive 2026-07-27 self-test as baseline evidence.
 
 Per-repository owners and exact allowed paths: TerraBase.Benchmark, Benchmark lane, only `TerraBase.Benchmark/docs/phase0/arm64-storage-baseline.manifest.json` and `TerraBase.Benchmark/docs/phase0/arm64-storage-baseline.md`; Terrascale.Documentation, Benchmark lane, only `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-0/p0-04b-arm64-storage-benchmark.md`.
 
 Prohibited paths: The non-exclusive 2026-07-27 self-test as baseline evidence, and every path other than the two TerraBase.Benchmark paths and the report.
 
-Exclusive path lease, predecessor evidence, executable dependencies, and integration order: The coordinator grants an exclusive path lease only after the owning-repository rules are read and its `develop` checkout is refreshed. P0-02 is the predecessor. Required predecessor evidence is the P0-02 positively owned, isolated, approved lab target identity with A1 capacity/allocation and exclusive CPU partition. The sole executable dependency is P0-02, and no closure evidence is an executable prerequisite, so the dependency is acyclic if P0-02 follows P0-01's required acyclic graph. Commit and validate the TerraBase.Benchmark manifest/result first, then commit the Documentation report; before linking repositories, the report verifies target identity, timestamp, CPU-isolation attestation, workload/methodology version, and result digest.
+Exclusive path lease, predecessor evidence, executable dependencies, and integration order: The coordinator grants an exclusive path lease only after the owning-repository rules are read and its `develop` checkout is refreshed. Required evidence is a positively owned, isolated, approved lab target identity with exclusive CPU partition. Commit and validate the TerraBase.Benchmark manifest/result first, then commit the Documentation report; before linking repositories, the report verifies target identity, timestamp, CPU-isolation attestation, workload/methodology version, and result digest.
 
-Authority and risk: A positively owned isolated lab target, A1 capacity/allocation, and exclusive CPU partition are required. The risk is that a non-exclusive self-test is accepted as a baseline.
+Authority and risk: A positively owned isolated lab target and exclusive CPU partition are required. The risk is that a non-exclusive self-test is accepted as a baseline.
 
-Validation artifact and threshold: The ARM64 storage-baseline manifest, baseline report, and Documentation receipt are the artifact. The threshold is raw database and block-storage p50/p95/p99, fsync, IOPS, expansion, and recovery data with the P0-02 target identity, methodology, and timestamp, plus the receipt's target identity, timestamp, CPU-isolation, workload/methodology-version, and result-digest verification.
+Validation artifact and threshold: The ARM64 storage-baseline manifest, baseline report, and Documentation receipt are the artifact. The threshold is raw database and block-storage p50/p95/p99, fsync, IOPS, expansion, and recovery data with the approved target identity, methodology, and timestamp, plus the receipt's target identity, timestamp, CPU-isolation, workload/methodology-version, and result-digest verification.
 
 Recovery or rollback: Recovery data is a required captured measurement. No separate rollback or recovery procedure is specified for P0-04B in the Control Board; this remains `gap`.
 
-Compatibility receipt: The P0-04B report verifies the P0-02 lab target identity, timestamp, CPU-isolation attestation, workload/methodology version, and result digest before linking TerraBase.Benchmark and Documentation, and records the required exact commit or digest, command results, methodology/version inputs, residual risk, and compatibility result.
+Compatibility receipt: The P0-04B report verifies the approved lab target identity, timestamp, CPU-isolation attestation, workload/methodology version, and result digest before linking TerraBase.Benchmark and Documentation, and records the required exact commit or digest, command results, methodology/version inputs, residual risk, and compatibility result.
 
 Independent verifier: Independent report review before P0-12 import.
 
@@ -23610,7 +23474,7 @@ Per-repository owners and exact allowed paths: TerraScale.Orchestrator, Integrat
 
 Prohibited paths: Every path other than the eleven Orchestrator paths and the report.
 
-Exclusive path lease, predecessor evidence, executable dependencies, and integration order: The coordinator grants an exclusive path lease only after the owning-repository rules are read and its `develop` checkout is refreshed. P0-01, P0-02, P0-03, P0-04A, and P0-04B are predecessors. Their exact predecessor evidence or ADR identifiers are `gap`, because the Control Board names task IDs at planning time. The executable dependencies are exactly those five P0 tasks, with closure evidence separately classified; P0-05 is the control-plane decision freeze and is acyclic when those predecessors retain their stated acyclic dependency conditions. Commit and validate the Orchestrator ADR/evidence paths first, then commit the Documentation report.
+Exclusive path lease, predecessor evidence, executable dependencies, and integration order: The coordinator grants an exclusive path lease only after the owning-repository rules are read and its `develop` checkout is refreshed. P0-01, P0-03, P0-04A, and P0-04B are predecessors. Their exact predecessor evidence or ADR identifiers are `gap`, because the Control Board names task IDs at planning time. The executable dependencies are exactly those four P0 tasks, with closure evidence separately classified; P0-05 is the control-plane decision freeze and is acyclic when those predecessors retain their stated acyclic dependency conditions. Commit and validate the Orchestrator ADR/evidence paths first, then commit the Documentation report.
 
 Authority and risk: Product, operations, security, and legal authority is required for pre-user cost, storage percentiles, RPO/RTO, retention, token TTL, density, survival window, and public commitments. The risk is runtime controls using unapproved SLO or residual-risk policy.
 
@@ -23677,7 +23541,7 @@ Independent verifier: Independent report review before P0-12 import.
 | FW-DB-CONTRACT-01 | P1 | Platform owner: `TerraScale.Internals/docs/planning/fw-db-contract-01-platform.md`; .NET owner: `TerraScale.DotNet/docs/planning/fw-db-contract-01-dotnet.md`; TypeScript owner: `TerraScale.TypeScript/docs/planning/fw-db-contract-01-typescript.md`; MCP owner: `TerraScale.Mcp/docs/planning/fw-db-contract-01-mcp.md` | Private routes, generic request APIs, direct TerraBase clients, Dashboard-only headers, and service-internal client shortcuts | Platform REST contract first, SDKs under separate leases, MCP last | Signed database-operation inventory, parity, and prohibited-bypass review | Public versioned REST and typed .NET/TypeScript parity with no listed bypass; not private transport exposure | P0-08, P0-09, FW-CONTRACT-01; API and security authority; boundary-drift risk | Per-operation REST/.NET/TypeScript/MCP parity, forbidden-surface static checks, and real tenant-denial evidence; compatible deprecation rollback | Independent API and boundary reviewer |
 | FW-DB-DEVELOPER-02 | P2 | Developer experience owner: `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-2/fw-db-developer-02.md`; Platform owner: `TerraScale.Internals/docs/planning/fw-db-developer-02-platform.md` | All other paths and every secret location | Platform workflow receipt first, Documentation last | Reproducible local/CI/integration/migration/upgrade/rollback/troubleshooting receipt | Clear customer and contributor workflows; not replacing operational recovery proof | FW-DB-CONTRACT-01, FW-DB-PROVISION-02; developer experience and security authority; unsafe guidance risk | Fresh-environment local and CI execution, integration path, migration/upgrade/rollback rehearsal, and sanitized troubleshooting evidence | Independent developer-experience reviewer |
 | FW-DB-02 | P2 | Platform database owner: `TerraScale.Internals/docs/planning/fw-db-02-platform.md`; Orchestrator owner: `TerraScale.Orchestrator/docs/planning/fw-db-02-orchestrator.md`; TypeScript owner: `TerraScale.TypeScript/docs/planning/fw-db-02-sdk.md`; MCP owner: `TerraScale.Mcp/docs/planning/fw-db-02-mcp.md` | All other paths | Per-path exclusive leases. Platform first, independent contract receipt, Orchestrator second, TypeScript third, MCP last | Versioned lifecycle schema and real-stack API receipt | Managed database, queues, Authentication product; not R3 production | FW-CONTRACT-01, FW-PROJ-02, P0-05, P0-06; product and security authority; data and secret risk | Create, use, rotate, delete, queue DLQ and Auth isolation; idempotent migration and recovery | Independent data-plane reviewer |
-| FW-RUNTIME-03 | P3 | Orchestrator runtime owner: `TerraScale.Orchestrator/docs/planning/fw-runtime-03.md`; Documentation receipt owner: `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-3/fw-runtime-03-receipt.md` | All other paths; retired infrastructure stubs; local RF=1 or development-lab results presented as production evidence; every secret location | Exclusive Orchestrator lease after P0-05 and P0-06 receipts; runtime-closure evidence first, Documentation receipt last | R3 runtime-foundation inventory revalidation and readiness-audit closure digest | Revalidate the substantial Orchestrator foundation and close the stated R3 runtime-readiness audit; not P0, product, or production acceptance, and not local-lab qualification | P0-05 and P0-06; cloud, security, and operations authority; runtime, credential, and recovery risk | Real R3 controllers/NATS, PKI/KMS/Vault/JWT lifecycle, OCI and host/volume execution, TerraBase topology/certificate/backup control, private ingress/DNS/VPN, HA observability, OIDC/RBAC/audit, native GitOps rollback, provenance, staged rollout, and clean-room/soak/DR evidence; recovery is `gap` until the required runtime rollback and DR proof are recorded | Independent runtime, security, and DR reviewer |
+| FW-RUNTIME-03 | P3 | Orchestrator runtime owner: `TerraScale.Orchestrator/docs/planning/fw-runtime-03.md`; Documentation receipt owner: `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-3/fw-runtime-03-receipt.md` | All other paths; retired infrastructure stubs; local RF=1 or development-lab results presented as production evidence; every secret location | Exclusive Orchestrator lease after P0-05 and P0-06 receipts; runtime-closure evidence first, Documentation receipt last | R3 runtime-foundation inventory revalidation and readiness-audit closure digest | Revalidate the substantial Orchestrator foundation and close the stated R3 runtime-readiness audit; not P0, product, or production acceptance, and not local-lab qualification | P0-05 and P0-06; cloud, security, and operations authority; runtime, credential, and recovery risk | Real R3 controllers/NATS, PKI/KMS/Vault/JWT lifecycle, host/volume execution, TerraBase topology/certificate/backup control, private ingress/DNS/VPN, HA observability, OIDC/RBAC/audit, native GitOps rollback, provenance, staged rollout, and clean-room/soak/DR evidence; recovery is `gap` until the required runtime rollback and DR proof are recorded | Independent runtime, security, and DR reviewer |
 | FW-REC-03 | P3 | TerraBase recovery owner: `TerraBase/docs/planning/fw-rec-03-engine.md`; Orchestrator owner: `TerraScale.Orchestrator/docs/planning/fw-rec-03-runtime.md`; Documentation owner: `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-3/fw-rec-03-receipt.md` | All other paths | TerraBase evidence first, DR receipt, Orchestrator second, Documentation last | Measured RPO/RTO and restore-schema digest | Recovery proof, not unsupported semantic claim | FW-DB-02, P0-04B, P0-05, P0-06; cloud and security authority; loss risk | Destructive R3 clean-room drill; cutover and rollback runbook | Independent DR reviewer |
 | FW-CONTRACT-01 | P1 | Platform owner: `TerraScale.Internals/docs/planning/fw-contract-01-platform.md`; .NET owner: `TerraScale.DotNet/docs/planning/fw-contract-01-dotnet.md`; TypeScript owner: `TerraScale.TypeScript/docs/planning/fw-contract-01-typescript.md`; MCP owner: `TerraScale.Mcp/docs/planning/fw-contract-01-mcp.md` | All other paths | Platform first, then .NET and TypeScript under separate leases, MCP last | Signed operation inventory and version-diff review | Classify public contracts, not feature code | P0-08 and P0-09; API authority; drift risk | Every operation classified for REST, Stream, auth, tenant, idempotency, compatibility; deprecation rollback | Independent API reviewer |
 | FW-BILL-04 | P4 | Platform owner: `TerraScale.Internals/docs/planning/fw-bill-04-platform.md`; Dashboard owner: `TerraScale.Internals/docs/planning/fw-bill-04-dashboard.md`; Documentation owner: `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-4/fw-bill-04-receipt.md` | All other paths and every secret location | Platform first, finance-security receipt, Dashboard successor lease, Documentation last | Redacted Polar event and reconciliation digest | Sandbox billing, not live claim | FW-CONTRACT-01 and authorized secret import; Polar, finance, legal authority; financial and secret risk | All SP07 tests and reconciliation; ledger replay rollback | Independent finance-security reviewer |
@@ -25153,9 +25017,9 @@ SourceAnchor: G0-20260805-0a2fe859ee1d8c6e345a10cb48be35e419978ebe8315d24a13515d
 
 RequirementID: REQ-START-ORCH-C-01
 
-RequirementText: Close the production-readiness audit: real R3 controllers/NATS, PKI/KMS/Vault/JWT lifecycle, OCI foundation and provider actuator, systemd/containerd host execution, volume/filesystem lifecycle, TerraBase topology/certificate/backup controllers, private ingress/DNS/VPN, HA observability, operator OIDC/RBAC/audit, native GitOps apply/drift/rollback, artifact provenance, staged live rollout, and clean-room/soak/DR proof. Development-lab wiring and local RF=1 are never production evidence.
+RequirementText: Close the production-readiness audit: real R3 controllers/NATS, PKI/KMS/Vault/JWT lifecycle, systemd/containerd host execution, volume/filesystem lifecycle, TerraBase topology/certificate/backup controllers, private ingress/DNS/VPN, HA observability, operator OIDC/RBAC/audit, native GitOps apply/drift/rollback, artifact provenance, staged live rollout, and clean-room/soak/DR proof. Development-lab wiring and local RF=1 are never production evidence.
 
-ContentLocator: Close the production-readiness audit: real R3 controllers/NATS, PKI/KMS/Vault/JWT lifecycle, OCI foundation and provider actuator, systemd/containerd host execution, volume/filesystem lifecycle, TerraBase topology/certificate/backup controllers, private ingress/DNS/VPN, HA observability, operator OIDC/RBAC/audit, native GitOps apply/drift/rollback, artifact provenance, staged live rollout, and clean-room/soak/DR proof. Development-lab wiring and local RF=1 are never production evidence.
+ContentLocator: Close the production-readiness audit: real R3 controllers/NATS, PKI/KMS/Vault/JWT lifecycle, systemd/containerd host execution, volume/filesystem lifecycle, TerraBase topology/certificate/backup controllers, private ingress/DNS/VPN, HA observability, operator OIDC/RBAC/audit, native GitOps apply/drift/rollback, artifact provenance, staged live rollout, and clean-room/soak/DR proof. Development-lab wiring and local RF=1 are never production evidence.
 
 Owner: Orchestrator
 

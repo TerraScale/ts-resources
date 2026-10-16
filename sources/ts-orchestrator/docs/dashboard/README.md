@@ -15,12 +15,8 @@ providers; it never changes control-plane state.
 | `/releases` | Each release's journey (CI qualified, signed, staged, canary, soak, batches, complete or rolled back) per region, and the version matrix of regions × units with drift highlighted. |
 | `/rollouts`, `/ci` | Rollout phase diagrams, release history, known-bad releases, managed TerraBase updates, qualification runs. |
 | `/topology` | Every region as a labeled group: its controllers on an inner ring (NATS routes), hosts on an outer ring (leaf connections to the meta leader) and TerraBase seats around their hosts. Other regions draw the members and seat hosts their summary reports. Edges and hosts are colored only from evidence: a route is healthy when both controllers report a full route mesh, hosts known only from placement and routes inferred from readiness stay grey (unknown), and links between two other regions are unknown. The graph is fitted and centered on load and resize; regions collapse and expand, node kinds filter from the toolbar, hover highlights neighbors and a click opens a details panel. |
-| `/members`, `/nats`, `/terrabase`, `/storage`, `/oci`, `/events` | Host time series, fleet heatmap and capacity; NATS rates, lag and backlog; seat grids, stage history and time-to-full forecasts; volumes, capacity treemap and backups; OCI rates, latency, 429s and inventory; the live event stream with search and chart click-through. |
 
-The OCI page also counts the managed fleet by OCI lifecycle state from the
-latest complete placement Observe sweep of each region: instances in the
-fleet's identity scope (owned or withheld), and the retained data volumes and
-volume attachments of the hosts it verified. Unattached retained volumes are
+Unattached retained volumes are
 not listed by the sweep. The same counts are exported as
 `ts_orch_oci_fleet_resources{region,kind,state}`.
 
@@ -49,7 +45,7 @@ which the page says.
 
 Path values are validated like the query parameters; anything else is a 404.
 
-The NATS page's leadership timeline shows authority lease changes, JetStream meta leader elections and quorum losses and recoveries, as the controllers journal them. NATS, TerraBase and Storage with another region selected label their live sections as this member's region; only their decision timelines follow the selection. Pages that only show this member (Hosts, OCI, Events, Rollouts) and the all-region pages (Releases, Qualification, Topology) send the region switcher to that region's overview. Empty histories say whether nothing happened or the query failed or was partial.
+The NATS page's leadership timeline shows authority lease changes, JetStream meta leader elections and quorum losses and recoveries, as the controllers journal them. NATS, TerraBase and Storage with another region selected label their live sections as this member's region; only their decision timelines follow the selection. Empty histories say whether nothing happened or the query failed or was partial.
 
 Every page carries the time range (`range=15m|1h|6h|24h`), the selected
 region (`r=`) and the live toggle (`live=0`) in its URL. Ctrl/⌘+K or `/`
@@ -71,25 +67,3 @@ binary never links it; a test enforces that.
 
 Taken from the preview with headless Chromium.
 
-![Global view](global.png)
-![Global view, dark](global-dark.png)
-![Needs attention](insights.png)
-![Decision chain](decision-chain.png)
-![Releases and version matrix](releases.png)
-![Topology](topology.png)
-![Topology details panel, dark](topology-details.png)
-![Topology on a phone](topology-mobile.png)
-![Region](region.png)
-![TerraBase](terrabase.png)
-![Hosts](hosts.png)
-![Member detail](member-detail.png)
-![Host detail](host-detail.png)
-![TerraBase partition with placement hold history](terrabase-partition.png)
-![Rollouts](rollouts.png)
-![Release rollout detail](rollout-detail.png)
-![Managed update detail](managed-update-detail.png)
-![Volume detail](volume-detail.png)
-![OCI fleet by lifecycle state](oci.png)
-![NATS, dark](nats-dark.png)
-![Releases, dark](releases-dark.png)
-![Global view on a phone](global-mobile.png)

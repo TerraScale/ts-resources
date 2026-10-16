@@ -1,7 +1,5 @@
 # TerraBase serving lifecycle
 
-Status: the health gate, drain and rollback below are implemented and
-tested locally against the real C# binary; nothing here has run on OCI.
 Sections marked **PROPOSED** are not implemented and are not deployment
 authorization. The binary and host contract are in
 [TerraBase runtime contract](terrabase-runtime-contract.md); the operator

@@ -1,9 +1,6 @@
 # TerraBase runtime contract
 
-Status: **implemented in source and tested locally against a published
-release; not deployed or tested on OCI.** This is the contract between the
-orchestrator and the C# TerraBase single-file binary (repository
-`TerraScale/terrabase`). Package [`internal/terrabase`](../internal/terrabase)
+Package [`internal/terrabase`](../internal/terrabase)
 holds the orchestrator side: release assets
 ([`release.go`](../internal/terrabase/release.go)), settings, peer list,
 layout and health probe ([`contract.go`](../internal/terrabase/contract.go)),
@@ -24,11 +21,7 @@ Every TerraBase `main` push that passes CI publishes the prerelease
 release is `ci-641274f7482bcf0ce2ae556af8be162d49e445be-run-13121`, SHA-256
 `69d132e76471089268ef1a807e69d4aef1e00a92995930817b0457ada0c02194`.
 
-**ARM64 gap.** OCI workload hosts are ARM64 (`VM.Standard.A1.Flex`), but
-TerraBase CI builds only `linux-x64` and publishes only
-`terrabase-linux-amd64`. A live OCI deployment needs TerraBase CI to also
-publish `terrabase-linux-arm64` and `terrabase-linux-arm64.sha256`
-(TerraBase TS-483). The orchestrator side is ready: `operator
+The orchestrator side is ready: `operator
 terrabase-release` and the attempt's `terrabase` phase consume the arm64
 asset, tested with the checked-in stand-in
 `internal/terrabase/testdata/terrabase-linux-arm64` (a bare aarch64 ELF
@@ -274,32 +267,15 @@ asset of `ci-641274f7482bcf0ce2ae556af8be162d49e445be-run-13121`: the mesh
 members answered `Replication/Sync` with gRPC status 12 (`Unimplemented`)
 over mutual TLS, which shows the call reached the service.
 
-`TestLiveOCITerraBaseHostsReadOnly` (`internal/terrabase`) is an opt-in,
-read-only check against the real OCI API through the shared client factory
-and the operator's `~/.oci/config` DEFAULT profile. With
-`TS_OCI_LIVE_COMPARTMENT_ID` set (optional `TS_OCI_LIVE_REGION`,
-`TS_OCI_LIVE_HOST_PREFIX`, default `gru-1-db-`, and `TS_OCI_LIVE_PEER_PORT`,
-default 9443) it checks that the region offers `VM.Standard.A1.Flex`
-(Ampere, 1 OCPU, 6 GB per OCPU), that A1 cores are left, and that an Ubuntu
-ARM64 image fits A1. For the running hosts of the prefix it checks the A1
+For the running hosts of the prefix it checks the A1
 shape, distinct fault domains and that every member's NSGs let the others
 reach the peer port, and logs the `TERRABASE_PEERS` value their primary
-private IPs give. It only lists and gets. On 2026-10-04 it passed for
-`sa-saopaulo-1` (A1 offered, 248 A1 cores available, 17 Ubuntu A1 images;
-GRU had no TerraBase hosts during its rebuild), and its host path read the
-VNIC and private IP of the running `ts-ops` A1 instance.
-
-Not tested: any live OCI host running a member, ARM64, the cgroup process runner as root with
-the real binary (its drain is covered by a root-only runner test), and real
-replication, which the binary does not implement yet.
+private IPs give. It only lists and gets.
 
 ## Retired terrabase-rust managed path
 
-Before this contract, TerraBase was the Rust `tb-server`, launched through a
-managed-member path: schema-5 placement in `internal/placement`, pinned
-member material in `internal/managedmaterial`, retained OCI volumes mounted
-by the host, and a native serving proof read through `internal/memberstatus`.
 That code remains in the repository with its operator commands, but it
 targets the retired binary and must not be used for the C# binary. Git
 history keeps the full previous text of this document, including its source
 identities and qualification records.
+

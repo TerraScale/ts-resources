@@ -1,10 +1,6 @@
 # TerraBase deployment into a running cell
 
-This is the operator workflow for the C# TerraBase binary. The regional
-bootstrap attempt (`ts-orch oci-region attempt`) brings a cell up end to
-end: controller material that includes the cell's member CA, signed
-controller configs that carry the member CA and the TerraBase workload
-profile, three controllers, the database hosts, and the first release. One
+This is the operator workflow for the C# TerraBase binary. One
 operator command verifies a published release, admits it, deploys it to
 every member, waits for readiness and rolls back a release that fails. The
 binary and host contract are in
@@ -13,9 +9,6 @@ command sequence is the [bring-up runbook](#gru-1-bring-up-runbook).
 
 | Command | Effect |
 | --- | --- |
-| `ts-orch oci-region attempt --config F PHASE` | Runs one resumable bring-up phase; see the [runbook](#gru-1-bring-up-runbook). |
-| `ts-orch oci-region preview cell-plan --plan F --inventory F [--profile F]` | Read-only: prints the cell's static names, placement and cost estimate against the plan ceiling. |
-| `ts-orch oci-region preview member-launch --plan F --inventory F --admission F --slot member-a --image-ocid OCID --host-enrollment F --owner-ssh-public-key F --out F` | Writes the launch input of one database host (`gru-1-db-1`); creates nothing. |
 | `ts-orch bootstrap render-controller-config ... --terrabase-profile F --terrabase-profile-sha256 H --out F` | Renders a controller config with the member CA paths and `controller.workloads.terrabase`. |
 | `ts-orch operator terrabase-release --config FILE [--nats-forward ...] --binary F --sha256 F --source-checkout DIR --commit SHA --environment ENV --profile F [--wait 10m]` | Verifies, admits and rolls out one release to all members; see [Run](#run). |
 | `ts-orch operator hosts --config FILE [--nats-forward ...]` | Prints each host's registration, session and latest reports, including each member's digest and state. |
@@ -23,22 +16,10 @@ command sequence is the [bring-up runbook](#gru-1-bring-up-runbook).
 
 On the operator host the installed binary is `terrascale-orchestrator`; it
 exposes the same commands. The operator config is
-`/var/lib/terrascale-operator/operator.json`. Add
-`--nats-forward CONTROLLER_IP:4222=127.0.0.1:PORT` only when reaching a
-controller through an OCI Bastion forward.
+`/var/lib/terrascale-operator/operator.json`.
 
 ## Prerequisites
 
-1. **Orchestrator revision.** Controllers, host agents and the operator CLI
-   run a revision that contains this contract (the `terrabase-peer` host
-   operation, `host.terrabase_root`, `controller.terrabase_ca_*` and
-   `operator terrabase-release`). Signed command and artifact claims change
-   between revisions, so a CLI from another revision can be rejected by the
-   controllers; `ts-orch oci-region attempt operator` verifies the cell's
-   qualified CLI and prints its path.
-2. **ARM64 release asset.** OCI hosts are ARM64. TerraBase CI publishes only
-   `terrabase-linux-amd64` today; it must also publish
-   `terrabase-linux-arm64` and its `.sha256` before an OCI deployment.
 3. **Member CA on every controller.** Any controller may be the authority
    leader that signs member certificates, so each needs the files named by
    `controller.terrabase_ca_cert_file` and `controller.terrabase_ca_key_file`.
@@ -63,36 +44,23 @@ controller through an OCI Bastion forward.
    a listed host is unavailable, a release cannot be placed; its delivery is
    retried and eventually held without writing any member.
 
-   On OCI such a host is a static database host. `preview member-launch`
-   (attempt phase `members`) launches `<cell>-db-<n>` in the workload
-   compartment at its plan address, from the cell image, with a static host
-   descriptor (`{"schema_version":2,"cell":"gru","region":"GRU","node":"gru-1-db-1"}`),
-   the public enrollment bundle and the tags `terrascale-owner`,
-   `terrascale-resource=terrabase-host` and `terrascale-host-node`. On boot
-   its `host-setup` enrolls with the controllers on port 8443. A controller
-   accepts it only when its signed profile lists the node at the host's
-   direct private address and OCI shows a `RUNNING` instance of the
-   regional fleet (compartment, availability and fault domains, image, boot
-   size, subnet and NSGs) that carries that exact descriptor and node tag
-   and no managed launch identity. The registration has role `terrabase`,
+On boot
+   its `host-setup` enrolls with the controllers on port 8443. The registration has role `terrabase`,
    the profile's `resources` as capacity, and no managed binding;
    `host-setup` writes `terrabase_root` `/srv/ts-managed/terrabase` into its
    `host.json`. A replacement instance at the same address registers the
    next generation with its own keys. It cannot take over a live member:
    enrollment refuses new keys while the node holds a host session, and the
    controller grants the new generation a session only after the previous
-   generation's session has expired. Launch rights in
-   the workload compartment are therefore part of the cell's trust
-   boundary. `operator host-enrollment-revoke --instance-id` disables a
+   generation's session has expired. `operator host-enrollment-revoke --instance-id` disables a
    static host's grant: it can neither renew nor enroll again, and its
    issued credentials expire within 48 hours.
 
    The regional fleet pin covers static hosts too: they must boot the
-   fleet's image with its boot size and VPUs. Changing `image_id` in the
-   signed `oci-region.json` means replacing the database hosts, and until
-   block volumes (TS-485) a replacement starts with an empty member. Hosts
+   fleet's image with its boot size and VPUs. Hosts
    that self-enroll through a managed placement seat register a
    `managed_oci` binding and cannot run C# members.
+
 6. **Network.** The workload NSG allows the peer port (9443) between member
    IPs and the client port (9465) from clients and the Bastion endpoint.
    The admin port (9464) is loopback-only and needs no rule. Hosts reach
@@ -126,9 +94,6 @@ Without it the binary exits before opening storage. Use `gru-1` in both the
 signed controller profile and the operator's `--profile` file; the host
 preserves this environment setting when adding the member's local paths.
 
-The `resources` values are an example; a static database host registers
-exactly this capacity. gru-1 uses the two-member
-[`deploy/oci-region/terrabase-gru-1-profile.json`](../deploy/oci-region/terrabase-gru-1-profile.json).
 A rendered controller config also names the member CA from its material:
 
 ```json
@@ -219,9 +184,7 @@ database: a write to one member is not on the others.
 
 ## gru-1 bring-up runbook
 
-**Prepared, not executed.** Every step marked **LIVE** creates or changes OCI
-or cell state and runs only after COS relays the user's approval for that
-step. Blast radius: the new `gru-1-*` resources of
+Blast radius: the new `gru-1-*` resources of
 [the rebuild proposal](evidence/gru-rebuild-plan-20261004.md); TerraBase
 members of `gru-1` start, or restart, on the new binary at once. There is no
 terrabase-rust data to migrate. Run each phase on its own; do not use
@@ -230,30 +193,14 @@ interruption reuses its retained records.
 
 Inputs, outside Git except where named:
 
-- `plan.json`: [`deploy/oci-region/plan.json`](../deploy/oci-region/plan.json)
-  with the phase-1 foundation OCIDs recorded after their confirmed creation
-  (compartments, Vault, key, VCN, subnet, both NSGs, security list, route
-  table, service and local peering gateways, controller and host dynamic
-  groups, controller and Object Storage key policies, NetBird secret and
-  policy). The host LiveS3Credential secret and `host_policy` stay `null`,
-  and the public API resource IDs stay `null` until TS-486 creates them.
 - `placement.json`: the signed placement sidecar with
   `"environment": "canary"` and a `member_role` other than `terrabase`, for
   example `"retired-tb-server"`.
 - The operator grant lists role `terrabase` and environment `canary`.
 - `attempt.json`: the existing attempt settings plus
 
-  ```json
-  "base_plan": "/ABSOLUTE/PATH/plan.json",
-  "placement_config": "/ABSOLUTE/PATH/placement.json",
-  "terrabase_profile": "/ABSOLUTE/PATH/deploy/oci-region/terrabase-gru-1-profile.json",
-  "terrabase": {"tag": "<TerraBase release tag>", "commit": "<its full 40-character commit>", "environment": "canary"}
-  ```
-
   The release must publish `terrabase-linux-arm64` and its `.sha256`
   (TerraBase TS-483).
-
-`A` below is `ts-orch oci-region attempt --config /ABSOLUTE/PATH/attempt.json`.
 
 1. **Dry run (read-only).** `$A plan` captures a fresh inventory of
    `base_plan` (or of the attempt's plan once `material` wrote it) and prints
@@ -297,11 +244,6 @@ Inputs, outside Git except where named:
    `sudo terrascale-orchestrator operator hosts --config /var/lib/terrascale-operator/operator.json`:
    both nodes registered with role `terrabase`, no `managed_*` binding and
    a current session.
-7. **Read-only host check.** Take the peer list from the log line of
-   `TS_OCI_LIVE_COMPARTMENT_ID=<gru-1-workload OCID> go test -count=1 -v -run '^TestLiveOCITerraBaseHostsReadOnly$' ./internal/terrabase`
-   and confirm it equals the profile's `TERRABASE_PEERS`. It fails when a
-   host is not A1, two hosts share a fault domain, an NSG keeps a member
-   from another member's peer port, or no A1 core is left in the region.
 8. **TerraBase release — LIVE (rollout).** `$A terrabase` downloads
    `terrabase-linux-arm64` and `.sha256` for the configured tag into
    `terrabase/<tag>/` of the attempt directory, verifies
@@ -320,17 +262,13 @@ Inputs, outside Git except where named:
 ## Qualification
 
 Unit and real-binary tests are listed in the
-[runtime contract](terrabase-runtime-contract.md#qualification).
-`make terrabase-release-process TERRABASE_BINARY=<path>` runs the real-binary
+[runtime contract](terrabase-runtime-contract.md#qualification). `make terrabase-release-process TERRABASE_BINARY=<path>` runs the real-binary
 deploy, upgrade and rollback test against an in-process controller and host
-agent. Nothing in this workflow has run on OCI.
+agent.
 
 ## Retired terrabase-rust managed path
 
-The previous workflow deployed the Rust `tb-server` as a two-member managed
-partition with `operator terrabase-deploy`, `terrabase-status`,
-`terrabase-update`, `terrabase-sync` and `terrabase-walkthrough`, using
-schema-5 placement, controller-prepared member material and retained OCI
-volumes. Those commands and their code remain, but they target the retired
+Those commands and their code remain, but they target the retired
 binary and must not be used for the C# binary. Git history keeps the full
 previous text of this document.
+

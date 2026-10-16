@@ -51,17 +51,6 @@ See [Go testing](docs/testing.md) for focused suites and external prerequisites.
 `make build` creates `dist/ts-orch` for the current host. The same executable runs
 the controller, host agent, and operator tooling:
 
-```bash
-dist/ts-orch --help
-dist/ts-orch bootstrap --help
-dist/ts-orch release --help
-dist/ts-orch image --help
-dist/ts-orch oci-region --help
-dist/ts-orch qualification --help
-dist/ts-orch run --config controller.json
-dist/ts-orch operator hosts --config operator.json
-```
-
 See [the unified CLI](docs/cli.md) for command migration and feature boundaries.
 `make release-linux` creates static Linux amd64 and arm64 executables and
 requires no Go runtime on the target machine. Forgejo CI repeats the checks
@@ -74,8 +63,7 @@ and what still needs a separate release process.
 
 ## Current limits
 
-The signed native-workload path has an app-level test with an in-memory runner.
-A four-VM Firecracker qualification passed for the pinned test image at source
+The signed native-workload path has an app-level test with an in-memory runner. A four-VM Firecracker qualification passed for the pinned test image at source
 revision `df09ee5692b4a5dc60230f019d1265efccb2f972`, covering guest execution,
 host restart recovery, and workload recovery through controller loss and
 quorum restoration. During controller loss, host session renewal/reporting
@@ -83,9 +71,7 @@ failed with `context deadline exceeded`; systemd restarted the host agent and
 the workload later returned to running. This demonstrates recovery, not
 uninterrupted availability or compatibility with arbitrary or production
 kernels. Exact image and binary hashes are in [the prior local qualification
-record](docs/local-development.md#prior-local-qualification-2026-09-24).
-Managed OCI placement can provision a host
-and retained volume. After the attachment is positively observed and the
+record](docs/local-development.md#prior-local-qualification-2026-09-24). After the attachment is positively observed and the
 runtime artifact and managed mount path are ready, it publishes signed
 TerraBase desired state; the host verifies an existing exclusive mount of the
 retained filesystem, launches the member, and reports local process and mount
@@ -94,16 +80,10 @@ member is serving, and the orchestrator does not discover, format, or mount the
 guest block device itself. Host image preparation, first-boot configuration,
 and signed enrollment remain operator steps.
 
-OCI provider behavior has only fake-provider and offline simulator coverage;
-no live OCI account has been mutated. A create accepted by
-OCI whose result is lost before its recovery result is durably journaled stays
-unowned. Matching tags alone do not authorize adoption; manual inspection and
+Matching tags alone do not authorize adoption; manual inspection and
 reconciliation are required. Artifact uploads are bounded by a 2 GiB default
-quota, but interrupted or concurrent uploads can leave chunks in the store.
-There is no repository-managed cleanup path, automatic garbage collection, or
+quota, but interrupted or concurrent uploads can leave chunks in the store. There is no repository-managed cleanup path, automatic garbage collection, or
 admitted-object eviction. Once the quota is full, new uploads fail with
-`ErrArtifactStoreFull`.
-Live OCI mutation, scale-in, region decommission, production authority
-failover, signed release publication, and guest-level rollback remain outside
-the evidence currently available here. Do not use this repository as a
+`ErrArtifactStoreFull`. Do not use this repository as a
 production-ready cloud control plane.
+

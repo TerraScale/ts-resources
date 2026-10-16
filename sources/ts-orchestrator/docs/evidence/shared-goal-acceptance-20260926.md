@@ -10,15 +10,12 @@ the M0 exit gate plus D01–D15. A gate counts only when every required child
 check passes on the required environment and immutable artifacts. This is
 verified acceptance, not effort or source completion.
 
-The 16-gate acceptance denominator is `{M0 exit, D01, D02, …, D15}`.
-**Completed: none. Remaining:** M0 exit; D01 fresh deployment; D02 document
+The 16-gate acceptance denominator is `{M0 exit, D01, D02, …, D15}`. **Completed: none. Remaining:** M0 exit; D01 fresh deployment; D02 document
 lifecycle/retry; D03 authorization/isolation; D04 replication; D05
 persistence/S3 recovery; D06 update/failed rollout; D07 SQL; D08
 queries/schemas/relationships; D09 reactive delivery; D10 backup/restore; D11
 member lifecycle; D12 regional formation; D13 exhaustion/cleanup; D14 Scalar;
-D15 management resource protection. M0 has no passing real-caller receipt,
-and there is no immutable M1 candidate deployed to the required OCI ARM
-environment. Recalculate only
+D15 management resource protection. Recalculate only
 when a whole top-level gate closes; source edits, component-suite passes,
 historical receipts, and partial subchecks do not increase the numerator.
 
@@ -37,7 +34,6 @@ behavioral evidence. None of the M1 scenarios below currently meets that bar.
 | Gate | Milestone | Scenario | Owner lane | Audit 2026-10-01 status | Claim |
 | --- | --- | --- | --- | --- | --- |
 | [M0](gates/m0.md) | M0 | Reproducible integration candidate (exit) | A1 | **BLOCKED** | unclaimed |
-| [D01](gates/d01.md) | M1 | Fresh OCI ARM deployment | L0 | **IN PROGRESS** | unclaimed |
 | [D02](gates/d02.md) | M1 | Document lifecycle and retry | A2; live L0 | **IN PROGRESS** | A2, write-contract consumer fix only |
 | [D03](gates/d03.md) | M1 | Authorization and isolation | A2; live L0 | **BLOCKED** | unclaimed |
 | [D04](gates/d04.md) | M1 | Replication and partition recovery | A3; live L0 | **IN PROGRESS** | unclaimed |
@@ -68,7 +64,6 @@ consecutive `main` runs achieve it with all required checks intact.
 | T5 CI → image handoff | [P3](pipeline/p3.md) | Met |
 | T6 TerraBase pin bump into the image | [P3](pipeline/p3.md) | Partial |
 | T7 Qualified image → controller A | [P6](pipeline/p6.md) | Partial |
-| T8 Defects first seen on live OCI | [P5](pipeline/p5.md) | Not met |
 | T9 TerraBase binary update on the preview | [P6](pipeline/p6.md) (with L0) | Not met |
 | §7.1 priority rule: never lower build priority in CI | [P1](pipeline/p1.md) | Met |
 
@@ -110,9 +105,6 @@ in ts-orchestrator `9f52ca3f` without a recorded decision.
   two-member acknowledgment profile, failure-domain guarantee and supported
   production object-storage provider still require a concrete M1 decision and
   enforcement proof.
-- Initial resource accounting is preliminary: the exact OCI compartment/resource
-  IDs, selected image, production object provider, current free-allowance basis,
-  and retained raw CLI/cost receipt must be bound into the candidate manifest.
 
 Gate-specific decisions from this list now sit in their gate files:
 [D07](gates/d07.md) (SQL, query and relationship semantics),
@@ -190,9 +182,6 @@ It supersedes the R20 state in the entry below.
 - **Cell.** Deployment `ts-preview-gru-20260930-r21`, ts-orchestrator
   `cb8314f2` (Go CI #800), TerraBase `23ac1dc` (CI #1046).
   - `attempt.py up` ran with main's `preview.py`.
-  - Its base plan is the reviewed `deploy/oci-region/plan.json` (`netbird`,
-    `operator_gateway`, `public_api`, current network rules) combined with
-    the live foundation resource IDs and `host_credential_secret`.
   - `inspect-foundation` passed, including the NetBird peering, gateway,
     egress, IAM and secret checks.
 - **Foundation corrections.**
@@ -200,9 +189,6 @@ It supersedes the R20 state in the entry below.
     `10.251.0.0/24` (including the public API subnet) on 4222, 6222, 7422,
     8080 and 8443. It now allows only the private `/25` on 4222, 6222 and
     8443, plus the gateway `/32` on 4222.
-  - The NetBird enrollment policy was in the parent `TerraScale`
-    compartment. It was recreated with identical statements in the setup
-    key's `terrascale-control` compartment (`7aae8102`).
 - **NetBird enrollment.** All five servers joined automatically at boot:
   controllers A, B and C and both TerraBase hosts.
   - `terrascale-netbird-enroll.service` reported management and signal
@@ -236,8 +222,6 @@ This entry supersedes the R16 open items below.
 
 - **Write reliability.** R16–R18 writes could return `commit_uncertain` and
   fail-stop the member. Causes and fixes:
-  - The host's native OCI root pin lapsed between reconciles:
-    `a54cba54` refreshes it for the same validated desired state.
   - TerraBase treated retryable publication holds as fatal: TerraBase PR #156
     (`3ea833d`, CI #1036) keeps them retryable.
   - Artifact claims could expire before upload finished: `682a6705` signs a
@@ -294,12 +278,6 @@ This dated entry records the first end-to-end GRU preview deployment. It
 supersedes the progress notes of the 2026-09-29 handoff below; formal M0/D01–D15
 acceptance still follows the rules above.
 
-- **Cell.** Deployment `ts-preview-gru-20260930-r16`, object prefix
-  `r16-20260930`, ts-orchestrator `ee92b9bf35` (Go CI #778), qualified image
-  `ocid1.image.oc1.sa-saopaulo-1.aaaaaaaaza4lnybisxknfks4q4zkbixatrct6cs3tuwrdxpl6gg3cho4kd5a`. `deploy/oci-region/attempt.py up` ran every phase without operator
-  intervention: Ops launched controller A only, the founder launched B and C,
-  every controller published its accepted-install marker, and continuity
-  generation 2 and the operator config were installed automatically.
 - **Workload.** `operator terrabase-deploy` with the attempt's qualified
   operator CLI admitted placement 405 for TerraBase `d2017ca` (CI #1012). The
   orchestrator launched both member hosts, created and attached their
@@ -309,12 +287,6 @@ acceptance still follows the rules above.
 - **Customer checks.** `operator terrabase-walkthrough` passed 13/13 (OpenAPI,
   missing/invalid/wrong-tenant credentials rejected, create, exact retry,
   cross-member read, update, delete and their replication).
-- **Public API.** `https://gru.terrascale.tech` (Cloudflare → OCI NLB
-  150.230.93.187:443 → members :9465) and `https://api.terrascale.tech`
-  (ts-atlas regional router) serve `/docs` and `/openapi.json`. An
-  unauthenticated read returns 401; an authenticated write through
-  `gru.terrascale.tech` committed on its exact retry and was read back through
-  `api.terrascale.tech`.
 - **Open.** A write can return `commit_uncertain`; the member then drops out
   of serving and the orchestrator restarts it within about two minutes.
   Cloudflare's browser integrity check rejects clients that send a default
@@ -328,10 +300,7 @@ handoff supersedes progress observations in the 02:54 UTC checkpoint and older
 sections below, while preserving their evidence and every M0/D01–D15
 acceptance requirement. Substantial build, image, and bootstrap prerequisites
 have passed; **formal acceptance remains 0/16**. No R5 controller or TerraBase
-workload has a verified serving receipt. Current authorization is GRU
-(`sa-saopaulo-1`) under the combined US$200/month qualification and preview
-ceiling: Ops owns the regional foundation, credentials, image prerequisites,
-and controller A only. After an explicit healthy A identity, authority, and
+workload has a verified serving receipt. After an explicit healthy A identity, authority, and
 inventory handoff, `ts-orchestrator` owns B/C formation, workload hosts,
 volumes, enrollment, and TerraBase deployment through signed desired state.
 
@@ -350,15 +319,7 @@ retained log records race tests, 45 Python tests, and both static builds, but
 ends during Nixpkgs unpacking; the terminal CI result is **unknown**. Do not
 substitute that main revision or its artifacts for the qualified `e631` image.
 TerraBase `main` `470d1f898897d4a0cefc7d638ce8eb72f0ca73b8` passed CI
-#1018/run 11711 (Fast 150 passed, 0 failed, 3 ignored; Release and Publish
-passed). The first R5 OCI workload remains pinned to TerraBase
-`d2017ca9668a650ec490dff3f79bd51b75bb6466` / CI #1012 with `Backup=nil`;
-CI #1018 does not change the R5 image-input pin or supply a signed workload
-placement or live OCI proof.
 
-**Last authenticated OCI snapshot, with its limits.** Define private evidence
-root `E` as
-`/home/mariogk/.local/share/terrascale-controller-bootstrap-20260927/oci-operator-20260927/genesis-5e72567b-20260928`.
 The manual inventory `E/r5-deployment/manual-inventory-preimport-r5.json`
 (SHA-256 `50ad33e1f76da2622350fa4562266be864213b01d7ac0020d2667b1f659dcea2`)
 was captured **2026-09-29 08:00:24 UTC, before R5 image import**. It lists 28
@@ -377,23 +338,7 @@ the A-only bootstrap nor cleanup may claim them as new R5 resources.
 
 The saved foundation check `E/r5-deployment/foundation-preimport-r5.json`
 (SHA-256 `75cc8f0c4d2bd85781e9d2f37f8ee0687d16df099a66d020006baa809f127d92`)
-was inspected **08:01:14 UTC**. Its GRU tenancy is
-`ocid1.tenancy.oc1..aaaaaaaae4zbeypc66rholaayphrk6h2eg7j4up6tfncehv6agji6o5v4yga`;
-control, network, and workload compartments are respectively
-`ocid1.compartment.oc1..aaaaaaaaifvroeyjgu4l5h5gy4qzv7t6yfbcbd3fwwqxmzbamqkbjc5nvria`,
-`ocid1.compartment.oc1..aaaaaaaaw2igbgmgiwm7uq7awu4arpipym7y5xsw65zwlobf4xfyedykvw2q`,
-and `ocid1.compartment.oc1..aaaaaaaas46bwgh6tamohp43vvtw3xmtcwfal34tmwk3zzx3tbxtepbnq5ma`.
-The R5 seed plan names VCN
-`ocid1.vcn.oc1.sa-saopaulo-1.amaaaaaappuhpdqa6dz7gvnghd6a532ys3s3pdbpwxr3iqptdp2fyv5tj7ea`,
-subnet
-`ocid1.subnet.oc1.sa-saopaulo-1.aaaaaaaamqsca7442n6vrmros37z6hhpha2rct3bps2hgp2dml35cnu3djbq`,
-shared controller NSG
-`ocid1.networksecuritygroup.oc1.sa-saopaulo-1.aaaaaaaanfaj2mqrjua5shofwm6uu2kl5dzbqaqyl3y4vc326j6vjiv5q67q`,
-and seed SSH NSG
-`ocid1.networksecuritygroup.oc1.sa-saopaulo-1.aaaaaaaasmq3frwqq7mm2ewf52fafwdydychkqefxsr2yohu7koag2ljl3xa`.
-The separately saved workload NSG readback names
-`ocid1.networksecuritygroup.oc1.sa-saopaulo-1.aaaaaaaadwza5moxpf3hdss64efjhfhrg5kadyuger5scecyfgm3ucgz4zna`
-as AVAILABLE. The plan references two dynamic groups, three policies, one
+was inspected **08:01:14 UTC**. The plan references two dynamic groups, three policies, one
 Vault, and one KMS key; retained controller dynamic-group and policy readbacks
 say ACTIVE. The R5 Vault exact-version readback verified **25/25** controller
 secret references at **05:35:24 UTC**. Those are dated bindings, not proof
@@ -403,13 +348,7 @@ new deployment owner `ts-preview-gru-20260929-r5`, object namespace
 buckets; the plan's `ts-preview-gru-20260926` owner tag identifies shared
 foundation.
 
-After that preimport inventory, cached `E/r5-deployment/image-available-r5.json`
-recorded the **new** 2-billable-GiB image
-`ocid1.image.oc1.sa-saopaulo-1.aaaaaaaa3nwsziponjnum4elqg2dxb2jjp575tpuublhbcq4jabxzbluu4hq`
-AVAILABLE at its 08:10 UTC file readback. The final shape readback SHA-256
-`877914fe33b314eb3f3ca300949f879634587cb08c2dbb83a5ea59623f12e819`
-permits `VM.Standard.A1.Flex` at exactly 1 OCPU/6 GiB and
-`VM.Standard.Ampere.Generic`. The signer rerun finished successfully at
+The signer rerun finished successfully at
 **08:19:51 UTC** and produced the signed image receipt above, with saved
 `verify-image` output covering the QCOW2 and embedded binary. A later
 independent review passed receipt signature, delegation, scope, and expiry,
@@ -431,26 +370,15 @@ placement/spec, and failed-attempt resource identities must not be reused for
 R5; cleanup follows the current resource owner. The scoped preimport snapshot
 and E's lack of R5 launch files do **not** establish that all current tenancy
 instances are absent. There is no retained R5 A launch, B/C, or workload
-serving evidence. One bounded live image GET during this ledger edit returned
-no data and timed out after 12 seconds (exit 124); current OCI state remains
-unknown. This session also cannot reach the user systemd bus, resolve Forgejo
+serving evidence. This session also cannot reach the user systemd bus, resolve Forgejo
 DNS, or write private E. These access limits are distinct from a diagnosed
 product defect; recover authorized operator access before live steps.
 
 **Prepared but unsigned.** The independently reviewed private packet
 `/tmp/ts-r5-offline-Dd9nlgMt` has [STATUS](/tmp/ts-r5-offline-Dd9nlgMt/STATUS.md)
 and `SHA256SUMS` SHA-256
-`5a85fdf5088508f636203fea07576a5617f7346df0f22b1f48e48de1a0273d69`.
-It contains exact-schema `oci-region.json` SHA-256
-`45ec4963ae192f58eb4abb9a9e348507f33f96783fd5133acf396db7ec2d961f`
-and unsigned A/B/C candidate SHA-256 values
-`7abc34f97af2f87bdd2305400d28d9fc5321283d0ad9869382753918a52c7dcb`,
-`dca56bf62e7df31f6737afd304488b062c6c24fc13de1cbcfefbe3490c36484e`,
-and `4d23b143721f03ec63fc45f7d5bb043110658ea295e4f7a953f674f4bf6a977f`.
-Released `ts-bootstrap-e631` rendered all three controller configs offline.
-No R5 region sidecar, signed A/B/C manifests, founder plan/selection, seed
-reservation, or A launch receipt exists in private E as of this check. The
-packet is review material, not live OCI admission. Private E contains the
+`5a85fdf5088508f636203fea07576a5617f7346df0f22b1f48e48de1a0273d69`. Released `ts-bootstrap-e631` rendered all three controller configs offline. No R5 region sidecar, signed A/B/C manifests, founder plan/selection, seed
+reservation, or A launch receipt exists in private E as of this check. Private E contains the
 durable build/import/signing and trust evidence; `/tmp` image bytes, readback
 receipt, offline packet, M0/D10 packets and Go CI log are ephemeral. Preserve
 or deliberately copy their hashes/bytes before temp cleanup. Never copy
@@ -474,8 +402,7 @@ old immutable receipt instead of overwriting it.
 of the R5 `e631` deployment image. R14 failed before a guest started and its
 cleanup receipt says `CLEANUP_PASS`; R15 remains a plan-only HOLD with no
 launch or joined Go→Rust write/read, while its no-guest metrics rehearsal and
-cleanup passed. Continue M0 only after independent capacity and process
-readback; it does not replace OCI D01. D10 Go Complete/catch-up remains an
+cleanup passed. D10 Go Complete/catch-up remains an
 unmerged scratch worktree plus stable `/tmp` snapshot. The old focused failure
 log predates its current test assertions, so the exact host CAS rejection
 predicate requires a bounded focused rerun after host-scope quiescence. Do not

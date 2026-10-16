@@ -314,8 +314,6 @@ Normative architecture remains [`ORCHESTRATOR.md`](../../ORCHESTRATOR.md). Owner
 
 #### `phase0-arm64-runtime-readiness` — Phase 0 work package: ARM64 host and runtime readiness
 
-**Outcome:** The readiness record compares Oracle Linux 9 and Ubuntu 24.04 LTS standard OCI aarch64 platform-image families without selecting either. Ubuntu 26.04 LTS is a watch item because Canonical documents ARM64 LTS support but the current cited OCI platform-image catalog does not list it. ext4 and XFS remain equally unqualified candidates. systemd remains coupled to the eventual host image; upstream and distribution containerd/runc tracks and upstream BuildKit 0.30 remain candidates with exact builds u
-
 - Handoff recorded: yes
 
 #### `phase0-ci-descriptor-inventory` — Phase 0 work package: runtime/build descriptor and CI policy inventory
@@ -338,8 +336,6 @@ Normative architecture remains [`ORCHESTRATOR.md`](../../ORCHESTRATOR.md). Owner
 
 - Handoff recorded: yes
 
-#### `phase0-oci-readonly-inventory` — Phase 0 work package: read-only OCI residual inventory
-
 - Handoff recorded: package only
 
 #### `phase0-owner-decision-packet` — Phase 0 work package: owner decision and SLO freeze packet
@@ -350,9 +346,7 @@ Normative architecture remains [`ORCHESTRATOR.md`](../../ORCHESTRATOR.md). Owner
 
 - Handoff recorded: yes
 
-#### `phase0-provider-qualification-schema` — Phase 0 work package: provider/TCO and OCI region qualification schema
-
-**Outcome:** Created a fail-closed custom field-contract for the normalized OCI/AWS/GCP/Azure TCO and storage benchmark plus the OCI `>=20` eligible-region matrix. It is deliberately not labeled as JSON Schema. The contract enumerates all cost and region fields named by `ORCHESTRATOR.md`. The blank dataset keeps every empirical value unknown, all provider results incomplete/unqualified, the OCI eligible count at zero, the threshold claim false, and provider winner/selection `null`. The 26-entry source catalo
+It is deliberately not labeled as JSON Schema. The contract enumerates all cost and region fields named by `ORCHESTRATOR.md`. The 26-entry source catalo
 
 - Handoff recorded: yes
 
@@ -434,7 +428,6 @@ Normative architecture remains [`ORCHESTRATOR.md`](../../ORCHESTRATOR.md). Owner
 
 | Package | Title | Handoff | Summary |
 |---|---|---|---|
-| `phase1-provider-create-observation-audit4` | Phase 1 provider create-observation audit 4 | yes | The same exact absent `ProviderCreateObservation` authorized independent create operations in different cells and compartments. Create evide… |
 | `phase1-provider-ownership-completeness` | Phase 1 provider ownership completeness shard | yes | The audit proved a durable-authorization forgery path in the previous pure model: `ProviderCallEvidence` carried only a status and optional … |
 
 ## Reconciliation and resource contracts
@@ -477,7 +470,7 @@ Normative architecture remains [`ORCHESTRATOR.md`](../../ORCHESTRATOR.md). Owner
 
 **Scope:** Implement pure admitted workload lifecycle decisions for native systemd/container runtimes plus orchestrator A/B self-update from `ORCHESTRATOR.md:359-390,843-879` and Phase 2/3 lifecycle requirements. It emits typed executor/bootstrap intents only.
 
-**Outcome:** The control plane now has a pure, closed runtime decision boundary for reviewed native-systemd and digest-pinned OCI workloads. Inputs bind workload, allocation, node, operation, epoch, generation, architecture, host image, runtime version, artifact/signature/signing profile, configuration, secret versions, volumes, ports, admission policy, health policy, and complete node-inventory evidence. OCI activation binds the selected platform image digest independently from its manifest-list digest. Lif
+**Outcome:** The control plane now has a pure, closed runtime decision boundary for reviewed native-systemd and digest-pinned OCI workloads. Inputs bind workload, allocation, node, operation, epoch, generation, architecture, host image, runtime version, artifact/signature/signing profile, configuration, secret versions, volumes, ports, admission policy, health policy, and complete node-inventory evidence. Lif
 
 - Handoff recorded: yes
 
@@ -586,7 +579,6 @@ Normative architecture remains [`ORCHESTRATOR.md`](../../ORCHESTRATOR.md). Owner
 |---|---|---|---|
 | `phase1-storage-create-output-audit4` | Phase 1 storage create output audit 4 | yes | Two fully valid provider-volume creation requests differing only in encryption-key reference produced equal accepted `Create` decisions. Equ… |
 | `phase1-storage-planner-property-shard` | Phase 1 storage planner property and replay shard | no | Exercise the existing pure storage create, format, attachment, expansion, deletion, and crash-recovery planners with deterministic generated… |
-| `phase1-storage-policy-audit2` | Phase 1 storage expansion policy audit 2 handoff | yes | This is Phase 1 pure-policy evidence only. It does not qualify provider, block-device, ext4/XFS, TerraBase, systemd, OCI, rootless container… |
 | `phase1-storage-policy-audit3` | Phase 1 storage destructive-output audit 3 handoff | yes | This closes only the pure-policy binding of the accepted retention and verified-backup subject. It does not qualify a deletion adapter, prov… |
 
 ## TerraBase topology and recovery

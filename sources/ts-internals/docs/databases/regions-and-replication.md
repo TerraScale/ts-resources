@@ -70,7 +70,7 @@ or durability.
 
 ## Backup and PITR
 
-Litestream continuously ships each database file to OCI Object Storage. Backup
+Litestream continuously ships each database file to object storage. Backup
 and PITR are disaster-recovery mechanisms, not replication or failover paths.
 Restore always creates a new database.
 

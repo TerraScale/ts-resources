@@ -140,28 +140,6 @@
       ]
     },
     {
-      "id": 3,
-      "question": "Vault authority",
-      "optionA": "Built-in policy/PKI/lease/rotation service with ciphertext/root protection in OCI Vault/KMS initially",
-      "optionB": "Store envelope-encrypted authoritative ciphertext in a dedicated, isolated vault JetStream account/stream from v1; never ordinary subjects or plaintext",
-      "recommended": "A",
-      "answer": "A",
-      "sourceLine": 113,
-      "semanticSha256": "7d5437aa6d8b30b3a0c9c4fbc6c27ae8ef2b963da05f620cc9b2852c4eeec917",
-      "impactedAdrs": [
-        12,
-        21
-      ],
-      "impactedGates": [
-        "contract-freeze",
-        "phase-0-exit",
-        "L0",
-        "L0C",
-        "L3S",
-        "L4"
-      ]
-    },
-    {
       "id": 4,
       "question": "Runtime defaults",
       "optionA": "Superseded by ADR 0031 (superseding ADR 0030): trusted OCI containers for TerraBase and TerraScale APIs, unprivileged OCI containers for customer compute, and systemd only for admitted host-native roles",
@@ -201,27 +179,6 @@
         "phase-0-exit",
         "L0",
         "L3S",
-        "L4",
-        "L5"
-      ]
-    },
-    {
-      "id": 6,
-      "question": "Provider implementation timing",
-      "optionA": "Finish OCI plus a provider-neutral contract first; OCI's catalog must expose at least 20 usable regions, while GRU/SFO/FRA are the first activated/qualified cells; add another adapter when needed",
-      "optionB": "Require a second complete cloud adapter before the first production deployment",
-      "recommended": "A",
-      "answer": "A",
-      "sourceLine": 116,
-      "semanticSha256": "21ea101380c4d0231b4c312a6d676127b5aeb06f6708c02b0204e9fedbd7d69c",
-      "impactedAdrs": [
-        16,
-        19
-      ],
-      "impactedGates": [
-        "contract-freeze",
-        "phase-0-exit",
-        "L0",
         "L4",
         "L5"
       ]

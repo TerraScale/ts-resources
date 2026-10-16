@@ -2,8 +2,7 @@
 
 Status: foundation plus the first operations. Every piece below is off by
 default; a controller without the new configuration blocks behaves exactly as
-before. The only OCI effect is the opt-in region subscription
-(`controller.region_planner.subscribe_regions`).
+before.
 
 ## Topology
 
@@ -208,10 +207,7 @@ envelopes from configured approvers, bound to the exact proposal digest and
 proposal generation. Spending steps need a cost admission younger than 15
 minutes; admission also enforces the region maximum and the global monthly
 ceiling. Records live in the `TS_REGION_LIFECYCLE` KV bucket and are advanced
-with compare-and-set under the global lease. The step intent, with a
-deterministic create key used as the OCI retry token and ownership tag, is
-stored before each effect; after a crash the driver observes before retrying.
-Every effect is fenced: the intent is stamped with the leader's epoch by a
+with compare-and-set under the global lease. Every effect is fenced: the intent is stamped with the leader's epoch by a
 compare-and-set before `Execute`, and the lease is guarded again immediately
 before it; a recovered intent is re-claimed through `Machine.ClaimStep`,
 which re-checks approval expiry and admission freshness. A region that fails
@@ -222,8 +218,7 @@ teardown step. Approvals can be renewed in flight (`RenewApproval`,
 the budget, budget sums saturate instead of wrapping, and a held unapproved
 proposal takes no slot.
 
-`internal/regionplanner` turns unplaceable placement intents, classified OCI
-capacity and limit errors, and latency rollups into proposals. It only
+It only
 proposes; a human or policy approval is always required. Proposal IDs carry
 the target proposal generation (`<cell>-g<generation>-<hash>`), so no two
 attempts on one cell ever share a proposal ID. With
@@ -265,9 +260,7 @@ have no source yet: TerraBase member status carries no client latency.
    its pending effect (an absent effect stays held for an operator).
 
 `admit` and `drive` need `approvers` (actor to base64 Ed25519 key); nothing
-is admitted or driven without a verifiable signed approval. Waits (no
-approval, stale admission, no effector, an OCI effect in progress) and
-refusals are journaled once per region and reason.
+is admitted or driven without a verifiable signed approval.
 
 The only effector so far is `subscribe_regions` (needs `drive`): the home's
 instance principal subscribes the tenancy to the proposal's catalog region
@@ -286,10 +279,6 @@ Every other step waits, journaled.
   seed, link, public API, handoff, activation and teardown are not started.
 - A signed path for operators to submit approvals (and renewals) into
   lifecycle records; today approvals can only be stored by code.
-- Appending interregion material's `ledgerDigest` to the OCI bootstrap
-  ledger as its own record kind, and rendering controller configuration
-  (cell/system JWT paths, listener, subtrees, topology, remotes) from the
-  material.
 - A latency signal source (TerraBase client latency rollups).
 - Granting controllers publish rights on peer `query` subjects, signed region
   health heartbeats (`internal/regionhealth`), and directory-gated placement

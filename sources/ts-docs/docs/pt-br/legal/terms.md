@@ -17,8 +17,7 @@ govern your use of TerraScale.
 ::: danger
 DRAFT — not legal advice, not published. Blocked on owner action O-5 (legal entity name + jurisdiction).
 
-[PLACEHOLDER — O-4 written confirmations for OCI data processing and
-residency, Cloudflare CDN/cache terms, and Stripe Tax account/configuration
+[PLACEHOLDER — O-4 written confirmations for Cloudflare CDN/cache terms, and Stripe Tax account/configuration
 are not on file. Do not publish until confirmed and reviewed by the owner.]
 :::
 

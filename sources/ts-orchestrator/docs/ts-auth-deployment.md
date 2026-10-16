@@ -1,28 +1,18 @@
 # ts-auth deployment on gru-1
 
-Status: **implemented in source and tested locally with fake OCI Vault,
-the real TerraBase release and fake replicas; not run on OCI.** ts-auth (repository
-`TerraScale/ts-auth`, C# .NET 10) runs as a native single-file workload of
-role `ts-auth` on the gru-1 controllers and is served publicly at
-`https://auth.terrascale.tech` through the OCI L7 load balancer `gru-1-api`
-(TS-486). Package
+Package
 [`internal/tsauth`](../internal/tsauth) holds the contract, the Vault secrets,
 the TerraBase tenant bootstrap and the `ts-orch ts-auth` command; the host
 side is [`internal/host/tsauth.go`](../internal/host/tsauth.go).
 
 | Command | Where | Effect |
 | --- | --- | --- |
-| `ts-orch ts-auth secrets --plan FILE` | operator host, `~/.oci/config` | Generates `TS_AUTH_MASTER_KEY`, `TS_AUTH_AUDIT_SIGNING_KEY` and `TS_AUTH_OPERATOR_KEY` once into the cell's Vault. |
 | `ts-orch ouroboros bootstrap --plan FILE --client-url URL --admin-url URL --member NODE --member-ca FILE --dashboard-credential-file FILE [--management-listener client\|admin] [--owner-email EMAIL --ts-auth-instance SLUG --ts-auth-key-file FILE [--ts-auth-url URL]]` | operator host, SSH forward to `gru-1-db-1` | Finds or creates TerraScale's TerraBase organization and the ts-auth and ts-dashboard projects and databases; stores each project ID and, once, a new API key in the Vault. With `--owner-email`, makes that ts-auth user the organization's owner. |
-| `ts-orch ouroboros fly-secrets --plan FILE` | operator host, `~/.oci/config` | Hands the dashboard's TerraBase settings to Fly app `ts-dashboard`: stages them with `FLY_API_TOKEN`, otherwise prints the non-secret ones. |
-| `ts-orch ts-auth env-file --host-config FILE --vault-id OCID` | each controller, as root | Reads the five secrets with the instance principal and writes `<ts_auth_root>/ts-auth.env`, mode 0600, owned by the workload user. |
-| `ts-orch ts-auth metadata-rules` | operator host, no OCI access | Renders the nftables metadata block installed on each controller in step 3. |
 | `ts-orch bootstrap render-controller-config ... --ts-auth-profile F --ts-auth-profile-sha256 H --ts-auth-service F --ts-auth-service-sha256 H --out F` | operator host, before initial controller signing | Includes the reviewed ts-auth profile and service in canonical signed controller configuration. |
 | `ts-orch operator ts-auth-release --config FILE --binary F --sha256 F --source-checkout DIR --commit SHA --environment ENV --profile F [--wait 10m]` | operator host | Verifies, admits and rolls out one release; gates on readiness and rolls back a release that fails. |
 
 On cell hosts the installed binary is `terrascale-orchestrator`; it exposes
-the same commands. No command prints a secret: they print secret names,
-OCIDs, tenant IDs and digests.
+the same commands.
 
 ## Placement: two stateless replicas on the controllers
 
@@ -59,12 +49,6 @@ and the SHA-256 of `git archive --format=tar <commit>`.
 
 Two committed files go into the signed controller config:
 
-- [`deploy/oci-region/ts-auth-gru-1-profile.json`](../deploy/oci-region/ts-auth-gru-1-profile.json)
-  is `controller.workloads["ts-auth"]` and the `--profile` of the release.
-- [`deploy/oci-region/ts-auth-gru-1-service.json`](../deploy/oci-region/ts-auth-gru-1-service.json)
-  is one entry of `controller.autoscale.services` (`enabled: true`). Its
-  `environment` (`canary`) must equal the controller hosts' registration.
-
 The profile is readable wherever desired state is, so it holds no secret. The
 controller refuses to start, and the release command refuses to run, when it
 breaks these rules:
@@ -91,17 +75,6 @@ breaks these rules:
 The project ID is not secret; it travels with the API key because the key
 reaches only that project's database.
 
-- Every secret lives in the gru-1 Vault (phase 1) in the control
-  compartment, read from the plan's `resource_ids` (`control_compartment`,
-  `vault`, `key`).
-- A secret is created only when the Vault holds no active secret of its name,
-  with an OCI retry token. A rerun never regenerates, replaces or rotates
-  one. A secret of that name in another state (for example pending deletion)
-  stops the command for inspection. Rotating `TS_AUTH_MASTER_KEY` would make
-  stored secrets unreadable and is not supported.
-- The controllers read them with their instance principal through the
-  existing controller policy grant `read secret-bundles` in the control
-  compartment, which covers `GetSecretBundleByName`.
 - `env-file` rejects a ts-auth root equal to, inside, or containing the
   install, state or TerraBase root before reading Vault secrets or changing
   directory permissions. It writes `KEY=VALUE` lines atomically (temporary file, fsync,
@@ -134,13 +107,9 @@ in its own cgroup under the host agent.
 
 COS chose to block ts-auth's metadata access on 2026-10-05. The
 `metadata-rules` command renders a dedicated nftables `inet` table with an
-output hook at priority 0, after destination NAT. COS approved metadata access
-for root and `terrascale-orchestrator`, the controller service account, so its
-OCI autoscaling client retains its instance principal. All other users,
+output hook at priority 0, after destination NAT. All other users,
 including ts-auth and its descendants, are blocked. Native workloads cannot
-assume those host UIDs or modify the firewall. `systemd-timesync` also retains
-UDP/123 to the same address, OCI's NTP server; that exception grants no HTTP
-metadata access and gives ts-auth no exception.
+assume those host UIDs or modify the firewall.
 
 The rule applies to existing connections as well as new ones. Reloading
 atomically replaces only `terrascale_metadata`, leaving NetBird and other
@@ -164,9 +133,7 @@ before the cgroup is killed.
 
 ### Load balancer
 
-`auth.terrascale.tech` is a proxied Cloudflare record for the OCI L7 load
-balancer `gru-1-api` in the public API subnet (`10.251.0.128/26`), which
-TS-486 creates. TLS ends at the load balancer with a Cloudflare Origin CA
+TLS ends at the load balancer with a Cloudflare Origin CA
 certificate; a hostname rule sends `auth.terrascale.tech` to the ts-auth
 backend set over plain HTTP. These are the values it consumes,
 `tsauth.BackendSet(plan)`:
@@ -307,15 +274,6 @@ one env file each, one ts-auth replica on two of them).
 
 ### Prerequisites
 
-1. **Phase 1.** `deploy/oci-region/plan.json` `resource_ids` names the live
-   `control_compartment`, `vault` and `key` (TS-470).
-2. **TerraBase.** `gru-1-db-1` serves the C# TerraBase release
-   ([TerraBase deployment](terrabase-deployment.md)) with
-   `TERRABASE_CLIENT_PORT=9465` and a dashboard credential:
-   `TERRABASE_DASHBOARD_CREDENTIAL_FILE` names a file of at least 32
-   characters that the workload user can read. **Open:** the committed
-   [`terrabase-gru-1-profile.json`](../deploy/oci-region/terrabase-gru-1-profile.json)
-   does not set it yet; TS-470 adds it with the TerraBase deployment.
 3. **Controller hosts (manual TS-470 prerequisite).** Prepare host-agent
    registration, NATS/TLS credentials and `/etc/terrascale-orchestrator/host.json`
    on `gru-1-ctl-1`, `-2` and `-3`, with role `ts-auth`, environment `canary`,
@@ -337,11 +295,6 @@ one env file each, one ts-auth replica on two of them).
 6. **Operator grant.** The operator's signer grant lists role `ts-auth`,
    environment `canary` and repository
    `https://git.terrascale.tech/TerraScale/ts-auth`.
-7. **Operator OCI access.** The operator's `~/.oci/config` DEFAULT profile
-   may list, create and read secrets (`manage secret-family`) in the control
-   compartment, use the Vault key (`use keys`) and, for step 0, manage the
-   controller NSG's rules; `ts-orch` sends no other OCI request in steps 1
-   and 2.
 8. **Instance metadata blocked.** Step 3 installs the nftables rule and its
    boot dependency on every controller before the host is restarted. Each
    host must provide `/usr/sbin/nft` (Ubuntu package `nftables`) and the
@@ -364,22 +317,6 @@ below to their reviewed paths and SHA-256 pins, choose a new
 `CONTROLLER_CONFIG` output path, and use the reviewed TerraBase profile with
 the dashboard credential setting described above:
 
-```sh
-REPO=$PWD
-ts-orch bootstrap render-controller-config \
-  --candidate "$CANDIDATE" --candidate-sha256 "$CANDIDATE_SHA256" \
-  --material-record "$MATERIAL_RECORD" --material-record-sha256 "$MATERIAL_RECORD_SHA256" \
-  --operator-grant "$OPERATOR_GRANT" --operator-grant-sha256 "$OPERATOR_GRANT_SHA256" \
-  --oci-region-intent "$REGION_INTENT" --oci-region-intent-sha256 "$REGION_INTENT_SHA256" \
-  --oci-region-config "$REGION_CONFIG" --oci-region-config-sha256 "$REGION_CONFIG_SHA256" \
-  --placement-config "$PLACEMENT_CONFIG" --placement-config-sha256 "$PLACEMENT_CONFIG_SHA256" \
-  --terrabase-profile "$TERRABASE_PROFILE" --terrabase-profile-sha256 "$TERRABASE_PROFILE_SHA256" \
-  --ts-auth-profile "$REPO/deploy/oci-region/ts-auth-gru-1-profile.json" --ts-auth-profile-sha256 "$TS_AUTH_PROFILE_SHA256" \
-  --ts-auth-service "$REPO/deploy/oci-region/ts-auth-gru-1-service.json" --ts-auth-service-sha256 "$TS_AUTH_SERVICE_SHA256" \
-  --out "$CONTROLLER_CONFIG"
-sha256sum "$CONTROLLER_CONFIG"
-```
-
 The renderer emits canonical `app.Config` bytes and validates both workload
 profiles and the service. Review the printed digest, then pass the output as
 `--controller-config` and that digest as `--controller-config-sha256` to the
@@ -389,28 +326,8 @@ Keep these exact bytes intact; a `jq` rewrite would fail canonical validation.
 
 ### Steps after bootstrap
 
-```sh
-# On the operator host, as the operator user whose ~/.oci/config DEFAULT
-# profile may manage secrets in the gru-1 Vault, in a ts-orchestrator checkout
-# of the deployed revision.
-REPO=$PWD
-PLAN=$REPO/deploy/oci-region/plan.json
-VAULT=$(jq -er .resource_ids.vault "$PLAN")
-NSG=$(jq -er .resource_ids.network_security_group "$PLAN")
-CRED=<path that TERRABASE_DASHBOARD_CREDENTIAL_FILE names on gru-1-db-1>
-WORK=$(mktemp -d)
-```
-
 0. Open the controller NSG to the load balancer subnet unless phase 1
    already created the rule from `plan.json`:
-
-   ```sh
-   oci network nsg rules list --nsg-id "$NSG" --all |
-     jq -e '.data[] | select(.source == "10.251.0.128/26" and ."tcp-options"."destination-port-range".min == 8080)' ||
-   oci network nsg rules add --nsg-id "$NSG" --security-rules '[{"direction":"INGRESS","protocol":"6",
-     "source":"10.251.0.128/26","sourceType":"CIDR_BLOCK","isStateless":false,
-     "tcpOptions":{"destinationPortRange":{"min":8080,"max":8080}}}]'
-   ```
 
 1. Generate the three keys into the Vault. Expect three lines with
    `"created":true` (a rerun prints `"created":false`):
@@ -494,22 +411,6 @@ WORK=$(mktemp -d)
    must be prepared before releasing an artifact that can run there.
 
 5. Download, verify and release:
-
-   ```sh
-   TAG=<ts-auth release tag>; COMMIT=<its full commit>
-   cd "$WORK"
-   fj -H git.terrascale.tech release asset download -r TerraScale/ts-auth "$TAG" ts-auth-linux-arm64
-   fj -H git.terrascale.tech release asset download -r TerraScale/ts-auth "$TAG" ts-auth-linux-arm64.sha256
-   sha256sum -c ts-auth-linux-arm64.sha256
-   fj repo clone -H https://git.terrascale.tech TerraScale/ts-auth "$WORK/ts-auth"
-   F=(--nats-forward 10.251.0.11:4222=127.0.0.1:14222)   # Bastion only
-   sudo terrascale-orchestrator operator ts-auth-release \
-     --config /var/lib/terrascale-operator/operator.json "${F[@]}" \
-     --binary "$WORK/ts-auth-linux-arm64" --sha256 "$WORK/ts-auth-linux-arm64.sha256" \
-     --source-checkout "$WORK/ts-auth" --commit "$COMMIT" \
-     --environment canary --profile "$REPO/deploy/oci-region/ts-auth-gru-1-profile.json" \
-     --wait 10m
-   ```
 
    Expect `{"step":"artifact",...}`, `{"step":"deploy",...}` and
    `{"step":"ready",...,"members":2}`.
@@ -596,22 +497,6 @@ TerraBase release binary.
   kept as admin, a no-op rerun, and a phase A rerun after the transfer.
   Passed locally against `terrabase-linux-amd64` SHA-256
   `8abcedaa6b8487f08ecafe4485862f1f9309154e58ac1a74eda2278b78500968`.
-- `internal/tsauth` (T0): `TestOuroborosTSAuthUserLookup` (paging;
-  unverified, banned, duplicate and missing users; HTTP errors without the
-  key) and `TestOuroborosFlySecrets` (no-token mode reads no API key; token
-  mode stages through a stub `flyctl` with the values on stdin and redacts the
-  key from a failure). Also profile rules, env file parse and render (no value
-  in any error), probe, release verification, the backend set from the real
-  `plan.json`, Vault create-once with a fake OCI Vault (existing, pending
-  deletion, duplicate and paged secrets, retry token), `ReadSecrets`, and
-  `WriteEnvFile` mode, owner and atomic replace.
-  `TestEnvFileRefusesOverlappingHostRootsBeforeMutation` covers equality,
-  ancestor and descendant overlaps for the install, state and TerraBase
-  roots, both through the command and a direct call; permissions and contents
-  stay unchanged and no OCI request is made.
-  `TestRenderedMetadataRulesReserveMetadataForRootAndController` checks the rendered
-  output rule, its root/controller allowlist, its timesync-only UDP exception,
-  and the unit's required boot ordering.
 - `internal/host` (T0): `TestTSAuthReplicaGetsEnvFileSecrets`,
   `TestTSAuthEnvFileMustBeWorkloadOwnedAndPrivate`,
   `TestTSAuthRootBelowManagedRuntimeRoot` (the image layout),
@@ -625,5 +510,3 @@ TerraBase release binary.
   agents in two failure domains, with a stand-in for the unpublished ts-auth
   binary: deploy, upgrade, and a crashing release rolled back.
 
-Not tested: OCI Vault, instance principal reads, the real ts-auth binary
-(TS-488 has not published it), and the load balancer.

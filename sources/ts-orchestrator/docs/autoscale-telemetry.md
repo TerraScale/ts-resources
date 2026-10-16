@@ -121,7 +121,4 @@ to that degree.
 
 ## Not in this slice
 
-Host pools still run in recommend-only mode. Launching and reclaiming
-generic OCI hosts needs a generic-host launch path in `oci.Fleet` (today
-`EnsureHost` is bound to a TerraBase seat's boot pins and launch scope) and a
-generic-host enrollment trust path, which is its own trust decision.
+Host pools still run in recommend-only mode.

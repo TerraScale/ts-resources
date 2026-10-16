@@ -40,8 +40,7 @@ The repository produces the operational Orchestrator/runner binary, a separate
 operator CLI, and the dependency-free policy/evidence tool. The `check` command
 exercises the production controller startup path against a real
 JetStream-enabled NATS server, then exits cleanly. The `lab` command runs the
-pinned, rootless-container development adapter used by DevHost. Real systemd
-and OCI A1 qualification remain separate production-boundary gates.
+pinned, rootless-container development adapter used by DevHost.
 
 ## Run
 
@@ -312,10 +311,8 @@ The shared explicit-ack `GLOBAL_CI` consumer fetches only on the current global
 leader. It reconstructs the normalized event, reapplies the closed trigger
 policy, and compare-and-sets the exact disposition, reason, trust zone,
 capabilities, artifact-publication flag, qualified-candidate requirement, and
-authority observation into `GLOBAL_RELEASES` before acknowledging the message.
-Ignored and held events are durable decisions too. Followers, authority loss,
-decision conflicts, corrupt events, and journal failure do not acknowledge.
-Without an OCI CI pool this stage remains classification-only. With the pool
+authority observation into `GLOBAL_RELEASES` before acknowledging the message. Ignored and held events are durable decisions too. Followers, authority loss,
+decision conflicts, corrupt events, and journal failure do not acknowledge. With the pool
 configured, the same leader-held delivery stays alive through pipeline
 completion and idle-runner deletion.
 
@@ -341,8 +338,7 @@ the Forgejo event. Restart recovery re-parses every descriptor and recomputes
 the impact, pipeline, and job identities; interrupted writes resume, while a
 second plan for the same event, corrupt content, or lost authority fails closed.
 
-Each persisted pipeline can also initialize one compact CAS record per job.
-Only dependency-ready work can prepare a dispatch, and preparation reuses the
+Each persisted pipeline can also initialize one compact CAS record per job. Only dependency-ready work can prepare a dispatch, and preparation reuses the
 closed runner selector plus the exact cgroup-v2, namespace, seccomp, network,
 credential, cache, resource, and output-isolation policy. Prepared, dispatched,
 running, success, and failure edges are strictly ordered and idempotent. A
@@ -364,16 +360,13 @@ durable acceptance; higher fenced takeover and contiguous retry attempts can
 replace it. A bounded runner pull adapter derives one durable exact-subject
 consumer per runner, permits one in-flight command, rejects wrong
 stream/consumer/sequence/redelivery metadata, renews the delivery while the
-fenced workload runs, and double-ACKs only after terminal durable execution.
-Command signatures now use a protocol-owned, versioned
+fenced workload runs, and double-ACKs only after terminal durable execution. Command signatures now use a protocol-owned, versioned
 canonical encoding that covers every identity, fence, validity, payload, and
 digest field without timestamp precision loss. The production identity adapter
 uses the supported .NET P-256/SHA-256 implementation: an intermediate private
 key is read only from a user-private systemd credential file, while runners load
 one to four public-only trust keys and select overlap-rotation keys by their
-SHA-256 SPKI fingerprint carried in the bounded signature envelope. OCI KMS
-can therefore remain at the offline/root issuance boundary rather than exposing
-a root key to the runtime. `TS_ORCH_COMMAND_SIGNING_KEY_FILE` and the
+SHA-256 SPKI fingerprint carried in the bounded signature envelope. `TS_ORCH_COMMAND_SIGNING_KEY_FILE` and the
 path-separator-delimited `TS_ORCH_COMMAND_TRUST_KEY_FILES` (or their typed JSON
 configuration fields) are structurally validated with the rest of startup and
 opened before any NATS connection. The process retains the loaded identity for
@@ -393,8 +386,7 @@ the credential is a scoped signing key. Typed JSON carries the same fields and
 startup opens and retains the signer before any NATS connection. Live credential
 delivery remains a separate unimplemented gate; no unsigned runtime fallback is
 installed. Exact cross-repository source resolution uses the bounded catalog
-described below.
-Only explicitly authorized transient feature-validation failures can retry:
+described below. Only explicitly authorized transient feature-validation failures can retry:
 attempts wait for the fixed 5-second then 30-second backoff, receive a new
 idempotency key and higher fence, and stop after attempt three. Workload/policy
 failures and trusted release builds remain terminal so candidate builds stay
@@ -518,8 +510,7 @@ The durable delivery records retain only exact immutable pipeline content,
 artifact-attestation proofs, and native runtime observations. Each pointer is
 content-addressed, read back before acknowledgement, and fenced by the current
 authority epoch. Corrupt or missing objects, altered subjects, interrupted
-writes, and authority loss fail closed; retries reuse the same identity.
-`GLOBAL_BUNDLES` stores their bounded canonical records under a content digest,
+writes, and authority loss fail closed; retries reuse the same identity. `GLOBAL_BUNDLES` stores their bounded canonical records under a content digest,
 while `GLOBAL_RELEASES` commits only a small immutable pointer after reading the
 object back. Recovery revalidates and re-hashes the pipeline, impact, exact
 source set, every first-attempt job result, every signed architecture-specific
@@ -543,10 +534,7 @@ partially committed qualified pointer. A leader-only bounded retention sweep
 streams those lifecycles hourly, retains qualified candidates, and CAS-prepares
 expired unqualified candidates with their exact pointer, tree index, and object
 identity before revision-fenced deletion. Authority loss and interruption stop
-safely between steps; exact retries finish a durable deletion tombstone. The
-OCI CI terminal path now invokes that coordinator
-after runner cleanup and reports Forgejo success only after the exact candidate
-is durable. Under the same fenced lease, the controller mints and readback-
+safely between steps; exact retries finish a durable deletion tombstone. Under the same fenced lease, the controller mints and readback-
 verifies a content-addressed P-256 artifact proof exactly once, then reads the
 independent native-runtime proof journal and verifies both exact signed subjects
 with the configured trust set. Without the signer and both verifiers, or without
@@ -557,9 +545,7 @@ admitted protected-`main` trigger, snapshots injected signed protected-main
 observations once, locates the immutable candidate by exact tree-set index, and
 records the resolved qualification under current authority. Missing triggers,
 non-qualification events, missing candidates, changed trees or webhook commits,
-and authority loss cannot create a qualification. With the OCI CI controller
-enabled, protected-`main` deliveries enter that coordinator instead of being
-acknowledged after classification. The catalog-backed source graph re-reads
+and authority loss cannot create a qualification. The catalog-backed source graph re-reads
 protected `main` for every affected repository and requires the triggering
 repository to remain at the webhook commit. A missing candidate, changed tree,
 or lost authority leaves the JetStream delivery pending, while exact
@@ -607,57 +593,13 @@ The runner receives that identity through
 `TS_ORCH_CI_RUNNER_NATS_TLS_{CA,CERT,KEY}_FILE` set. It never accepts the
 controller's global NKey as a runner credential.
 
-OCI CI capacity is compiled as standalone preemptible
-`VM.Standard.A1.Flex` instances with 4 OCPUs and 24 GiB, a private VNIC, closed
-NSG membership, encrypted paravirtualized transport, and disposable boot and
-launch data volumes. The real Compute adapter uses an OCI instance principal;
-launch idempotency is content-bound, while idle deletion requires exact
-Orchestrator ownership tags and an ETag fence. Nodes with active work, ambiguous
-identity, foreign ownership, or an incomplete fence fail closed. OCI `user_data`
-contains bootstrap code or an encrypted reference only—never a plaintext runner
-credential—and the admitted runner obtains its scoped NATS/mTLS identity after
-bootstrap. Preemption and idle termination both delete the boot volume.
+Nodes with active work, ambiguous
+identity, foreign ownership, or an incomplete fence fail closed. Preemption and idle termination both delete the boot volume.
 
-Production OCI CI is enabled by `TS_ORCH_CI_OCI_CONFIG`. The bounded JSON file
+The bounded JSON file
 declares placement plus one to 32 fixed runner slots. A slot is launched only
 while durable work needs its trust zone, and the controller reconciles its exact
-JetStream consumer before launch. It observes owned instances through OCI,
-dispatches only to a running exact runner/sequence/bootstrap generation, keeps
-the Forgejo delivery alive with progress acknowledgements, releases dependent
-jobs from durable runner results, and ETag-terminates every pool node after its
-30–900 second idle bound. Forgejo Actions is not in this path.
-
-```json
-{
-  "schemaVersion": 1,
-  "endpoint": "https://iaas.sa-saopaulo-1.oraclecloud.com/",
-  "compartmentId": "ocid1.compartment.oc1..example",
-  "availabilityDomain": "example:SA-SAOPAULO-1-AD-1",
-  "faultDomain": "FAULT-DOMAIN-1",
-  "subnetId": "ocid1.subnet.oc1.sa-saopaulo-1.example",
-  "networkSecurityGroupIds": [
-    "ocid1.networksecuritygroup.oc1.sa-saopaulo-1.example"
-  ],
-  "imageId": "ocid1.image.oc1.sa-saopaulo-1.example",
-  "generation": 1,
-  "idleSeconds": 60,
-  "pollSeconds": 5,
-  "runners": [
-    {
-      "runner": "ci-untrusted-1",
-      "zone": "untrusted-product",
-      "sequence": 1,
-      "bootstrapFile": "bootstrap/ci-untrusted-1.cloud-init"
-    },
-    {
-      "runner": "ci-trusted-1",
-      "zone": "trusted-build",
-      "sequence": 1,
-      "bootstrapFile": "bootstrap/ci-trusted-1.cloud-init"
-    }
-  ]
-}
-```
+JetStream consumer before launch. Forgejo Actions is not in this path.
 
 Cross-repository impact and qualification use the optional bounded catalog at
 `TS_ORCH_FORGEJO_CI_SOURCE_GRAPH_FILE`. It accepts schema version 1 and one to
@@ -674,30 +616,11 @@ is omitted, CI keeps the compatible root-only graph.
 }
 ```
 
-Bootstrap paths are relative to the pool file. Their bounded cloud-init/script
-content is the only value placed in OCI `user_data`; the loader rejects embedded
-NATS JWTs, NKey seeds, and private keys. Each image/bootstrap obtains its
-runner-scoped NATS credentials and distinct mTLS identity from OCI Vault using
-instance principal, then starts `terrascale-orchestrator runner` with the exact
-declared runner, zone, sequence, command trust key, private runtime roots, and
-the default 4 OCPU / 8 GiB / 50 GiB / 4096 PID isolation profile. Configure the
+Bootstrap paths are relative to the pool file. Configure the
 pool together with global NATS, Forgejo source access, and the controller command
 signer:
 
-```bash
-TS_ORCH_CI_OCI_CONFIG=/etc/terrascale/oci-ci-pool.json \
-TS_ORCH_FORGEJO_CI_SOURCE_GRAPH_FILE=/etc/terrascale/forgejo-ci-source-graph.json \
-TS_ORCH_COMMAND_SIGNING_KEY_FILE=/run/credentials/command-signing.pem \
-TS_ORCH_COMMAND_TRUST_KEY_FILES=/run/credentials/command-signing.pub.pem \
-TS_ORCH_FORGEJO_API_URL=https://git.terrascale.tech/ \
-TS_ORCH_FORGEJO_REPOSITORY=TerraScale/TerraScale.Orchestrator \
-TS_ORCH_FORGEJO_API_TOKEN_FILE=/run/credentials/forgejo-ci-token \
-terrascale-orchestrator run
-```
-
-The OCI CI controller token must read every repository in the configured source
-graph and have Forgejo `write:repository` access to the webhook repository
-because it posts terminal commit statuses there. A root-only polling controller
+A root-only polling controller
 can keep the narrower `read:repository` token described below.
 
 This repository now carries its native CI policy in `.terrascale/ci-v2.json` and
@@ -765,8 +688,7 @@ create actions; cells removed from an otherwise retained workload receive
 guarded retirement. Retirement-only cells remain in the required-cell barrier
 even when the proposed workload set is empty. Each payload has its own SHA-256,
 and an aggregate handoff digest binds the sorted cell/digest set. These payloads
-are signable material only: the compiler does not grant unsigned apply authority.
-The cell-envelope adapter reuses the shared command protocol and requires the
+are signable material only: the compiler does not grant unsigned apply authority. The cell-envelope adapter reuses the shared command protocol and requires the
 configured P-256 signer/verifier. Its signed material binds the
 aggregate handoff digest, exact cell, generation, global writer epoch, payload
 SHA-256, deterministic operation/idempotency identities, delivery attempt, and
@@ -778,27 +700,19 @@ bounded receipt binds the cell, global plan and handoff digests, generation,
 writer epoch, signed operation/idempotency identities, signature digest,
 acceptance time, and original stream sequence. Replays converge on the same
 receipt; stale writers/generations, same-generation equivocation, authority
-loss, corrupt payloads, and crash-before-pointer fail closed. Exact global and
-regional publishers, bounded pull consumers, and the fenced relay boundary are
-implemented; runtime credential composition and OCI KMS-backed
-root/intermediate issuance remain.
-One compiled handoff targets at most 64 distinct cells, regardless of how cells
+loss, corrupt payloads, and crash-before-pointer fail closed. One compiled handoff targets at most 64 distinct cells, regardless of how cells
 are distributed across workloads, and the regional bundle store is capped at
-256 MiB so one maximally bounded handoff does not consume its entire capacity.
-Each region can validate from a compact descriptor containing the generation,
+256 MiB so one maximally bounded handoff does not consume its entire capacity. Each region can validate from a compact descriptor containing the generation,
 global-plan digest, aggregate handoff digest, and sorted cell/payload-digest
 set; it recomputes the aggregate and checks its own closed payload identity, so
-transport does not need to copy every other region's full CellSpec.
-Each CellSpec also binds the accepted base generation/global-plan digest and
+transport does not need to copy every other region's full CellSpec. Each CellSpec also binds the accepted base generation/global-plan digest and
 the exact before/after digest of every changed workload. Regional drift,
 retirement, and rollback decisions therefore never infer prior ownership from
-the proposed plan or from mutable runtime labels.
-The wire contract keeps the CellSpec as raw bytes and carries exactly 16
+the proposed plan or from mutable runtime labels. The wire contract keeps the CellSpec as raw bytes and carries exactly 16
 canonical metadata headers rather than Base64-expanding the payload. CellSpecs
 are capped at 896 KiB, headers at 64 KiB, and the complete command plus protocol
 allowance at 1 MiB. Duplicate, unknown, non-canonical, oversized, reordered,
-digest-mismatched, and payload-substituted inputs fail before durable delivery.
-Before publication, the global writer stores each exact signed wire command in
+digest-mismatched, and payload-substituted inputs fail before durable delivery. Before publication, the global writer stores each exact signed wire command in
 `GLOBAL_BUNDLES` under its content digest and read-verifies it, then advances one
 compact branch pointer in `GLOBAL_RELEASES` by CAS. The pointer binds the source
 journal revision, global authority/writer epoch, generation, plan and handoff
@@ -807,77 +721,66 @@ restart or concurrent writer therefore recovers the winning signature bytes;
 it never re-signs different bytes behind an already assigned message ID. Crash
 orphans are harmless, while authority, source-revision, and generation rollback
 or same-generation equivocation fail closed. The worst-case 64-cell pointer
-remains within the global 16 KiB KV value limit.
-When the command signer is configured, the protected-`main` source poll now
+remains within the global 16 KiB KV value limit. When the command signer is configured, the protected-`main` source poll now
 invokes this coordinator immediately after its source CAS. It captures one exact
 global lease, signs a 30-day validity window matching `GLOBAL_SPEC` retention,
 and resumes durable publication on every exact polling replay. `develop` remains
 a validation/source-journal input and cannot publish desired state. Missing
 signing authority leaves the source journal available but installs no unsigned
-handoff path.
-The global publisher then appends those recovered commands to
+handoff path. The global publisher then appends those recovered commands to
 `ts.orch.v1.global.desired.gitops.<cell>` sequentially and requires a nonzero
 `GLOBAL_SPEC` storage acknowledgement for every cell. Exact retries retain the
 same message identity and bytes. Authority loss before a later cell or after a
 storage acknowledgement returns explicit partial durable evidence and can
 never report a complete handoff; regional `CELL_SPEC` publication and acceptance
-remain separate fenced boundaries.
-Each current per-cell `GLOBAL_SPEC` acknowledgement is then CAS-journaled with
+remain separate fenced boundaries. Each current per-cell `GLOBAL_SPEC` acknowledgement is then CAS-journaled with
 the signed-handoff pointer revision, source revision, authority, generation,
 plan/handoff identity, exact wire digest, and stream sequence. Restart readback
 distinguishes an incomplete set from all required cells and can skip already
 journaled cells. A different sequence cannot relabel an existing cell; a newer
 generation or fenced writer starts a new proof set instead of inheriting stale
 acknowledgements. Authority-lost publications never advance this journal, whose
-worst-case 64-cell record also remains within the 16 KiB global KV limit.
-The dispatch coordinator preflights that journal before any publish, skips only
+worst-case 64-cell record also remains within the 16 KiB global KV limit. The dispatch coordinator preflights that journal before any publish, skips only
 exact wire digests already acknowledged for the current signed-handoff pointer,
 and commits each new acknowledgement before attempting the next cell. A crash
 after stream storage but before CAS replays the same persisted bytes and message
 ID, then converges on the journal. Stale or conflicting durable state blocks the
-side effect, and a completed replay performs no publish.
-The handoff coordinator starts only from the restart-reconstructed durable
+side effect, and a completed replay performs no publish. The handoff coordinator starts only from the restart-reconstructed durable
 source/base diff, persists its signed wires, and then invokes that resumable
 dispatch. Missing sources, legacy pointers without a recoverable diff, a source
 written by a newer authority, signing rejection, dispatch conflict, and every
 authority-loss edge are explicit non-success results. A crash anywhere after
 wire persistence resumes the same signature bytes, message identity, and
-per-cell acknowledgement progress rather than rebuilding from process memory.
-The global-to-regional relay decodes and validates one exact globally stored
+per-cell acknowledgement progress rather than rebuilding from process memory. The global-to-regional relay decodes and validates one exact globally stored
 CellSpec against its destination cell, current global writer epoch, validity
 window, and injected signature trust policy before any regional side effect. It
 then publishes the unchanged payload and canonical headers to regional
 `CELL_SPEC` and acknowledges the global delivery only after regional storage and
 a final regional-authority check. Authority loss at any boundary leaves the
 global delivery unacknowledged; acknowledgement failure redelivers the same
-regional message identity and bytes so JetStream deduplication remains safe.
-Its per-cell durable pull consumer accepts only the exact `GLOBAL_SPEC` stream,
+regional message identity and bytes so JetStream deduplication remains safe. Its per-cell durable pull consumer accepts only the exact `GLOBAL_SPEC` stream,
 cell-filtered subject, consumer identity, nonzero stream/consumer sequences,
 five-attempt delivery bound, and 1 MiB wire ceiling. Repeated header values are
 preserved for strict decoding, and the successful relay uses a double
-acknowledgement so an uncertain global acknowledgement remains safely replayable.
-The JetStream publisher sends one signed command to
+acknowledgement so an uncertain global acknowledgement remains safely replayable. The JetStream publisher sends one signed command to
 `ts.orch.v1.<cell>.desired.gitops`, requires a `CELL_SPEC` storage sequence, and
 uses handoff/cell/writer-epoch message identity so exact retries deduplicate but
 a fenced takeover is not suppressed. Authority loss before publish causes no
 mutation; loss after the storage acknowledgement is reported distinctly so the
 stale durable message cannot be mistaken for authority to advance the global
-plan. The regional epoch/signature gate still rejects that stale message.
-The regional inbox acknowledges only after decoding the bounded command,
+plan. The regional epoch/signature gate still rejects that stale message. The regional inbox acknowledges only after decoding the bounded command,
 verifying the configured signature policy, reading back the content-addressed
 payload, committing the fenced acceptance receipt, and rechecking regional
 authority. Malformed, invalid-signature, stale, conflicting, and non-durable
 deliveries remain unacknowledged. Authority or acknowledgement loss after the
 receipt is safe: redelivery observes the durable duplicate and a replacement
-leader can acknowledge it without repeating acceptance.
-The concrete pull adapter requires the exact `CELL_SPEC` stream, cell subject,
+leader can acknowledge it without repeating acceptance. The concrete pull adapter requires the exact `CELL_SPEC` stream, cell subject,
 durable consumer identity, nonzero stream/consumer sequences, and delivery
 count within the configured five-attempt bound. Its per-instance consumer has a
 15-second acknowledgement window, at most eight outstanding messages/pulls,
 bounded backoff, and double acknowledgements. Repeated NATS header values are
 preserved so the strict wire decoder can reject duplicates instead of silently
-choosing one.
-An acceptance barrier evaluates at most one durable receipt per required cell
+choosing one. An acceptance barrier evaluates at most one durable receipt per required cell
 against the exact generation, global-plan/handoff/payload digests, signed
 operation identity, writer epoch, regional stream sequence, journal revision,
 and signature digest. Missing cells remain explicit and produce no barrier
@@ -885,8 +788,7 @@ digest; duplicate, foreign, stale, or mismatched receipts fail closed. A
 complete barrier digest is deterministic across receipt arrival order and
 changes across a fenced takeover. This proves only regional CellSpec
 acceptance—it is not apply, health, live-convergence, or deployment-success
-evidence.
-Regional convergence rehydrates that immutable payload, requires its accepted
+evidence. Regional convergence rehydrates that immutable payload, requires its accepted
 base plan to match local accepted history, and emits at most one action per
 evaluation. Active workload drift uses the shared dependency-safe
 reconciliation engine; missing or in-progress state is observed before another
@@ -896,32 +798,26 @@ authorization proof digests bound to the current writer epoch. Failed health
 requests a new generation referencing a previously qualified global plan; it
 never rewinds a local artifact in place. Only exact live workload/absence
 observations produce a regional convergence digest, and cross-cell success is
-still a separate global barrier.
-Every convergence decision is CAS-journaled before it can authorize dispatch
+still a separate global barrier. Every convergence decision is CAS-journaled before it can authorize dispatch
 or global advancement. The checkpoint chain binds the accepted CELL_SPEC
 stream sequence, signature digest, acceptance revision, writer epoch,
-observation watermark, exact intent or hold, and prior checkpoint digest.
-Exact retries recover the same dispatch identity; changed observations require
+observation watermark, exact intent or hold, and prior checkpoint digest. Exact retries recover the same dispatch identity; changed observations require
 a strictly newer watermark. A new generation or fenced takeover must also
 advance both the acceptance revision and regional stream sequence, preventing
-an old accepted receipt from being relabeled as fresh authority.
-Each converged cell emits a signed, validity-bounded receipt over its exact
+an old accepted receipt from being relabeled as fresh authority. Each converged cell emits a signed, validity-bounded receipt over its exact
 handoff/payload, convergence checkpoint, acceptance sequence/revision, and
 regional writer epoch. The global live barrier verifies those receipts through
-the injected KMS trust policy and the current epoch for every required cell.
-Missing cells remain explicitly pending with no barrier digest; duplicate,
+the injected KMS trust policy and the current epoch for every required cell. Missing cells remain explicitly pending with no barrier digest; duplicate,
 foreign, expired, signature-substituted, wrong-digest, and stale-writer
 receipts fail closed. Only the complete same-generation, same-global-plan,
-same-handoff live set produces the deterministic cross-cell barrier digest.
-Before a regional live receipt can be acknowledged, the global receiver stores
+same-handoff live set produces the deterministic cross-cell barrier digest. Before a regional live receipt can be acknowledged, the global receiver stores
 its exact signed envelope in a bounded per-cell CAS journal. Restart readback
 therefore preserves the signature bytes needed to re-run the configured KMS
 trust policy rather than trusting a derived success flag. Checkpoint sequence,
 journal revision, acceptance sequence/revision, regional writer epoch,
 generation, handoff identity, and global authority epoch advance monotonically;
 crashes, authority loss, corrupt records, stale writers, and conflicting
-generations never become acknowledgeable.
-Global live completion is a separate bounded CAS record. It re-verifies the
+generations never become acknowledgeable. Global live completion is a separate bounded CAS record. It re-verifies the
 exact durable per-cell envelopes at the current global and regional epochs,
 requires every handoff cell, and persists no success for a partial set. Its
 completion digest binds global authority, generation, global plan, handoff,
@@ -1030,10 +926,7 @@ health-gates replacements, restores the last healthy artifacts on failure, and
 projects bounded structured incidents for DevHost.
 
 Run regional fault scenarios sequentially against one healthy lab and reuse it
-when clean bootstrap is not the behavior under test. Pure decision logic stays
-in-process; real quorum uses a separate one-region R3 component lane; and
-systemd, containerd, storage, ARM, and OCI/provider qualification run as
-targeted real-boundary fixtures one at a time. The RF=1 lab proves regional
+when clean bootstrap is not the behavior under test. The RF=1 lab proves regional
 composition, not production HA or destructive-operation safety.
 
 DevHost creates stable, owner-private credentials beneath its Orchestrator data
@@ -1075,9 +968,7 @@ src/TerraScale.Orchestrator/bin/Debug/net11.0/linux-x64/terrascale-orchestrator 
 ```
 
 All production-shaped DevHost resources project to one of these built-in
-descriptors. Platform, Authentication, and Dashboard retain the production OCI
-default; TerraBase, both NATS planes, and Orchestrator retain their native
-systemd defaults. Payment providers remain external.
+descriptors. Payment providers remain external.
 
 `runtime plan` resolves a role and artifact digest through that catalog into a
 typed host execution plan. It never accepts an executable path, image

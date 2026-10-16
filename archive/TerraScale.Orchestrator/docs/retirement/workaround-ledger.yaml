@@ -243,26 +243,6 @@
   },
   "entries": [
     {
-      "id": "WRK-001",
-      "status": "identified",
-      "disposition": "retain-until-native-gate",
-      "source_anchors": [
-        "archive:TerraScale.Infrastructure/AGENTS.md:66",
-        "archive:TerraScale.Infrastructure/src/TerraScale.Infrastructure/Program.cs:13"
-      ],
-      "original_constraint": "OKE, CNI/CSI, pools and duplicate controllers supplied capacity.",
-      "retained_semantic_behavior": "isolated capacity, admission, spread and elastic growth.",
-      "native_replacement_requirement": "direct A1 hosts with regional scheduler/agent, cgroups, systemd and containerd.",
-      "native_replacement_gate": "L3S host admission plus L4 density/cost evidence.",
-      "owner_workstream": "Cloud",
-      "phase_removal_task": "cleanup-after-L3S-host-admission / pending-WRK-001",
-      "regression_scenario": "density, host loss, scale out/in and seven-day cost",
-      "real_boundary_needed": "OCI A1 host/cost",
-      "recovery_rollback_boundary": "Pulumi foundation; journal resumes operations.",
-      "external_authority_dependency": "P0-02/P0-04B provider access",
-      "evidence_claim_status": "archive-verified; provider cleanup unverified"
-    },
-    {
       "id": "WRK-002",
       "status": "identified",
       "disposition": "retain-until-native-gate",
@@ -339,44 +319,6 @@
       "evidence_claim_status": "archive-verified; not retired"
     },
     {
-      "id": "WRK-007",
-      "status": "identified",
-      "disposition": "retain-until-native-gate",
-      "source_anchors": [
-        "archive:TerraScale.Infrastructure/src/TerraScale.Infrastructure/ObservabilityIngestTls.cs:101"
-      ],
-      "original_constraint": "cert-manager and shared telemetry certificate.",
-      "retained_semantic_behavior": "issuance, trust, renewal, revocation and mTLS.",
-      "native_replacement_requirement": "regional PKI with unique workload identities and dual-bundle rotation.",
-      "native_replacement_gate": "L2/L3S identity/rotation/revocation/captured-output proof.",
-      "owner_workstream": "Messaging/security",
-      "phase_removal_task": "cleanup-after-PKI-rotation-L3S / pending-WRK-007",
-      "regression_scenario": "stolen certificate and renewal",
-      "real_boundary_needed": "PKI/Vault and mTLS runtime",
-      "recovery_rollback_boundary": "regional renewal; OCI root protection",
-      "external_authority_dependency": "security/OCI Vault authority",
-      "evidence_claim_status": "archive-verified; not retired"
-    },
-    {
-      "id": "WRK-008",
-      "status": "identified",
-      "disposition": "retain-until-native-gate",
-      "source_anchors": [
-        "archive:TerraScale.Infrastructure/gitops/observability/runtime-secrets/production/external-secrets.yaml:2"
-      ],
-      "original_constraint": "External Secrets and broad instance principals.",
-      "retained_semantic_behavior": "encrypted delivery, rotation and workload auth.",
-      "native_replacement_requirement": "closed vault lease policy and least-privilege identity.",
-      "native_replacement_gate": "L2/L3S/L4 denial, stolen-node and OCI IAM proof.",
-      "owner_workstream": "Messaging/security",
-      "phase_removal_task": "cleanup-after-vault-denial-L3S / pending-WRK-008",
-      "regression_scenario": "cross-workload denial and lease expiry",
-      "real_boundary_needed": "OCI IAM/Vault",
-      "recovery_rollback_boundary": "ciphertext/root stays in Vault/KMS",
-      "external_authority_dependency": "OCI IAM/Vault access",
-      "evidence_claim_status": "archive-verified; provider state unverified"
-    },
-    {
       "id": "WRK-009",
       "status": "identified",
       "disposition": "retain-until-native-gate",
@@ -393,25 +335,6 @@
       "real_boundary_needed": "compiler/persistence boundary",
       "recovery_rollback_boundary": "last validated signed CellSpec",
       "external_authority_dependency": "none",
-      "evidence_claim_status": "archive-verified; not retired"
-    },
-    {
-      "id": "WRK-011",
-      "status": "identified",
-      "disposition": "retain-until-native-gate",
-      "source_anchors": [
-        "archive:TerraScale.Infrastructure/AGENTS.md:69"
-      ],
-      "original_constraint": "HPA and Cluster Autoscaler duplicated floors.",
-      "retained_semantic_behavior": "R3 floor, demand growth, safe scale-in and budget.",
-      "native_replacement_requirement": "one scheduler/provider autoscaler.",
-      "native_replacement_gate": "L2/L3S/L4 oscillation/orphan/cost proof.",
-      "owner_workstream": "Core",
-      "phase_removal_task": "cleanup-after-autoscaling-L3S-and-L4 / pending-WRK-011",
-      "regression_scenario": "burst, capacity denial, DB floor",
-      "real_boundary_needed": "OCI capacity/cost",
-      "recovery_rollback_boundary": "regional pre-authorized limits",
-      "external_authority_dependency": "approved SLOs and OCI",
       "evidence_claim_status": "archive-verified; not retired"
     },
     {
@@ -453,44 +376,6 @@
       "evidence_claim_status": "archive-verified; not retired"
     },
     {
-      "id": "WRK-014",
-      "status": "identified",
-      "disposition": "retain-until-native-gate",
-      "source_anchors": [
-        "archive:TerraScale.Infrastructure/Pulumi.production-sfo.yaml:20"
-      ],
-      "original_constraint": "VPN lifecycle was assumed, not implemented.",
-      "retained_semantic_behavior": "private routes, least privilege and regional autonomy.",
-      "native_replacement_requirement": "selected WireGuard implementation and route-policy controller.",
-      "native_replacement_gate": "L3S/L4 GRU-loss, route denial and OCI UDP proof.",
-      "owner_workstream": "Operations",
-      "phase_removal_task": "qualification-before-production / pending-WRK-014",
-      "regression_scenario": "peer rotation/revocation/failover",
-      "real_boundary_needed": "OCI network",
-      "recovery_rollback_boundary": "existing routes continue; global policy freezes",
-      "external_authority_dependency": "network/security selection",
-      "evidence_claim_status": "archive-verified; native choice open"
-    },
-    {
-      "id": "WRK-015",
-      "status": "identified",
-      "disposition": "retain-until-native-gate",
-      "source_anchors": [
-        "archive:TerraScale.TypeScript/src/regions.ts:15"
-      ],
-      "original_constraint": "three OCI regions were compile-time constants.",
-      "retained_semantic_behavior": "stable aliases, compatibility and deterministic selection.",
-      "native_replacement_requirement": "signed provider-discovered catalog with at least 20 qualified OCI regions.",
-      "native_replacement_gate": "L1/L2/L4 signature, compatibility and eligibility proof.",
-      "owner_workstream": "Cloud",
-      "phase_removal_task": "contract-freeze-and-client-cleanup / pending-WRK-015",
-      "regression_scenario": "unknown region and catalog compatibility",
-      "real_boundary_needed": "provider region discovery",
-      "recovery_rollback_boundary": "last signed catalog",
-      "external_authority_dependency": "P0-04A",
-      "evidence_claim_status": "archive-verified; catalog unqualified"
-    },
-    {
       "id": "WRK-016",
       "status": "identified",
       "disposition": "retain-until-native-gate",
@@ -527,25 +412,6 @@
       "recovery_rollback_boundary": "versioned generated artifacts",
       "external_authority_dependency": "none",
       "evidence_claim_status": "archive-verified; not retired"
-    },
-    {
-      "id": "WRK-018",
-      "status": "identified",
-      "disposition": "retain-until-native-gate",
-      "source_anchors": [
-        "archive:TerraScale.Infrastructure/src/TerraScale.Infrastructure/Program.cs:366"
-      ],
-      "original_constraint": "deleted OKE estate may leave source/cloud remnants.",
-      "retained_semantic_behavior": "inventory, ownership attribution, quarantine and auditable cleanup.",
-      "native_replacement_requirement": "greenfield Pulumi and approved positive-identity cleanup.",
-      "native_replacement_gate": "L1/L3S/L4 parser/credential scan plus provider inventory.",
-      "owner_workstream": "Cross-repository cleanup",
-      "phase_removal_task": "P0-02 then one WRK-scoped cleanup package/repository",
-      "regression_scenario": "forbidden parser/credential and orphan inventory",
-      "real_boundary_needed": "OCI read-only inventory",
-      "recovery_rollback_boundary": "independently revertible cleanup; quarantine unknowns",
-      "external_authority_dependency": "P0-02 and explicit cleanup approval",
-      "evidence_claim_status": "archive-verified; cloud remnants unverified"
     },
     {
       "id": "WRK-019",

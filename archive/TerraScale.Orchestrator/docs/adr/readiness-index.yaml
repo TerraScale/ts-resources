@@ -145,7 +145,6 @@
         "ORCHESTRATOR.md:139-158"
       ],
       "missingEvidence": [
-        "Exact OCI IAM policy and tag schema",
         "Pulumi retain/unmanage primary-source spike",
         "Fresh-resource handoff and crash-recovery model evidence"
       ],
@@ -160,40 +159,6 @@
         "L0 handoff model covering every crash checkpoint",
         "L3S fresh-resource handoff receipt and survival test",
         "L4 proof Pulumi and regional actuator cannot concurrently own a transferred resource"
-      ]
-    },
-    {
-      "id": 5,
-      "slug": "oci-instance-strategy",
-      "title": "Direct OCI instances versus instance pools by node class",
-      "status": "owner-input-required",
-      "ownerLane": "Cloud",
-      "decisionAdrReferences": ["ADR-0005"], "sourceAnchors": ["ORCHESTRATOR.md:687-709"], "evidenceLocations": ["ORCHESTRATOR.md:687-709"],
-      "controllingInputs": [
-        "maximum-three-region-pre-user-cost",
-        "storage-slo"
-      ],
-      "openInputOwnershipReferences": ["maximum-three-region-pre-user-cost", "storage-minimum-iops-per-member", "storage-minimum-throughput-per-member", "storage-p95-read-latency", "storage-p99-read-latency", "storage-p95-write-latency", "storage-p99-write-latency"],
-      "availableEvidence": [
-        "ORCHESTRATOR.md:687-709",
-        "ORCHESTRATOR.md:711-754"
-      ],
-      "missingEvidence": [
-        "OCI termination-selection and work-request primary sources",
-        "A1 capacity and provisioning measurements",
-        "Per-node-class stateful/stateless failure analysis and TCO"
-      ],
-      "executableDependencies": [],
-      "closureEvidence": [
-        4,
-        19,
-        20
-      ],
-      "exitEvidence": [
-        "Node-class decision matrix with OCI primary citations",
-        "Fake-provider timeout/duplicate/capacity suite",
-        "L4 direct-instance and any proposed pool behavior evidence",
-        "Measured cost and create-to-ready p95"
       ]
     },
     {
@@ -324,7 +289,6 @@
       "missingEvidence": [
         "Approved storage SLO/RPO",
         "Filesystem selection",
-        "OCI Block Volume and guest-rescan primary evidence",
         "Real ext4/XFS crash-point tests"
       ],
       "executableDependencies": [],
@@ -337,9 +301,7 @@
         "Owner decision 5 and approved storage/RPO targets",
         "Selected filesystem/layout/tool pins",
         "L0 irreversible-operation model and wrong-volume rejection",
-        "L1R ext4/XFS online-growth crash matrix",
-        "L4 OCI attach/expand/detach/performance evidence"
-      ]
+        "L1R ext4/XFS online-growth crash matrix"]
     },
     {
       "id": 10,
@@ -447,9 +409,7 @@
         "Owner decision 3",
         "Reviewed backend/custody/lease/DR threat model",
         "L0 policy/lease/outage/anti-rollback/no-secret-output suite",
-        "L3S disconnected cache and recovery drill",
-        "L4 OCI KMS/Vault rotation and restore evidence"
-      ]
+        "L3S disconnected cache and recovery drill"]
     },
     {
       "id": 13,
@@ -551,9 +511,7 @@
         "Selected DNS/registry design with ARM64 and HA evidence",
         "Golden region-header/routing-loop/client-IP fixtures",
         "L0 ownership and stale-readiness models",
-        "L3S registry/DNS/LB failure tests",
-        "L4 OCI LB reconciliation and ingress withdrawal proof"
-      ]
+        "L3S registry/DNS/LB failure tests"]
     },
     {
       "id": 16,
@@ -587,9 +545,7 @@
         "Owner decision 6",
         "Selected VPN with primary-source, ARM64, HA and memory evidence",
         "Twenty-region topology/route policy model",
-        "L3S GRU-control-loss, revocation and partition tests",
-        "L4 real OCI UDP/route/ACL evidence"
-      ]
+        "L3S GRU-control-loss, revocation and partition tests"]
     },
     {
       "id": 17,
@@ -683,8 +639,6 @@
       "missingEvidence": [
         "All planning values",
         "Post-OKE residual bill",
-        "Normalized OCI/AWS/GCP/Azure TCO",
-        "At-least-20-row OCI eligibility matrix",
         "Comparable ARM64 TerraBase/storage benchmarks"
       ],
       "executableDependencies": [],
@@ -698,41 +652,7 @@
       "exitEvidence": [
         "Owner decision 6 and approved planning/SLO values",
         "Current normalized provider decision report with raw evidence",
-        "At least 20 qualified OCI region rows",
         "Seven-day measured three-region billing and storage-performance gate"
-      ]
-    },
-    {
-      "id": 20,
-      "slug": "provider-actuator-threat-model",
-      "title": "Provider-actuator crash-stop threat model, irreversible-operation fencing/resume, and OCI credential boundary",
-      "status": "draft-ready",
-      "ownerLane": "Cloud",
-      "decisionAdrReferences": ["ADR-0020"], "sourceAnchors": ["ORCHESTRATOR.md:627-648"], "evidenceLocations": ["ORCHESTRATOR.md:627-648"],
-      "controllingInputs": [],
-      "openInputOwnershipReferences": [],
-      "availableEvidence": [
-        "ORCHESTRATOR.md:627-648",
-        "ORCHESTRATOR.md:687-709"
-      ],
-      "missingEvidence": [
-        "Exact OCI SDK idempotency/work-request semantics",
-        "Compartment-scoped IAM policy",
-        "Leadership-loss model and adapter race evidence",
-        "Independent security review"
-      ],
-      "executableDependencies": [],
-      "closureEvidence": [
-        1,
-        4,
-        23
-      ],
-      "exitEvidence": [
-        "Reviewed crash-stop/late-call threat model",
-        "Exact ProviderOperationContext contract and compartment policy",
-        "L0 exhaustive leadership-loss-before/after-call model",
-        "L4 delayed work-request and new-leader same-operation resume evidence",
-        "Proof tags never authorize mutation"
       ]
     },
     {
@@ -851,52 +771,6 @@
         "Signed exact-tree DSSE/in-toto evidence rejected after any input change",
         "Credential issuance impossible without valid evidence"
       ]
-    },
-    {
-      "id": 24,
-      "slug": "greenfield-bringup",
-      "title": "Greenfield OCI inventory, stale-resource quarantine/approved cleanup, partial-create recovery, initial trust/NATS/TerraBase seeding, independent regional partial success, Pulumi handoff, cleanup-PR sequencing, ingress activation/withdrawal, and first-production rollback boundaries",
-      "status": "owner-input-required",
-      "ownerLane": "Cloud",
-      "decisionAdrReferences": ["ADR-0024"], "sourceAnchors": ["ORCHESTRATOR.md:54-66"], "evidenceLocations": ["ORCHESTRATOR.md:54-66"],
-      "controllingInputs": [
-        "maximum-three-region-pre-user-cost",
-        "regional-rpo-rto"
-      ],
-      "openInputOwnershipReferences": ["maximum-three-region-pre-user-cost", "regional-rpo", "regional-rto"],
-      "availableEvidence": [
-        "ORCHESTRATOR.md:54-66",
-        "ORCHESTRATOR.md:1579-1630"
-      ],
-      "missingEvidence": [
-        "Sanitized read-only OCI inventory",
-        "Positive ownership and stale-remnant classifications",
-        "Approved cleanup list",
-        "Partial-create/independent-region recovery model",
-        "Closed-ingress clean-room rehearsal"
-      ],
-      "executableDependencies": [],
-      "closureEvidence": [
-        4,
-        10,
-        13,
-        15,
-        19,
-        20,
-        21,
-        22,
-        23
-      ],
-      "exitEvidence": [
-        "Read-only account inventory proving old estate remains outside new ownership graph",
-        "Explicit per-remnant quarantine/cleanup approval",
-        "L0 every-checkpoint partial-create/retry model",
-        "Two equivalent from-zero L3S rehearsals",
-        "Closed-ingress L4 assembly with independent regional handoffs",
-        "Signed post-soak ingress enable and tested withdrawal",
-        "Separate reviewed cleanup PR evidence"
-      ]
-    }
-  ],
+    }],
   "notes": "Owner choices 1A-10A accepted 2026-07-16 (reliability first). openOwnerQuestions cleared. Measurable qualification targets remain openPlanningInputs. Evidence anchors rewritten to ORCHESTRATOR.md and docs/guides after historical audit archival."
 }

@@ -66,7 +66,7 @@ The lane checks formatting, strict Clippy, unit checks and the
 real released server, and retains JSON/Markdown artifacts even on failure.
 It fails on correctness, setup, transport or API errors, **never performance
 numbers**. CI runs at full CPU priority; callers apply `nice -n 19` locally.
-No KVM, OCI provisioning, production API call, DNS or secret change is needed.
+No KVM, production API call, DNS or secret change is needed.
 
 The retained SQLite/Turso smoke runs identical CRUD traces, reopens both
 engines, checks integrity and compares final-state/trace hashes. Its historical

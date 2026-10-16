@@ -7,7 +7,7 @@
 
 ## Context
 
-TerraScale needs Pulumi to establish durable cloud foundation without leaving Pulumi and the regional orchestrator as competing reconcilers. The platform is greenfield: the new ownership graph may not adopt an OCID, identity root, data resource, or control resource from the deleted OKE estate (`REQ-O023`). The checked-in residual inventory does not weaken that rule: OCI discovery failed before scoped queries ran, so OKE absence and residual resource counts remain unproven, not empty ([Phase 0 evidence guide](../guides/phase0-evidence.md)).
+TerraScale needs Pulumi to establish durable cloud foundation without leaving Pulumi and the regional orchestrator as competing reconcilers.
 
 The specification already separates durable foundation from concrete regional resources. Pulumi creates and versions networking, IAM, root protection, image and launch templates, caps, bootstrap generations, initial seeds, initial dual-NATS stores, and the signed `BootstrapBundle`. After a deliberate handoff, the regional controller owns concrete nodes, workload backends, eligible attachments, and orchestrator-created volumes ([specification, lines 627-640](../../ORCHESTRATOR.md#L627-L640)). This is the boundary expressed by `REQ-O010` and `INV-014` ([requirement trace, lines 122 and 156](../../ORCHESTRATOR.md#L122-L156)).
 
@@ -21,7 +21,6 @@ Use an explicit two-owner lifecycle:
 2. **Handoff transaction.** A regional controller may assume ownership only through the proposed `SM-PULUMI-OWNERSHIP-HANDOFF`: establish both NATS quorums, enroll controller candidates, verify the regional journal/PKI/provider access/backups, persist a signed `HandoffReceipt`, make Pulumi retain or unmanage the exact transferred inventory, activate the regional fencing epoch, and only then enable self-management ([specification, lines 650-663](../../ORCHESTRATOR.md#L650-L663)).
 3. **Regional actuator owner.** After the receipt is durable and both owners agree on the exact inventory, the cell exclusively owns concrete replacement and elastic compute, ephemeral boot volumes, post-handoff NATS/TerraBase/workload volumes, attachments, workload LB membership, node generation, drain/scale/termination, expansion, and orphan reconciliation.
 4. **No count reconciliation by Pulumi after transfer.** Pulumi continues to version foundation, allowed templates, IAM, caps, and bootstrap/recovery generations, but does not reconcile transferred regional instance counts ([specification, line 648](../../ORCHESTRATOR.md#L648)). A changed template enters a region through a reviewed native GitOps plan and rolling generation operation, not through Pulumi replacing region-owned instances.
-5. **Positive ownership is mandatory.** Resource tags are inventory and reconciliation evidence. They are never authority to adopt, terminate, detach, delete, format, or otherwise mutate. Mutation requires the compartment-scoped actuator capability plus the persisted, fenced operation described by ADR 0020 ([specification, lines 642-646](../../ORCHESTRATOR.md#L642-L646)).
 6. **Disaster bootstrap is distinct.** A higher `bootstrapGeneration` and recovery authorization are required, after proving no viable regional quorum exists; it may not seed a competing cluster beside a partitioned one ([specification, line 685](../../ORCHESTRATOR.md#L685)).
 
 This is a proposed direction, not an accepted contract. The exact Pulumi retain/unmanage mechanism, tag schema, IAM statements, receipt schema, transferred resource-type matrix, and crash checkpoints remain open.
@@ -47,8 +46,6 @@ Rejected because Pulumi and the orchestrator would become two autoscalers with i
 
 Rejected because it creates a circular bootstrap and recovery dependency and moves durable networking, root trust, IAM, and template-generation responsibilities across `INV-014` without an approved replacement authority.
 
-### Import or adopt the historical OCI estate
-
 Rejected. Full greenfield deployment is `REQ-O023`, and the residual inventory is currently incomplete. Unknown or old resources remain unrelated, quarantined, or separately approved cleanup targets.
 
 ### Tags determine ownership
@@ -70,25 +67,22 @@ Rejected. An undocumented order or manual runbook cannot prove agreement after a
 
 ## Unresolved inputs and evidence
 
-The readiness map labels this draft-ready but requires exact OCI IAM/tag schemas, a primary-source Pulumi retain/unmanage spike, and fresh-resource crash-recovery evidence; it also depends on ADRs 1, 20, and 24 ([readiness index, lines 47-57](readiness-index.yaml#L47-L57)). Acceptance remains blocked on:
+Acceptance remains blocked on:
 
-- the exact per-region compartment policy, dynamic-group/workload identity design, action and resource-type allowlists, and explicit deny/hold behavior;
 - the exact required/free-form tag namespace and immutable-versus-observed field rules;
 - proof of the selected Pulumi retain/unmanage operation across preview, apply, refresh, rollback, import rejection, and crashes;
 - a complete resource-type handoff matrix, including which seed boot/NATS volumes transfer and which foundation resources never do;
 - owner questions that determine regional authority/topology, vault custody, elastic volume retention, and physical NATS isolation;
 - approved cost, storage performance, regional RPO/RTO, security, and survival-window targets;
-- repaired read-only OCI evidence. Current account discovery is authentication-blocked and proves no resource absence ([OCI audit, lines 34-50](../audits/oci/phase0-residual-inventory.md#L34-L50)).
 
 ## Required verification before acceptance
 
 - **Review:** exact ownership/action matrix, tag schema, IAM policy, receipt schema, Pulumi primary-source behavior, and independent security review.
 - **L0:** model every handoff checkpoint, duplicate/reordered callbacks, stale bootstrap generation, mismatched inventory, partial Pulumi state transition, competing owner, and forbidden adoption. Prove `INV-004`, `INV-005`, `INV-006`, and `INV-014`.
 - **L3S:** perform two from-zero handoffs from the same signed contracts, crash both sides at every checkpoint, resume the same lineage, and replace a node from the survival bundle while GRU/Git are disconnected.
-- **L4:** use only fresh disposable OCI resources after the exact-tree pre-deployment gate; prove a later Pulumi run cannot mutate transferred resources and the regional actuator cannot mutate foundation or unowned resources.
 - **L5:** retain a signed inventory/receipt trail across the production soak and verify no drift creates dual ownership.
 
-No SUT cloud instance or OCI mutation is authorized by this ADR. The repository's exact-tree pre-deployment evidence gate remains mandatory ([specification, lines 1114-1122](../../ORCHESTRATOR.md#L1114-L1122)).
+The repository's exact-tree pre-deployment evidence gate remains mandatory ([specification, lines 1114-1122](../../ORCHESTRATOR.md#L1114-L1122)).
 
 ## Traceability
 

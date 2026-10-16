@@ -11,8 +11,7 @@ Assess the smallest evidence-bearing path from pure control-plane planning to a 
 ## Evidence
 
 - `OperationEngine` and `ProviderOwnershipEngine` are pure engines.
-- The current boundary has no durable journal store or codec, CAS append, runtime coordinator, signed `HandoffReceipt`, Pulumi verifier, or generic OCI adapter.
-- Existing OCI runner code is CI-only and is not provider-actuation evidence.
+- The current boundary has no durable journal store or codec, CAS append, runtime coordinator, signed `HandoffReceipt`, Pulumi verifier.
 - The local `develop` checkout was ahead of `origin` during the exploration and a validation lease was held. That state is not execution evidence.
 
 ## Findings / decision
@@ -21,7 +20,7 @@ Do not claim provider execution readiness. A pure plan cannot establish durable 
 
 ## Recommended bounded next slice
 
-Implement a minimal durable operation journal with codec and compare-and-swap append, a signed `HandoffReceipt`, and a runtime coordinator. Exercise it against a fake `CreateNode` adapter, then run one disposable OCI proof verified through Pulumi. Keep the first proof non-production and explicitly destroy its resources.
+Implement a minimal durable operation journal with codec and compare-and-swap append, a signed `HandoffReceipt`, and a runtime coordinator. Exercise it against a fake `CreateNode` adapter.
 
 ## Validation / constraints
 

@@ -62,7 +62,6 @@ as on the host enrollment listener.
 | `ts_orch_build_info`, `ts_orch_ready`, `ts_orch_ready_check{check}` | collector |
 | `ts_orch_authority_{leader,ready,can_mutate,epoch,revision,lease_expiry_timestamp_seconds}` | authority snapshot |
 | `ts_orch_nats_*`, `ts_orch_js_meta_*`, `ts_orch_js_store_*`, `ts_orch_js_stream_*{stream}`, `ts_orch_js_consumer_*{stream,consumer}` | `natscell.Runtime.Observe` (in-process `Varz`/`Jsz`/`Routez`; the NATS HTTP monitor stays off) |
-| `ts_orch_oci_requests_total{service,operation,code}`, `ts_orch_oci_request_duration_seconds`, `ts_orch_oci_throttled_total` | `oci` SDK dispatcher wrapper; operations are templated (`GET /instances/{id}`), never raw OCIDs |
 | `ts_orch_reconcile_total{loop,result}`, `ts_orch_reconcile_duration_seconds`, `ts_orch_reconcile_last_success_timestamp_seconds` | placement controller |
 | `ts_orch_terrabase_members{stage}`, `ts_orch_terrabase_replicas{database,partition,state}`, `ts_orch_rollout_progress_ratio` | `placement.Summarize` (first 64 partitions labeled) |
 | `ts_orch_delivery_intents_total{result}`, `ts_orch_delivery_transport_retries_total` | delivery consumer |
@@ -130,7 +129,6 @@ every asset is embedded in the binary and nothing is loaded from a CDN.
 | `GET /` | Cluster overview: readiness, members answering and missing, authority lease, JetStream meta leader, partitions, collection errors, recent events. |
 | `GET /members` | Controllers (role, build, uptime, lease, routes, CPU, load, memory, PSI) and the hosts that carry TerraBase seats. |
 | `GET /nats` | Servers, meta group peers, streams and consumers. |
-| `GET /oci` | OCI API calls per templated operation: errors, throttling, latency. |
 | `GET /storage` | JetStream store usage and filesystem capacity per member. |
 | `GET /terrabase` | Placement partitions, desired and serving seats, seat stages per host. |
 | `GET /rollouts` | Managed runtime update progress and delivery intent counters. |

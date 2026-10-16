@@ -5,10 +5,7 @@ This repository contains the current Go `ts-orchestrator` executable. The
 early, low-cost ARM64 preview of ts-orchestrator with TerraBase. It authorizes
 that preview under a combined recurring-cost cap of **US$200/month for
 qualification testing and preview**; these local commands do not deploy or
-qualify it. Current preview evidence and open gates are linked in the
-[OCI preview record](evidence/oci-preview-20260926.json) and
-[shared-goal acceptance ledger](evidence/shared-goal-acceptance-20260926.md).
-The management resource-protection and pressure/restart acceptance requirement
+qualify it. The management resource-protection and pressure/restart acceptance requirement
 is defined as D15 in the [workspace GOAL](../../GOAL.md#minimum-end-to-end-acceptance-scenarios)
 and tracked in the [D15 gate file](evidence/gates/d15.md); the commands below
 do not establish that runtime qualification.
@@ -65,8 +62,6 @@ leave chunks behind, and the current implementation has no automatic garbage
 collection or repository-managed cleanup path. Once the quota is full, new
 uploads fail with `ErrArtifactStoreFull`.
 
-Managed OCI mode requires `controller.oci_region_intent_file`,
-`controller.oci_region_config`, and `controller.placement_config` together.
 The placement file accepts `environment`, `member_role`, `resources`, and an
 optional `tick_millis` (zero means the five-second default; otherwise 100 to
 300000). Managed placement can create region-bound hosts and retained volumes

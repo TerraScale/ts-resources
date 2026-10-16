@@ -15,13 +15,6 @@ Use one runtime substrate for every workload class:
    digest-pinned OCI containers through the same containerd/runc substrate on
    dedicated tenant-worker nodes.
 
-OCI containers are the only workload runtime. The earlier virtualized-isolation
-research and the WebAssembly component runtime were retired by owner
-decision on 2026-08-24; [ADR 0031](../adr/0031-run-tenant-workloads-as-unprivileged-oci-containers.md)
-records the decision, and the repository retired-runtime policy tests block
-the return of virtualized or WebAssembly tenant tiers in living source and
-documentation.
-
 The initial customer contract is:
 
 - unprivileged OCI container image, admitted only by immutable digest from
@@ -73,8 +66,5 @@ requirements.
 - One lifecycle substrate (containerd/runc) serves trusted, tenant, and CI
   containers, so runtime hardening review concentrates on a single pinned
   stack.
-- Tenant admission, scheduling, density measurement, and autoscaling operate
-  on OCI images and their resource profiles; no per-language runtime or
-  component compilation step exists.
 - Rollback, staging, and digest verification reuse the trusted-container
   artifact machinery with a separate tenant registry namespace and policy.

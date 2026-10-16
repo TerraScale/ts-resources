@@ -14,7 +14,6 @@ Safe disabled gates are valuable: for example, the runtime rejects plaintext or 
 - A real R3 regional runtime, provider actuators with persisted intent and provider-truth recovery, and qualified systemd/containerd, storage, and TerraBase administrative boundaries.
 - Production ingress and private RPC listener policy with workload mTLS and peer identity enforcement. Public REST, WebSocket, and SSE remain separate from private MagicOnion.
 - Application-consistent object backup, object-store and retained-volume recovery, clean-room DR, operational observability, alerts, and retained runbook evidence.
-- The L4 OCI/ARM destructive boundary lane, including provider APIs, block storage, load balancer, KMS/Vault, and recovery tests.
 
 The source-level R3 journal requirement in [NatsOperationJournalStore](../../../../TerraScale.Orchestrator/src/TerraScale.Orchestrator/Messaging/NatsOperationJournalStore.cs) and the development PKI in [DevelopmentPki](../../../../TerraScale.Orchestrator/src/TerraScale.Orchestrator/Development/DevelopmentPki.cs) are building blocks, not completed versions of those gates.
 
