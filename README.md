@@ -50,6 +50,7 @@ effect. Files in `archive/` are historical references.
 
 `sources/<repository>/` and `archive/<repository>/` preserve original paths.
 These are snapshots of local files, not automatically synchronized mirrors.
+Local hosting adaptations are labelled in the manifest; see [HOSTING.md](HOSTING.md).
 The original repositories are unchanged. Application code, dependencies,
 build outputs, test fixtures, and agent instruction files are excluded;
 the Ku privacy page source is included because it contains the policy.

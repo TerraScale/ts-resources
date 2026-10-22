@@ -21409,15 +21409,15 @@ N/A: gap
 
 Work: `FW-ADR-06`
 
-### REQ-S7-ADR-FLY-01
+### REQ-S7-ADR-ARCHIVED-HOSTING-01
 
 SourceAnchor: `G0-20260805-0a2fe859ee1d8c6e345a10cb48be35e419978ebe8315d24a13515df8357c95b9 > # TerraScale Production DBaaS Goal > ## Product Scope > ### 7. Production engineering`
 
-RequirementID: `REQ-S7-ADR-FLY-01`
+RequirementID: `REQ-S7-ADR-ARCHIVED-HOSTING-01`
 
-RequirementText: Analyze relevant Fly.io patterns and adopt only those fitting TerraScale constraints.
+RequirementText: Archived hosting-provider pattern analysis; this local adaptation retires the provider-specific requirement.
 
-ContentLocator: `Fly.io`
+ContentLocator: Retired hosting-provider source; see manifest adaptation note.
 
 Owner: Architecture steward
 
@@ -21437,7 +21437,7 @@ MCP: N/A[production engineering control;MCP architecture authority;no MCP tool o
 
 Auth: Named production-control owner with least-privilege access and audit.
 
-AT: Planned artifact: ADR architectural-fit fly 01 decision receipt; Work contract: `FW-ADR-06`; Evidence: gap.
+AT: Planned artifact: archived hosting-provider architectural-fit decision receipt; Work contract: `FW-ADR-06`; Evidence: gap.
 
 Evidence: gap
 
@@ -23553,7 +23553,7 @@ Independent verifier: Independent report review before P0-12 import.
 | FW-SEC-06 | P6 | Security engineering owner: `TerraScale.Orchestrator/docs/planning/fw-sec-06.md`; Documentation receipt owner: `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-6/fw-sec-06-receipt.md` | All other paths and every secret location | Security control receipt first, Documentation last | Threat-model, scan, SBOM/provenance, secret, patch, privacy, audit, and access-review digest | Security engineering controls, not a public security certification claim | P0-05, P0-06, FW-OBS-06; security, privacy, and release authority; compromise and compliance risk | Signed threat model; real SAST, DAST, dependency and container scan receipts; redacted secret-control proof; patch, privacy, audit, and access-review evidence; vulnerability-response and secret-recovery runbooks | Independent security and privacy reviewer |
 | FW-OPS-06 | P6 | SRE and runtime owner: `TerraScale.Orchestrator/docs/planning/fw-ops-06.md`; Documentation receipt owner: `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-6/fw-ops-06-receipt.md` | All other paths | Approved SLO and failure-domain design first, measured scenario evidence second, Documentation last | HA, capacity, load/soak, chaos, recovery, incident, escalation, ownership, SLO/error-budget, and DR exercise digest | Production operability and resilience, not an unsupported availability or recovery claim | P0-05, P0-06, FW-OBS-06, FW-REC-03; operations and recovery authority; outage and data-loss risk | Production-like load/soak and chaos results, destructive recovery drill, SLO/error-budget decision, incident/escalation exercise, capacity review, and DR cutover/rollback runbooks | Independent SRE and DR reviewer |
 | FW-DELIVERY-06 | P6 | Release engineering owner: `TerraScale.Orchestrator/docs/planning/fw-delivery-06.md`; Documentation receipt owner: `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-6/fw-delivery-06-receipt.md` | Retired infrastructure stubs, unreviewed production mutation, and every secret location | Reproducible pipeline and environment-gate receipt first, Documentation last | Build, test, migration, deployment, progressive delivery, rollback, promotion, configuration, infrastructure-as-code, and artifact receipt | Reproducible delivery, not a production-control-plane replacement outside TerraScale.Orchestrator | P0-05, P0-06, FW-SEC-06; release, security, and operations authority; unsafe or irrecoverable release risk | Rebuilt artifact digest, real pipeline results, migration rehearsal, progressive-delivery and rollback exercise, promotion/configuration review, IaC plan/apply receipt, and release rollback runbook | Independent release and infrastructure reviewer |
-| FW-ADR-06 | P6 | Architecture steward: `TerraScale.Orchestrator/docs/planning/fw-adr-06.md`; Documentation analysis owner: `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-6/fw-adr-06-analysis.md` | Product implementation paths and unapproved provider adoption | Comparative source capture first, architecture review second, Documentation analysis last | ADR register and Vercel, Fly.io, Turso, and Neon pattern-analysis receipt with explicit fit decision | Architecture decision and relevant-pattern analysis, not vendor endorsement or automatic adoption | P0-04A, P0-05; product, architecture, compliance, security, and operations authority; architecture-mismatch risk | Source-cited analyses, ADR approval record, and fit assessment against TerraScale product, architecture, compliance, and operational constraints; reversal plan for rejected or reverted pattern | Independent architecture and compliance reviewer |
+| FW-ADR-06 | P6 | Architecture steward: `TerraScale.Orchestrator/docs/planning/fw-adr-06.md`; Documentation analysis owner: `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-6/fw-adr-06-analysis.md` | Product implementation paths and unapproved provider adoption | Comparative source capture first, architecture review second, Documentation analysis last | ADR register and Vercel, Turso, and Neon pattern-analysis receipt with explicit fit decision | Architecture decision and relevant-pattern analysis, not vendor endorsement or automatic adoption | P0-04A, P0-05; product, architecture, compliance, security, and operations authority; architecture-mismatch risk | Source-cited analyses, ADR approval record, and fit assessment against TerraScale product, architecture, compliance, and operational constraints; reversal plan for rejected or reverted pattern | Independent architecture and compliance reviewer |
 | FW-DOCS-06 | P6 | Documentation owner: `Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-6/fw-docs-06.md` | All product implementation paths and every secret location | Accepted workflow and evidence receipts first, audience documentation last | Customer, SDK, API/MCP, operator, security, billing, support, on-call, recovery, release, and local-contributor documentation receipt | Audience-specific operational documentation, not evidence substitution or unapproved product claim | FW-SEC-06, FW-OPS-06, FW-DELIVERY-06, FW-ADR-06, P0-11; product, security, operations, support, billing, and legal authority; unsafe or misleading guidance risk | Fresh-reader task completion for each audience, redaction review, public-claim review, and recovery/release/support documentation exercises; documentation rollback procedure | Independent documentation and domain reviewers |
 ## Scoped atomic governing records
 

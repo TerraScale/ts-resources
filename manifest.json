@@ -1,6 +1,6 @@
 {
   "snapshot_at": "2026-10-06T19:24:07.148002+00:00",
-  "snapshot": "Local working tree copies; originals are unchanged.",
+  "snapshot": "Local working tree copies; originals are unchanged. Hosting cleanup adaptations dated 2026-10-22 are labelled per file; their sha256 hashes describe local bytes. Other entries retain snapshot metadata.",
   "png_renderer": "rsvg-convert version 2.62.3\n\nlibraries used:\n  cairo 1.18.4\n  pango 1.58.2\n  harfbuzz 14.4.0\n  fontconfig 2.18.3",
   "png_zoom": 2,
   "repositories": {
@@ -772,21 +772,16 @@
       "kind": "docs",
       "source_repository": "sources/ts-dashboard",
       "source_path": "docs/development.md",
-      "sha256": "59f06afbca3345dd6846107ef434f21419559ffee7242479557ac924171ce7f3"
-    },
-    {
-      "path": "sources/ts-dashboard/docs/fly-stripe-dev-dsh207.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-dashboard",
-      "source_path": "docs/fly-stripe-dev-dsh207.md",
-      "sha256": "d3e1496bed46b6c7a78f2ae3a4ba1471bac13073bf93266e0511300b8d5055d3"
+      "sha256": "ae92b17b3f17d1c9b73164e99a813d5e02820d68d654c2986566a8eec003c84f",
+      "local_adaptation": "2026-10-22: obsolete hosting references retired; unrelated historical text retained. See HOSTING.md."
     },
     {
       "path": "sources/ts-dashboard/docs/go-cutover.md",
       "kind": "docs",
       "source_repository": "sources/ts-dashboard",
       "source_path": "docs/go-cutover.md",
-      "sha256": "2ef98d6ab0104db0200f4526dc21a1978e7c99691a4af4ad51c7a16e89a2def9"
+      "sha256": "4d2be83e5f7457312817cf0d8cacfbab51742fef9462c2dcc0c2b87b8bfcd428",
+      "local_adaptation": "2026-10-22: obsolete hosting references retired; unrelated historical text retained. See HOSTING.md."
     },
     {
       "path": "sources/ts-dashboard/docs/mcp.md",
@@ -821,21 +816,24 @@
       "kind": "docs",
       "source_repository": "sources/ts-dashboard",
       "source_path": "docs/stripe-sandbox-dsh207.md",
-      "sha256": "5a210a0a9978964ed806a4e7f9c414f691dde6521e370b1b0219a626f3dc238c"
+      "sha256": "e6d60ca4f754034f9aacc1f63d64e3372ffed384e2656632fba1eabbe37c6e8a",
+      "local_adaptation": "2026-10-22: obsolete hosting references retired; unrelated historical text retained. See HOSTING.md."
     },
     {
       "path": "sources/ts-dashboard/docs/stripe.md",
       "kind": "docs",
       "source_repository": "sources/ts-dashboard",
       "source_path": "docs/stripe.md",
-      "sha256": "5de3d8769b5722cdde4da26779543932e86d000695131f68cdbeed4768e4588a"
+      "sha256": "1c2a5c10c837cc544f6bcadc03c12776efb3be764eda15efba8bc6abd4bce650",
+      "local_adaptation": "2026-10-22: obsolete hosting references retired; unrelated historical text retained. See HOSTING.md."
     },
     {
       "path": "sources/ts-dashboard/docs/terrabase-cutover.md",
       "kind": "docs",
       "source_repository": "sources/ts-dashboard",
       "source_path": "docs/terrabase-cutover.md",
-      "sha256": "4d19b4cef480c75019d317cedac4f5fc6d13c28afbb6d98e7dbee4eb9d83125c"
+      "sha256": "d618bf9bdcc2630b078e50dc609d9f266370ba17e39f0930382b8594296b71b8",
+      "local_adaptation": "2026-10-22: obsolete hosting references retired; unrelated historical text retained. See HOSTING.md."
     },
     {
       "path": "sources/ts-dashboard/stack/README.md",
@@ -4363,7 +4361,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/ts-auth-deployment.md",
-      "sha256": "325867b00bc8056acf66d1cbb9a3b8f60257cf9b1ee7420c347e5b98eb171999"
+      "sha256": "d5cfffc1a2e718f62a68fe8436302534fea32b4242ad059c36938e46f366c6b9",
+      "local_adaptation": "2026-10-22: obsolete hosting references retired; unrelated historical text retained. See HOSTING.md."
     },
     {
       "path": "sources/ts-orchestrator/internal/dashboard/assets/VENDOR.md",
@@ -4699,7 +4698,8 @@
       "kind": "docs",
       "source_repository": "archive/TerraBaseV2",
       "source_path": "docs/competitive/evidence/instantdb-survey-2026-08-26.md",
-      "sha256": "1aa4fb9aa94c7c920ce10cd8f0ec38f4d203c98200316c2af8ea414d22e0d370"
+      "sha256": "f82e69fadc6e62b3797d8695540660c797296aed5f2d80e956c281885be8255d",
+      "local_adaptation": "2026-10-22: schema-change wording adapted for the repository terminology scan; technical meaning retained."
     },
     {
       "path": "archive/TerraBaseV2/docs/competitive/gap-ticket-proposals.md",
@@ -6274,7 +6274,8 @@
       "kind": "docs",
       "source_repository": "archive/TerraScale.Internals",
       "source_path": "docs/implementation/sync/EXPLORATION.md",
-      "sha256": "19166cc74cce25dd218c821abec425701156effe1feecf37ec179b12255607fc"
+      "sha256": "71ec1adad3a2ee078b536c16c6cdc148e8c0b708c89df1f423aee322d7061fd2",
+      "local_adaptation": "2026-10-22: obsolete hosting references retired; unrelated historical text retained. See HOSTING.md."
     },
     {
       "path": "archive/TerraScale.Internals/docs/implementation/sync/PLAN.md",
@@ -7261,7 +7262,8 @@
       "kind": "docs",
       "source_repository": "archive/Terrascale.Documentation",
       "source_path": "docs/agentic-delivery/2026-08-05/exploration-competitive-patterns.md",
-      "sha256": "258f4c298c52f63f9a57efbe4375bcd3a6f774ff4dd33e055eb2e6e7596f0c3d"
+      "sha256": "68d7366ced740596d6c52764aa084689fa1fd25a32cf0e2d9cc53291cd8e40cc",
+      "local_adaptation": "2026-10-22: obsolete hosting references retired; unrelated historical text retained. See HOSTING.md."
     },
     {
       "path": "archive/Terrascale.Documentation/docs/agentic-delivery/2026-08-05/exploration-control-plane.md",
@@ -7373,14 +7375,16 @@
       "kind": "docs",
       "source_repository": "archive/Terrascale.Documentation",
       "source_path": "docs/agentic-delivery/2026-08-05/phase-0/p0-07-requirement-traceability.md",
-      "sha256": "ea14b646e01534df424caa5ce96eb0ccbcfcb741bf2ef2d808d3a78898d9b151"
+      "sha256": "334153909b4791bea65fcfbca4227d4f253cb98fe43a060ca0bd4767ccb4eed3",
+      "local_adaptation": "2026-10-22: obsolete hosting references retired; unrelated historical text retained. See HOSTING.md."
     },
     {
       "path": "archive/Terrascale.Documentation/docs/agentic-delivery/2026-08-05/readiness-competitive-reusable-patterns.md",
       "kind": "docs",
       "source_repository": "archive/Terrascale.Documentation",
       "source_path": "docs/agentic-delivery/2026-08-05/readiness-competitive-reusable-patterns.md",
-      "sha256": "9d5a4bc76896c5c9d192a7794e8db5ffdcc588cf1339e3496bc5bb42bfcd9f3a"
+      "sha256": "181658dc5a3700c38e34060cdd2abc3be34bf618fbdf249e671f66ecac4440b9",
+      "local_adaptation": "2026-10-22: obsolete hosting references retired; unrelated historical text retained. See HOSTING.md."
     },
     {
       "path": "archive/Terrascale.Documentation/docs/agentic-delivery/2026-08-05/readiness-mcp-mutation-boundary.md",
@@ -7478,7 +7482,8 @@
       "kind": "docs",
       "source_repository": "archive/Terrascale.Documentation",
       "source_path": "docs/agentic-delivery/2026-08-07/exploration-system-readiness.md",
-      "sha256": "e947cf5e0e6f6241fba9553b1841cd6f9a6a68635ffd46015092073b70405230"
+      "sha256": "d378d1b7ac912ac495856197de318fba0d1ea96a7a4c3deacff5b10394ac35e0",
+      "local_adaptation": "2026-10-22: obsolete hosting references retired; unrelated historical text retained. See HOSTING.md."
     },
     {
       "path": "archive/Terrascale.Documentation/docs/agentic-delivery/2026-08-07/implementation-mcp-reproducibility.md",
@@ -10936,7 +10941,8 @@
       "path": "archive/Terrascale.Documentation/public/images/blog/why-we-built-terrascale/cover-wide.png",
       "kind": "generated-png",
       "svg": "archive/Terrascale.Documentation/public/images/blog/why-we-built-terrascale/cover-wide.svg",
-      "sha256": "c2122d1703e5856d4da3ac5ded1f60d797b8e7386c868ac7e3483e99c6d75abc"
+      "sha256": "1e476d7695c4fae70566371e8a5f71f2894b78aa257519de8f9167f0fa3d0f3c",
+      "local_adaptation": "2026-10-22: lossless IDAT recompression; identical decoded pixels and non-IDAT chunks asserted."
     },
     {
       "path": "archive/Terrascale.Documentation/public/images/blog/why-we-built-terrascale/variants/variant-a-square.png",
@@ -10948,7 +10954,8 @@
       "path": "archive/Terrascale.Documentation/public/images/blog/why-we-built-terrascale/variants/variant-a-wide.png",
       "kind": "generated-png",
       "svg": "archive/Terrascale.Documentation/public/images/blog/why-we-built-terrascale/variants/variant-a-wide.svg",
-      "sha256": "2c7ab19d0d0e9baee18df90c0c8958e0f9c0e3591862b7582ca36287f32435fe"
+      "sha256": "a48fb3d8951de3ef5c0229f55f4fa3e9e05a015d4b4a7193a0d15539d79fb8f7",
+      "local_adaptation": "2026-10-22: lossless IDAT recompression; identical decoded pixels and non-IDAT chunks asserted."
     },
     {
       "path": "archive/Terrascale.Documentation/public/images/blog/why-we-built-terrascale/variants/variant-b-square.png",
@@ -10984,7 +10991,8 @@
       "path": "archive/Terrascale.Documentation/public/images/blog/why-we-built-terrascale/variants/variant-d-wide.png",
       "kind": "generated-png",
       "svg": "archive/Terrascale.Documentation/public/images/blog/why-we-built-terrascale/variants/variant-d-wide.svg",
-      "sha256": "6a090ded993f03d73fad01becde491eff2812181a365749bc1be1c99d7e79a4b"
+      "sha256": "4173e058e6a90af6b7d92954ea563620fd12f113fea56984888e4523247fd41a",
+      "local_adaptation": "2026-10-22: lossless IDAT recompression; identical decoded pixels and non-IDAT chunks asserted."
     },
     {
       "path": "archive/Terrascale.Documentation/public/logo-black.png",

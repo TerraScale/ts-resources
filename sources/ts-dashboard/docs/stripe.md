@@ -69,11 +69,10 @@ enabled only when `STRIPE_MODE=test` until the staging gate in
 | `TS_BILLING_DATABASE_ID` | TerraBase database name (lowercase letters, digits, dashes) |
 | `TS_API_BASE_URL`, `TS_API_ACCESS_TOKEN` | ts-go endpoint and a token that can read and write that database |
 
-Store the key, signing secret, and TerraBase token as Fly secrets, never in `fly.toml`:
-
-```sh
-fly secrets import --stage -a <app> < /private/path/stripe.env
-```
+Store the key, signing secret, and TerraBase token in OCI Vault. Production
+workloads receive them through instance principal under ts-orch; do not put
+values in configuration files or command arguments. See
+[HOSTING.md](../../../HOSTING.md).
 
 A restricted key needs write access to Customers, Checkout Sessions, Customer
 portal, Subscriptions, and Subscription schedules, and read access to Invoices

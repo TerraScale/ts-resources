@@ -18,7 +18,7 @@ Audits found broad existing foundations across Platform, Dashboard, and MCP. The
 
 ## Competitive design guidance
 
-Official Vercel, Fly, Turso, and Neon documentation was researched. Its patterns are design guidance only, not a claim that TerraScale implements them. The applicable guidance is:
+Official Vercel, Turso, and Neon documentation was researched. Its patterns are design guidance only, not a claim that TerraScale implements them. The applicable guidance is:
 
 - Keep public typed APIs separate from MCP adapters.
 - Model operation state separately from readiness state.

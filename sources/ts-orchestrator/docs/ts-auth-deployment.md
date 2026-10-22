@@ -268,8 +268,8 @@ and create projects and databases.
 changes the cell, the Vault or TerraBase.** Blast radius: one controller NSG
 rule, the gru-1 Vault (three generated keys, then four from bootstrap), the
 production TerraBase on `gru-1-db-1` (one organization, two projects, two
-databases and two API keys, and with phase B its ownership), the Fly app
-`ts-dashboard` (four staged secrets) and the three controllers (`host.json`,
+databases and two API keys, and with phase B its ownership), the archived
+`ts-dashboard` hosting handoff and the three controllers (`host.json`,
 one env file each, one ts-auth replica on two of them).
 
 ### Prerequisites
@@ -457,25 +457,10 @@ A rerun prints `"steps":[]`. If the person has not signed in, it stops with
 with that address (for example on the dashboard), then rerun`; sign in and
 rerun.
 
-Dashboard handoff, Fly app `ts-dashboard`. It sets `TERRABASE_URL`
-(`https://gru.api.terrascale.tech`), `TERRABASE_PROJECT_ID` (from the Vault),
-`TERRABASE_DATABASE` (`dashboard`) and `TERRABASE_API_KEY` (from the Vault).
-
-```sh
-# Without a token: reads only the project ID, prints the three non-secret
-# settings and the Vault secret that holds the key.
-terrascale-orchestrator ouroboros fly-secrets --plan "$PLAN"
-# Expect {"app":"ts-dashboard","settings":{...},"api_key_secret":"gru-1-ts-dashboard-terrabase-api-key","staged":false}
-
-# With a token: reads both secrets and runs
-# flyctl secrets import --app ts-dashboard --stage, values on stdin.
-FLY_API_TOKEN=<token> terrascale-orchestrator ouroboros fly-secrets --plan "$PLAN"
-# Expect the same line with "staged":true
-```
-
-No secret is in argv, output or logs. Staged secrets take effect at the
-dashboard's next deploy (`fly deploy` or `fly secrets deploy`), which is the
-TS-472 cutover.
+The former hosted dashboard handoff is archived. Current production hosting
+is OCI gru under ts-orch, with GHCR images and OCI Vault delivery through
+instance principal; see [HOSTING.md](../../../HOSTING.md). This historical
+runbook does not prove a current dashboard deployment or secret binding.
 
 ## Qualification
 

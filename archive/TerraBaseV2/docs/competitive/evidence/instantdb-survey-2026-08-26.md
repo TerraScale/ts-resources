@@ -111,7 +111,7 @@ row; it is recorded here once as survey context.
 - Rules are boolean expressions in CEL, declared per namespace under
   `allow`, governing `view`, `create`, `update`, `delete`; unset rules
   "evaluate to true" by default; `$default` flips defaults; field-level
-  rules via `fields`; `attrs` namespace gates on-the-fly schema changes.
+  rules via `fields`; `attrs` namespace gates dynamic schema changes.
 - Vocabulary: `data`, `newData`, `ref()` relation traversal, `bind`
   aliases, `ruleParams`, `request.time/origin/ip/modifiedFields`.
 - Enforcement is server-side for reads and writes: every object matching

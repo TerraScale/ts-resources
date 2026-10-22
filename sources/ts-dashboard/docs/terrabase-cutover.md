@@ -1,5 +1,8 @@
 # TerraBase state cutover
 
+Locally adapted historical checklist; verify current service contracts before use.
+Hosting: [HOSTING.md](../../../HOSTING.md).
+
 COS-run checklist for moving dashboard state from the in-memory demo to
 TerraBase (TS-472). At runtime the dashboard uses only the ts-go Documents v1
 client against one dedicated database. It never calls the TerraBase
@@ -16,25 +19,19 @@ Management API; only the operator `import-org` command below reads it.
 Record the project ID and the key. Never put the key in git, logs or a
 dashboard document.
 
-## 2. Set the Fly secrets
+## 2. Configure OCI Vault delivery
 
 All four TerraBase variables must be set together; a partial set fails startup.
 With none set, the dashboard keeps the in-memory demo store, so merging this
 change does not alter a deployment without them.
 
-```sh
-fly secrets set --stage \
-  TERRABASE_URL='https://<terrabase-origin>' \
-  TERRABASE_API_KEY='tb_<key-from-vault>' \
-  TERRABASE_PROJECT_ID='<ts-dashboard-project-id>' \
-  TERRABASE_DATABASE='dashboard' \
-  TS_DASHBOARD_CSRF_SECRET='<stable secret, at least 32 bytes>'
-```
-
-`ts-orch ouroboros fly-secrets` stages the `TERRABASE_*` values the same way.
-`TS_DASHBOARD_PRODUCTION_DEMO=1` in `fly.toml` may stay: the TerraBase
-variables take precedence over it. Billing stays disabled until the Stripe
-variables are set; Stripe bindings live in the same `dashboard` database.
+The settings are `TERRABASE_URL`, `TERRABASE_API_KEY`,
+`TERRABASE_PROJECT_ID`, `TERRABASE_DATABASE` and a stable
+`TS_DASHBOARD_CSRF_SECRET` of at least 32 bytes. Secrets belong in OCI Vault
+and are delivered through instance principal by ts-orch; never place values
+in command arguments. The former hosted staging command is retired.
+Billing stays disabled until the Stripe settings are configured; Stripe
+bindings live in the same `dashboard` database.
 
 ## 3. Import the organization
 
@@ -59,8 +56,10 @@ The command is idempotent:
 
 ## 4. Deploy and verify
 
+Deploy the reviewed GHCR image through ts-orch on OCI gru, preserving the
+existing release and activation approvals. Then check readiness:
+
 ```sh
-fly deploy
 curl -s https://<dashboard>/health/ready
 ```
 
@@ -70,14 +69,9 @@ the `terrascale` organization lists `ts-auth` and `ts-dashboard`.
 
 ## 5. Rollback
 
-Unset the secrets, or redeploy the previous image; both return to the memory
-store:
-
-```sh
-fly secrets unset TERRABASE_URL TERRABASE_API_KEY TERRABASE_PROJECT_ID TERRABASE_DATABASE
-# or
-fly deploy --image <previous-image-ref>
-```
+Redeploy the previously reviewed GHCR image through ts-orch, retaining its
+OCI Vault bindings. Removing TerraBase settings returns to the memory store
+and makes durable state unavailable to the dashboard; it is not data recovery.
 
 Keep the `dashboard` database and its key: dropping collections or rotating
 the key strands the migrated state. Rerun the readiness check afterwards.
