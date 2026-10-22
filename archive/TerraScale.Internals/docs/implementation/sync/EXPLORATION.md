@@ -249,10 +249,6 @@ versioned query sets, exact transition continuity, optimistic-base replay,
 single-flight work, and bounded backpressure. TerraScale uses its own authority
 model, storage layout, protocol, types, names, and implementation.
 
-Fly.io documentation informed closest-edge ingress, private backhaul, and the
-requirement that a routing component choose the destination before the
-destination completes a WebSocket upgrade.
-
 Microsoft’s Blazor/SignalR documentation informed circuit lifetime, WebSocket
 preference, sticky sessions, retained disconnected circuits, and negotiated
 stateful reconnect. Vinext behavior was verified against the installed package

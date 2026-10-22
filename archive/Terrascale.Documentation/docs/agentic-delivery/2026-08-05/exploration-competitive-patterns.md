@@ -5,7 +5,6 @@ Status: planning and evidence record, not production-ready. Sources were accesse
 ## External evidence
 
 - [Vercel MCP](https://vercel.com/docs/agent-resources/vercel-mcp) documents remote OAuth, user-scoped access, and human confirmation.
-- [Fly Machines API](https://fly.io/docs/machines/api/) and [Volumes resource](https://fly.io/docs/machines/api/volumes-resource/) document managed machine and volume operations; Fly also documents encrypted daily snapshots with retention.
 - [Turso branching](https://docs.turso.tech/features/branching) and [point-in-time recovery](https://docs.turso.tech/features/point-in-time-recovery) describe branches and recovery as a new database that can be validated, cut over, and cleaned up.
 - [Neon branching](https://neon.com/docs/guides/branching-intro) and its [restore-candidate changelog](https://neon.com/docs/changelog/2026-02-06) show lifecycle patterns alongside billing-aligned API and MCP delivery.
 - [Polar sandbox](https://polar.sh/docs/integrate/sandbox) and [Polar MCP](https://polar.sh/docs/integrate/mcp) describe separately scoped sandbox user, organization, API, and MCP environments.

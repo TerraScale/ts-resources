@@ -64,8 +64,8 @@ production environments.
 
 `TS_DASHBOARD_CSRF_SECRET` (at least 32 bytes) keys the CSRF tokens. Every
 machine serving one deployment must share it, so it is required outside the
-demo; on Fly.io set it as an app secret. When the demo runs without it, each
-process draws a random key.
+demo; production delivery uses OCI Vault through instance principal. When the
+demo runs without it, each process draws a random key.
 
 Use `make serve PORT=5481` for a plain HTTP server without Air or asset
 watching.
@@ -168,13 +168,11 @@ while preserving the download exit status.
 
 The MCP endpoint and its tool conventions are described in [mcp.md](mcp.md).
 
-## Fly runtime
+## Hosted runtime
 
-`fly.toml` configures the production app for one warm machine. Its process-local
-accounts and sessions must remain on one machine and do not survive restarts.
-`fly.preview.toml` configures one machine per preview and allows it to stop
-while idle, so preview accounts are reset when it wakes. Both configurations
-probe `GET /health/ready` and set `TS_DASHBOARD_PRODUCTION_DEMO=1`.
+The former hosted infrastructure configuration is archived. Current hosting
+is described in [HOSTING.md](../../../HOSTING.md). Process-memory accounts
+and sessions do not survive restarts; use the TerraBase backend below.
 
 ### State backend
 
@@ -212,7 +210,7 @@ reports handler panics (then lets `net/http` abort the response as before),
 every 5xx response grouped by its route, and every `slog` record at error
 level, with an `error` attribute as the exception. Events carry the build
 version as the release and `SENTRY_ENVIRONMENT` as the environment, which
-defaults to `production` on Fly.io and `development` elsewhere. Request
+must be set explicitly for hosted environments. Request
 bodies, query strings, cookies and the signed-in user are never sent (the
 CLI approval URL carries its `user_code` in the query, also nested in
 `returnTo`), and request headers keep their values only for `Accept`,
@@ -225,16 +223,11 @@ Content-Security-Policy so browsers post violations to GlitchTip's security
 endpoint. There is no `report-to` directive: GlitchTip only accepts the
 legacy `application/csp-report` body, not the Reporting API's.
 
-`fly.toml` and `fly.preview.toml` set both; previews report as the `preview`
-environment.
-
 The e2e workflow runs lint and the full Go browser and SDK suite on every pull
-request and push to `main`. The production and preview workflows build the
-image on Fly's remote builder (`fly deploy --remote-only`), so they need no Go
-or Node.js toolchain on the runner; the Dockerfile keeps the Go build and npm
-caches in BuildKit cache mounts. Production deploys one warm machine and the
-preview workflow deploys one machine per pull request. No live deployment is
-required for local development or tests.
+request and push to `main`. The former hosted build and preview workflow
+instructions are archived. The Dockerfile keeps the Go build and npm caches
+in BuildKit cache mounts. No live deployment is required for local
+development or tests.
 
 ## Public device authorization origin
 
@@ -243,8 +236,7 @@ Set `DASHBOARD_PUBLIC_URL` to the dashboard's public HTTP(S) origin, such as
 credentials, queries, and fragments are rejected at startup. CLI verification
 links use this configured origin regardless of the request's Host header.
 
-On Fly, an unset value defaults to `https://$FLY_APP_NAME.fly.dev`, which also
-keeps PR previews tied to their own app. Without either setting, device-code
+Set the public origin explicitly for hosted deployments. Without it, device-code
 issuance accepts only a loopback Host for local development. Pending grants are
 limited to ten per client address (using the same trusted proxy header and IPv6
 /64 grouping as password throttling) and 1,000 per demo process. An approved

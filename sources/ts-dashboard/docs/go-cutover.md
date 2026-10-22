@@ -24,8 +24,8 @@ builds do not use a sibling C# or SDK checkout. Multiple CSS source files under
 
 The supported account mode is `TS_DASHBOARD_PRODUCTION_DEMO=1`. It is required
 by startup, uses process-memory accounts and sessions, and resets them when the
-process restarts. Production is configured to keep one Fly machine warm;
-preview machines may stop while idle and start with an empty store. A cutover
+process restarts. The former hosted production and preview configuration is
+archived; these process-memory limitations remain relevant to the demo. A cutover
 therefore forces a fresh login and account state in the Go runtime. No C# to Go
 account or session migration is part of this work.
 
@@ -86,12 +86,9 @@ source/config is identified by the 58-file manifest at
 is `a433ffeee760bc273e39615010663f7f0dc385acc4910bc8d1b3fdde51809b6f`; the
 170,288-byte CSS bundle SHA-256 is
 `81209a05ef143ad74b52a3c62334783cf678e6755af8fd41cc9ada7043f15497`.
-Static Fly configuration/workflow checks passed for the production target of one 512 MB,
-2 shared CPU machine with 900 MB swap and one 1 GB volume, and preview at one
-256 MB, 1 CPU machine with no swap or volume; the future three-machine
-production setup remains commented out. The preview at
+The former hosted configuration/workflow checks are archived. The preview at
 <http://mariogk-dev.tail057f.ts.net:5624> passed health, login, CSS, and HMR SSE
-checks. No live Fly app was changed. Operator logs are under `/tmp`:
+checks. No live hosted app was changed. Operator logs are under `/tmp`:
 `dsh198-final-generate-3.log`, `dsh198-final-css.log`,
 `dsh198-final-check-generated.log`, `dsh198-final-lint-3.log`,
 `dsh198-final-{test-fast-2,test-slow-2,build-5}.log`
@@ -100,31 +97,18 @@ and `dsh198-preview-final-*`. The final desktop capture covered 27 states at
 horizontal overflow; the expected public not-found response was the only
 reported 404. Capture data is in
 `/tmp/dsh-198-cutover-final/go/final-capture.json`. Independent image-pair
-review compared 27 full-page Fly/Go desktop pairs at 1440×900 and found no
+review compared 27 full-page legacy/Go desktop pairs at 1440×900 and found no
 concrete visual defect. Its manifest is
 `/tmp/dsh-198-cutover-final/pair-manifest.json` (SHA-256
-`2ba9d1a8d1a735861cc0b704d3d6aaef1f77edea50c907f95f48299d04591931`). The Fly
+`2ba9d1a8d1a735861cc0b704d3d6aaef1f77edea50c907f95f48299d04591931`). The legacy
 30-day Usage selection is limited by its seven days of retained telemetry;
 Go's 30-day chart uses labeled demo samples, so the values are not comparable
 provider readings. Do not infer provider telemetry or non-demo integration
 success from demo-mode results.
 
-The committed production Fly configuration targets one warm machine: shared CPU 2x,
-512 MB RAM, 900 MB swap, and one 1 GB Fly volume per machine. Auto-stop is off,
-auto-start is on, and `min_machines_running` is 1. The deployment workflow sets
-the active count to one and verifies the deployment. The volume is local to its
-machine and does not persist the Go process-memory accounts or sessions.
-
-The production workflow contains a commented future three-machine setup. Keep
-it disabled until account and session state are shared. Each extra machine
-would have its own volume; per-machine volumes do not share state.
-
-PR previews use one 256 MB, shared CPU 1x machine, with auto-stop enabled,
-auto-start enabled, `min_machines_running = 0`, and no configured swap or
-volume. The preview workflow scales to one machine and checks the count and
-absence of volumes. This is a workflow check, not a Fly-wide cap: manual or API
-changes outside the workflow can change the machine count. A stopped preview
-starts with empty process memory.
+The former machine sizing, volume, scaling and preview workflow instructions
+are archived. See [HOSTING.md](../../../HOSTING.md) for current hosting.
+Process-memory accounts and sessions do not persist across restarts.
 
 ## Reproduce locally
 

@@ -31,7 +31,7 @@ The read-only run on 2026-09-25 found all six price/product checks passing,
 the portal active, one matching enabled webhook, and no customer with multiple
 current subscriptions among 6 active and 5 trialing subscriptions. The
 webhook lacks at least one required invoice event. The configured public
-origin is a Tailscale development host; it is not the Fly staging app.
+origin is a Tailscale development host, separate from the archived staging app.
 Per-endpoint delivery success must be checked in Stripe Workbench because the
 public event list does not prove HTTP delivery to a particular endpoint.
 
@@ -52,13 +52,10 @@ which endpoint is pending.
 
 `origin/main` currently rejects non-demo startup in
 `internal/platform/config/config.go` and `internal/app/app.go`. Its account and
-session store is process memory. `fly.toml` forces
-`TS_DASHBOARD_PRODUCTION_DEMO=1`, which disables Stripe. The existing Go
-runtime therefore cannot run the live Stripe path on
-`terrascale-dashboard-dev` or prove recovery after restart. The local Fly CLI
-has no access token, so the dev app could not be inspected or changed.
-The user confirmed that the identity/database integration still needs to be
-built and that Fly access will not be available in this workspace. The
+session store is process memory. The archived hosted configuration forced
+`TS_DASHBOARD_PRODUCTION_DEMO=1`, which disables Stripe. That runtime could
+not run the live Stripe path or prove recovery after restart. The user
+confirmed that the identity/database integration still needed to be built. The
 `TerraScale/ts-dotnet` SDK exists in Forgejo and includes a ts-auth client, but
 the current Go dashboard does not use that C# SDK and has no durable account
 adapter. Implementing that integration requires a separate runtime design.
@@ -70,5 +67,6 @@ failure, upgrades, downgrades, Free, cancellation, renewal, and trial expiry
 with Stripe test clocks against that app. This document records current
 evidence; local demo tests do not satisfy the staging gate.
 
-The operator steps for the dev app are in
-[`fly-stripe-dev-dsh207.md`](fly-stripe-dev-dsh207.md).
+The former hosted dev-app runbook is retired. Current hosting is described in
+[HOSTING.md](../../../HOSTING.md); these historical audit results do not prove
+a current Stripe staging deployment.
