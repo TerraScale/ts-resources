@@ -590,7 +590,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-auth",
       "source_path": "README.md",
-      "sha256": "e772706ac5ff9e3a7f05ecaf0ae34fc1e39dbff94798d28f3c5b6fbc3eda39d1"
+      "sha256": "a219d363e7cd4ef4549b4870079a885e7a6afd576e4ce4acc088eaf0daec7987",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-auth/docs/competitive-review.md",
@@ -646,14 +647,16 @@
       "kind": "docs",
       "source_repository": "sources/ts-benchmark",
       "source_path": "README.md",
-      "sha256": "6f61910717c25c09b787f779283cf95000d291a45a7f21152ac28d0c5d5f18a7"
+      "sha256": "5a6031b49f4604f0a627da8d0b1666f31a5386e2f4f9f20f0f90f3c267897ee2",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-benchmark/firecracker-harness/README.md",
       "kind": "docs",
       "source_repository": "sources/ts-benchmark",
       "source_path": "firecracker-harness/README.md",
-      "sha256": "0d8b388651dd8a16ff6040cd84ebf0065b2e0a2be5cbf88a9a9631f0539202b1"
+      "sha256": "a37a7cc18957b38ba16cd9ddceac160a6739a2b458c1ba0f792de34fb647e531",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-benchmark/firecracker-harness/images/terrabase-noble-podman-v1/README.md",
@@ -1064,7 +1067,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-docs",
       "source_path": "create-terrascale-app/qualification/sdk-journey-fixture.md",
-      "sha256": "dc6496abbd8d0001991224c7af65939e41ced2caa9879528561824963ca874a3"
+      "sha256": "8cacc9e4e70b3b7112685d5d48ae6f62830314830877a7e75ca15d77d2832a73",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/create-terrascale-app/template/README.md",
@@ -1085,7 +1089,8 @@
       "kind": "reference",
       "source_repository": "sources/ts-docs",
       "source_path": "data/canonical/regions.json",
-      "sha256": "1e9afcdbd1160d985bbceff471eddae3e37a5d6e37f7f4606451828c06acb589"
+      "sha256": "56797a4db0ae35e99c8e1c4d2e2df026278072b381b2d2df69d9f5fa4ab63553",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/data/policies.json",
@@ -1197,28 +1202,32 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/ar/legal/dpa.md",
-      "sha256": "e7c1707d302416857c005d540e404a0af8da8cf61222d3c9e9bcadd263aad648"
+      "sha256": "b2cff02ea1b4e9fab9dcbe2e7abff5f9776db0f07819ab15208b9259016c9aa7",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/ar/legal/index.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/ar/legal/index.md",
-      "sha256": "10bee03c5790bc9327ec402fead903771dbe7095870671124fbe1bbc15c71059"
+      "sha256": "2acfd103b49c42331fe7db713825c0c0b6c8a50cdbebe48a414dfde5d55a7fa4",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/ar/legal/privacy.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/ar/legal/privacy.md",
-      "sha256": "d75d5fef9737ade8852d1705ded68debd3790c5b314e0af4c599c760b13eb05f"
+      "sha256": "29dbd85c5179ed0d6d88d9ef7d88b2dbd11129060031fd198d8656d042de4f2e",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/ar/legal/security.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/ar/legal/security.md",
-      "sha256": "fe5f4f2a6d381b2459ac589ae6b904d866c73bba2c98d8a73e839289e6ba8d17"
+      "sha256": "d5aedcbf2361d483093dc9fb3cf421c3a4228a4b817c45bcb75e6e2a1fa2075d",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/ar/legal/support.md",
@@ -1232,7 +1241,8 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/ar/legal/terms.md",
-      "sha256": "df569bd6ae1ed98378703a9d6860c6bf04b13388bda9b39eb17894fd8a69b12e"
+      "sha256": "ed3dbf1635f2fcb1221b836d4ad48469006e00e66bfb697eb07c2f09dfd08574",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/ar/limits.md",
@@ -1435,28 +1445,32 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/de/legal/dpa.md",
-      "sha256": "fc250fd90f9a4e5f34af86f88f2594b937316f66738fb07e33676cd7f2c752ad"
+      "sha256": "bbf080509e66a770ef2281eb54886e26d521b46b9de423f70f41d2c8f8a74775",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/de/legal/index.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/de/legal/index.md",
-      "sha256": "a75ee6967d8b86fa8569f21bce96d99505e8cf5d75c3d91608a2779c540ff336"
+      "sha256": "a61f3df34aea0a4978e192ce00fe63ba9f8d5291f977a433e8bc83a6cff3e541",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/de/legal/privacy.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/de/legal/privacy.md",
-      "sha256": "0acc328fa2c15e1b27b7f0f511196051750bb5934f9a93ed0d839ed97fa6e34b"
+      "sha256": "0ebb8a1bac1c909462beef943e3594460726287b2c0e8c4bb9694d3ff96df04a",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/de/legal/security.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/de/legal/security.md",
-      "sha256": "a2701d1341f408063429c45b012814852d01bde08c6dc55a70871544d60100b8"
+      "sha256": "2982ca032395f61b7b82acea8b0f920b0ed5599967d6b559cb64bfa2599a415e",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/de/legal/support.md",
@@ -1470,7 +1484,8 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/de/legal/terms.md",
-      "sha256": "3e4410fcaf14ec29d7d6c1162cc0ca96e82e6b546ad0ae58cdd9ed0bcbb72258"
+      "sha256": "b6440350bade6b6c5e8dd281cb8798535b9ae8d41b33b0aac9bb0da3bd892f03",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/de/limits.md",
@@ -1603,28 +1618,32 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/es/legal/dpa.md",
-      "sha256": "a85179e08b61cc57b2f2b9f375dc5adf63c2fb6fdbf065dbb75bbc7bf5cf1d10"
+      "sha256": "5054797fe60790e72346a4a239ad6d27b9dc57c846084c515e922c044197ce25",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/es/legal/index.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/es/legal/index.md",
-      "sha256": "9c196f3e505d91c082f5f8b38ec5dd45ee7dfb13c645a2d9d96646801cb92fbf"
+      "sha256": "8961668383bcdc5d0d537d0048151c5cb09697d501ce8de00990515d4333666a",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/es/legal/privacy.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/es/legal/privacy.md",
-      "sha256": "f298c440453adf4806fb8c33bb27d414bb50d13fff353812dd13fd240a16b28d"
+      "sha256": "8451a3452901885ec18d0691a4b90f2627845e958e790519372527937591d28c",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/es/legal/security.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/es/legal/security.md",
-      "sha256": "4814690a3b9d50934503d4732b1d475d4042e1e9f5ac7ef1afbc9c0331f3fbf6"
+      "sha256": "9614f12cd0174f93c72d52e27700d3f35151ba5ec8b5be0cb66003fe9da30063",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/es/legal/support.md",
@@ -1638,7 +1657,8 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/es/legal/terms.md",
-      "sha256": "295b9bba2fff5e1313249691888c3435bf24cb731ee9fd0f2e57c7c561eed78c"
+      "sha256": "f0717b8a49a295a2475b4a738b16af03230a29e9aca4ff4b63445bf50b427d20",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/es/limits.md",
@@ -1771,28 +1791,32 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/fr/legal/dpa.md",
-      "sha256": "25fdcd3741891b5ec5e48780e23c0e8d3214970abc402b1a51cb0d0e42282f85"
+      "sha256": "a94f60631a53e080f620e7c0a248dec031a11f308d889c1df1226db112ddc307",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/fr/legal/index.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/fr/legal/index.md",
-      "sha256": "cd98a367ea7837428b8fbf0a572d86b0420e06ae7104653d437f78ad9eae7a08"
+      "sha256": "b14d1579e1434d610fb36d249394fd8e4e52eb44115b2593896e2f60f01e5873",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/fr/legal/privacy.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/fr/legal/privacy.md",
-      "sha256": "a7bf470524abb4074326125cb5e5736d090c23a437e654e7069413e5621839b2"
+      "sha256": "33d7157878a97c56e8089acc3735dd294105e0c4708ec477cdcd1310ac2261a0",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/fr/legal/security.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/fr/legal/security.md",
-      "sha256": "1fcccd705b8a784ba0952f76b6dade21af441b7ca557443560211ecd9456471d"
+      "sha256": "34e36c3d2bf2a10eeb704edc986a9d09ff3e5ded5053760d74b0615a624b13c9",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/fr/legal/support.md",
@@ -1806,7 +1830,8 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/fr/legal/terms.md",
-      "sha256": "aa0c36f4caf5cde18d2bd46fdab15de92fce265f25e7caa3fc99e66a4d754d8d"
+      "sha256": "e0b661e5860382ee69c6ebc5e6811f5aa44d56bfa644b767d3809e258bae160f",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/fr/limits.md",
@@ -1960,28 +1985,32 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/hi/legal/dpa.md",
-      "sha256": "cb1b414cbc16b06d59afea6d85415fe2f4bae1a2e7f0c14fcb57ee096e6a9f12"
+      "sha256": "0e5d1482178a77bfb78a0415c5cc73187489666d612d44fb408ae9b76c75c7b4",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/hi/legal/index.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/hi/legal/index.md",
-      "sha256": "e911019a02bceae2165f21b3dcdd3e88378e290c9cec1c433c66ba17c89b7946"
+      "sha256": "652ef67c4af9c2629c4fe09448d300991e0dcbd3b859e877868217f808957462",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/hi/legal/privacy.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/hi/legal/privacy.md",
-      "sha256": "8ddbbd77155a25082eac5fcff31a26cb55bf2a4fd8f333e457d9cfb713b94120"
+      "sha256": "a1a70b16ea89a004f4424da00a452b4cad4119a75e2be9f810ef46fcc8d928f0",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/hi/legal/security.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/hi/legal/security.md",
-      "sha256": "088076e0878034da59e25c20fac9880a114acc14fa01d26221948a912d636697"
+      "sha256": "b9fbe1384fc982640b1e8ce59fcebd34eaf8d86277ea82d45413736766093aba",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/hi/legal/support.md",
@@ -1995,7 +2024,8 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/hi/legal/terms.md",
-      "sha256": "ccd033bb574c37d8e5eff013ef0ee448b18df991d882c078d8718feaaa9fd47a"
+      "sha256": "5de4ec655a56f047ea29642fbe07acafd792602cfab506832d2bbcc401dc4399",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/hi/limits.md",
@@ -2135,28 +2165,32 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/ja/legal/dpa.md",
-      "sha256": "06ab4c3499088c5a27d3127a4e0577060076e74281583f966622046f330f7ebe"
+      "sha256": "0f1d975cbd7abd08c6c17d29b1e588de690b66a8b9cf99630dc7e8a976981dd6",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/ja/legal/index.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/ja/legal/index.md",
-      "sha256": "379f77c9774d2f59aeb7c55264cc6b1c751e5085a4d875f25f1e0ab4d1d4b902"
+      "sha256": "c04ffc09182cdef0628c0b93088079a1c0e55aa8e58a685b01a52f899ef8c787",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/ja/legal/privacy.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/ja/legal/privacy.md",
-      "sha256": "831e15058020d09542beecf151975b4e91460eefe8055de9418c4efe5ef64596"
+      "sha256": "888494b65370bf3b7441016cd4207a395ab60e0b915087edf264b8aec219e0b7",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/ja/legal/security.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/ja/legal/security.md",
-      "sha256": "7b07d9014aa4de98563af5728c590f02f3b9f37c3f5a356b5a70ba6e18c8feca"
+      "sha256": "61aad8bee14ccceda8952423d46d766ec953736dc48a9e22b2cb879e47483489",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/ja/legal/support.md",
@@ -2170,7 +2204,8 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/ja/legal/terms.md",
-      "sha256": "7bb08544a1dd880634fdd287e09f4749809f246827badc5b35cd0d337f36e693"
+      "sha256": "6848ade83c3cee6b025eacc0d025a288080443f0685da2215534d7c94516cb51",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/ja/limits.md",
@@ -2205,28 +2240,32 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/legal/dpa.md",
-      "sha256": "2c72e5ebab4b30bb780811aace8ed09a16e05e471a59cd06e47ccd02df3a6f43"
+      "sha256": "a3d7d0a9ff249a4d244dfdd0a10cf1cbe96610a9cd9f6efa0684728e5417b531",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/legal/index.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/legal/index.md",
-      "sha256": "35739bc46032a7769d56a05934fbbdc13f5b1eb435097d1ac3ef9340db79ac24"
+      "sha256": "4cf33ade5d5ddb08c41b6a29909698fd7967daf3cb160cb6406eb88596459a8a",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/legal/privacy.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/legal/privacy.md",
-      "sha256": "0d8c110b89640f9be3d11f3a26faba05d45bae8ad02b03017a8e9ee79146cf8b"
+      "sha256": "1858deccc137559f62731a2525ae5444ceb4a24c0972d6ba6174457dfa7afdf0",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/legal/security.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/legal/security.md",
-      "sha256": "6b7b1d28144aa1ca9a877e3ed032652192c5c1158e720c5a5be3d55a37da520b"
+      "sha256": "3678939b949df9b244805493a352ad2adc85ea2c7895df8c506e4a987b2984ac",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/legal/support.md",
@@ -2240,7 +2279,8 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/legal/terms.md",
-      "sha256": "f255e37daafbdec387eebeeb41766a7131da4752efd8b51982d161e2b349b483"
+      "sha256": "3c2ca3acd90a0a193ba542af1a317b741e22a13791b34b354fe4d6942147617c",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/limits.md",
@@ -2366,28 +2406,32 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/pt-br/legal/dpa.md",
-      "sha256": "da40c62c9bea498afe3c4e82ca76f1b191c2dc1bf1a5d8749cc02a1ff920750e"
+      "sha256": "49dd9a9119d8564ab0d0b20ed4355380b4c1b5b3ac2e73d178d33a413a7ed9e0",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/pt-br/legal/index.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/pt-br/legal/index.md",
-      "sha256": "a8cafaf8087bb003dbc57383302b3ccfde77b72583dcf938ebbb6ef5a9778c94"
+      "sha256": "924389c045108d180b9579e0f4f2bb00196858f066e4c05560dd995a3f41ecad",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/pt-br/legal/privacy.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/pt-br/legal/privacy.md",
-      "sha256": "58ffa4fab931a2f18555bfa3b33ee99f1b3e1241fabe3308dcbafbc8772156ca"
+      "sha256": "6fdada0f2f86befbd5f8772759e167ad96390a58320bdc1a38fe64219ac4b20d",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/pt-br/legal/security.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/pt-br/legal/security.md",
-      "sha256": "ac0d712e82621aa7e66e386f4a7b22034c4bcb3463272edb4e0fceedc0d5f151"
+      "sha256": "227b968f0cea6fe86c7209ffe672c31d6cb9c2a2136e1381af15a4537ca83b3e",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/pt-br/legal/support.md",
@@ -2401,7 +2445,8 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/pt-br/legal/terms.md",
-      "sha256": "0626fba7b5fbb7b8e2b1c59dcf8be4971799ee3eeef35264e558a9952d2b1116"
+      "sha256": "f362396a0f8a23d30252d0991ecdf82d06ca3f44573a9597263ba3dd028cd82b",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/pt-br/limits.md",
@@ -2548,28 +2593,32 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/ru/legal/dpa.md",
-      "sha256": "432fe2debe1de2ff7d3972dabebee4344856256262aee3d659de4af1e3b1a605"
+      "sha256": "a84c0422084091ee513286a6af863567504b93994afa4d7f7aeda306cad5bdf6",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/ru/legal/index.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/ru/legal/index.md",
-      "sha256": "57c6e58aea1ef637bc758b97309e13f109379b78705375a9cd39c19fd9843e33"
+      "sha256": "eb219754a5d63fbe1cf46fb0f7ff210d78278ff3e4869be09e651a15f8d2346b",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/ru/legal/privacy.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/ru/legal/privacy.md",
-      "sha256": "17b36c63c4e637b5f09345e55ed99e064ee7b984dc150bd308d63011b879a1c8"
+      "sha256": "65f2fecefc42ee3c83fd3d3ffd94587f08f39085bd8e56a9c2cc5618d891a239",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/ru/legal/security.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/ru/legal/security.md",
-      "sha256": "ae47819eacfdd013e55bc2cf474cfbd6e1d8dade898aa4db56e507c5481cec8f"
+      "sha256": "cd3afcdded2c50331935b8d85f1dc4e5261e04bba38afd2146c30d1ca7530f5c",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/ru/legal/support.md",
@@ -2583,7 +2632,8 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/ru/legal/terms.md",
-      "sha256": "bdf8a9deb1375e306f624f9447d450f1462a47894f1c228f5187099e8133df19"
+      "sha256": "077f8f35ba49460d1657a0653156a248850d91bc6d7d56ddc8ed8162e9ae6c88",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/ru/limits.md",
@@ -2723,28 +2773,32 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/zh-cn/legal/dpa.md",
-      "sha256": "7bc2ba3390b829b182be5e61526807aa377e5b15b833b3ff85505e8e987dd276"
+      "sha256": "ea71c2d59a27a615f3bcea9d532867811aff30dc5e87302d177ad8a81fab6070",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/zh-cn/legal/index.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/zh-cn/legal/index.md",
-      "sha256": "e42a6a1e1b146472e218e0ffdf0c07a5bdbf75144927da634846992d308400d3"
+      "sha256": "5f262ff8b0ee57b211b7f3c7711429f4b7bff5e238359602c030ff9631ceb55f",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/zh-cn/legal/privacy.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/zh-cn/legal/privacy.md",
-      "sha256": "0bda2358968d188a43ca3ae78b37efc25c0bd9c9fac0a04c55787ab96c5da2b6"
+      "sha256": "26625a84dcb49c904c04dc90927c38dc95074d76ff836c65952d60ba29f6bb3c",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/zh-cn/legal/security.md",
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/zh-cn/legal/security.md",
-      "sha256": "44fbcb955330be65794bb9e17a6c097809587c4e1c35a3d85adbed19b0a5e13d"
+      "sha256": "1a2e516c663146a0ea55ccaf66a75ae216eed1fb70a71a20eb89810463ddbed5",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/zh-cn/legal/support.md",
@@ -2758,7 +2812,8 @@
       "kind": "legal",
       "source_repository": "sources/ts-docs",
       "source_path": "docs/zh-cn/legal/terms.md",
-      "sha256": "7dbe014f8681fc604c512681cf6e0baa26e122dd4ad1fe0abc43302ffa288bd6"
+      "sha256": "b315b2b6d5d05af33ad98cedd7cb6cc090b3a0a3c7941c66e6147e262a23d8f4",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-docs/docs/zh-cn/limits.md",
@@ -2878,20 +2933,6 @@
       "source_repository": "sources/ts-go",
       "source_path": "scripts/qualification/gojourney/README.md",
       "sha256": "5f3fb45010104a631934bc318d0b669f275f82e102f0fa0583b8ad1f47c06e67"
-    },
-    {
-      "path": "sources/ts-infra/README.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-infra",
-      "source_path": "README.md",
-      "sha256": "99505e01d88aaeb90b399ebd81c6ee79bbf4cdc0cea7be9f4679e45d345bcf37"
-    },
-    {
-      "path": "sources/ts-infra/docs/state-recovery.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-infra",
-      "source_path": "docs/state-recovery.md",
-      "sha256": "48869fe6fc9d6f8908deb7fa6f90ce08a44a9735522c3a5b72fa9921ed540661"
     },
     {
       "path": "sources/ts-js/CHANGELOG.md",
@@ -3633,49 +3674,56 @@
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "CONTEXT.md",
-      "sha256": "03ac2932ec5dfe7c1ccaba583be5172f05129f410982793f3a848799b4181cce"
+      "sha256": "83389dec8ea60ac2be081656f09c29524af99f02ae12c3bab08258f8d4b54594",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/CONTRIBUTING.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "CONTRIBUTING.md",
-      "sha256": "a0cc00dd130dac093be2fec905d0b78e384d88724d545d9c26847aa091e69af1"
+      "sha256": "b21c2dcfecac468d318dae9c073d4fbd232423a4d5424709c672b2458e4971c0",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/README.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "README.md",
-      "sha256": "612b4013ce7c1ceee77e2cacfd0c4a15a3ec4156d250c9c96ab6b52c55028a26"
+      "sha256": "06bc11572245cd7aa8d546325acfd5705ff273510a2b3c3c288c3ea6e5d49c88",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/deploy/netbird/README.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "deploy/netbird/README.md",
-      "sha256": "acb70b61775f29f1ee639ad634dd5629df18958b8b65d40d9a4a56391784650f"
+      "sha256": "5baabd8e81c2030f76436ceb6d147d50bb0b7698d713376eca7e0c860df071f7",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/README.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/README.md",
-      "sha256": "ec07eca2226105c428604e795f1e54c5dc5ce259bb3377b1721ee13424d1cee4"
+      "sha256": "27985b716bdf2aebf4e5924644b345c931c3138aeeccb333826cb1d06f348b95",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/architecture.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/architecture.md",
-      "sha256": "9ae8ebf912f6592adb176d6ed8e99ada4249872ec5124f51a85db241bccb6fbd"
+      "sha256": "f485417a66c41a0a235a042a193e1d7d07baae93465f42c73109b7654f1d1892",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/autoscale-telemetry.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/autoscale-telemetry.md",
-      "sha256": "ff31a24075b86dba4e8f152a806c111cf0db5198f94e24e1e68bb0222d465e82"
+      "sha256": "6b1cf63edfe10827140f09c3d68367b33d880e4a24accad8da70486eff52ffd0",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/broker-claim-rotation.md",
@@ -3689,35 +3737,40 @@
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/cell-autoscaler.md",
-      "sha256": "9a73a1953130419561cabd65223871bff0a9f0ebc343f4736be6b518deea6ba9"
+      "sha256": "62f67574f58139dbe7a2bae97b246668bd4dfca6e6d727c30bf1f484afa773d8",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/cli.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/cli.md",
-      "sha256": "10f5a4ecd1c710077869ec6be6de09df7e7bbf111b7f569860cdbc156360d0d2"
+      "sha256": "4b472e0ada83e1a6625f6dab8f12693d2759dbdb35d45b7c5b3bd5e7f178a74c",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/continuous-delivery.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/continuous-delivery.md",
-      "sha256": "9cc533b38a52368b436ea9ad92dea837c8bbd58a34075c38b5cca7eca0df0c70"
+      "sha256": "72703e9dec69c05884fa9682933fc5f1dde507dfb9c3ae353f1dc7f468f82ae3",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/controller-membership.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/controller-membership.md",
-      "sha256": "efd1cab4967ce05992efb022f8e984c6048caa8049cc81bd59eef6997822056b"
+      "sha256": "25c80079348454024d621f72af34c0f67721ed1bae8a861932a3caa0818ef85f",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/dashboard/README.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/dashboard/README.md",
-      "sha256": "51b8c1e26fc3a61393e6c09d7b79632c138e2007546b12c5c17a483dbf334280"
+      "sha256": "02761dee32947c8b60abef4019de778961202641172117c14a6c3acb41611c5c",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/dashboard/decision-chain.png",
@@ -3788,13 +3841,6 @@
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/dashboard/nats-dark.png",
       "sha256": "56cc0db87d6812e8cc4feab9cf966243da02f3448071503a81034af8e5fd56e9"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/dashboard/oci.png",
-      "kind": "assets",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/dashboard/oci.png",
-      "sha256": "b38dda9dc119d61b3817ddb94fe18d27babe76adf2cd42044d8fcb7e37c06f49"
     },
     {
       "path": "sources/ts-orchestrator/docs/dashboard/region.png",
@@ -3878,21 +3924,16 @@
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/decision-journal.md",
-      "sha256": "f349426e80956bd1d528116d935e01bdc8c470e68af9a541b10d5d34943188bb"
+      "sha256": "ce3c34c4fa7fdc75f5d15664afbcfd7725ef9aa2a879f1c8bcca73b575b23ac0",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/delivery-pipeline.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/delivery-pipeline.md",
-      "sha256": "85db84d6948ffb745595c64a1d3aa87119c25143a9b6e0469dbb63634799a7fb"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/disposable-workload-teardown.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/disposable-workload-teardown.md",
-      "sha256": "6fd6d09e0088ad0ab05686b2e47e8ab18c866da2e06895dd3e80ecae5ce1249f"
+      "sha256": "86ce5d2d73ffaca1f46736977545af0484ddecfc825b4759dde9ef953347b4bc",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/e2e.md",
@@ -3902,32 +3943,28 @@
       "sha256": "b1c495b09a1f34a9c6c21f578f40b85805196bd57e86da447c6b7167d9a7123b"
     },
     {
-      "path": "sources/ts-orchestrator/docs/evidence/gates/d01.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gates/d01.md",
-      "sha256": "74e31478819da7b51b39520a4e36373aa50fa8271fb19d6dab20047c97c40f1f"
-    },
-    {
       "path": "sources/ts-orchestrator/docs/evidence/gates/d02.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/evidence/gates/d02.md",
-      "sha256": "ed66f9222d0c0b0e92a398a04d4ad9f35eee18541f144a2ff05c2b84631cd24f"
+      "sha256": "1dcf836ff0a577d8410073a09139260d51644b32de2189a14de3368c3134689f",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/evidence/gates/d03.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/evidence/gates/d03.md",
-      "sha256": "8a529eed834504478e2710ecbc89d97f5f263214434c736ca6d6a0355098a41e"
+      "sha256": "40c3655533537a80d65f4ba4b2304944fa4883a0cc122d91980274edfa07e204",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/evidence/gates/d04.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/evidence/gates/d04.md",
-      "sha256": "4f01355d800eb773fc66e950c0984f4196589749114e14f0967a6a3afdebd81d"
+      "sha256": "070eea30a909b47ec6958b27492e86b2da623aeff24ddc2c94e831d2cd801c7f",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/evidence/gates/d05.md",
@@ -3941,7 +3978,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/evidence/gates/d06.md",
-      "sha256": "7d39872118ddfc63d3c8ed8b19506b3001735d3f88b981a28d540de9a27c950a"
+      "sha256": "681fb3785863dab5fcdd65573036490b4e4012a48ff1abf21e814188873b320f",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/evidence/gates/d07.md",
@@ -3976,203 +4014,48 @@
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/evidence/gates/d11.md",
-      "sha256": "44f75b86ac372163572fa3f52cb55a7270993e67150681c8c47481869cd52d76"
+      "sha256": "4826447ea3be88b7363162bca983be5286ee444ee1fcfb9b2701064cf2337678",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/evidence/gates/d12.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/evidence/gates/d12.md",
-      "sha256": "51dff4179c95a2381c5adb5c08c9fed9d39ff9b2bdf445a51be5bb8a2157cef0"
+      "sha256": "28034a024cc6d27a98f7f9c5ba7bfe10cd4c32d71ddb80bd0d6a2d52b8009f22",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/evidence/gates/d13.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/evidence/gates/d13.md",
-      "sha256": "36b0398be232ce62d30ec6c2499a143ac47540144f947d72a31e38c79da97fe6"
+      "sha256": "2ab86e927186f14dfa139969989b9d36bc84d8ab7e8ea561632ce8c284ad93b3",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/evidence/gates/d14.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/evidence/gates/d14.md",
-      "sha256": "5fbb4883737ff199eedba391155fce0041fe18e6e1a5388716e2d16afb2f8cf1"
+      "sha256": "841198dc20742cfa2cc108d59fcdef73cae5fd998ef861f59e9629a551a0c23a",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/evidence/gates/d15.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/evidence/gates/d15.md",
-      "sha256": "b93926f1c4dff973fb0c5221ffc8d9a362226801bb9cb6366d8c406ea9523a4f"
+      "sha256": "65d21aa70918bd44f0c66444222cf5281610c50ad59c04d649225ed038e615c0",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/evidence/gates/m0.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/evidence/gates/m0.md",
-      "sha256": "4e6054e6b6d75dc5f0ead90ce5800ea774d53b098edebc5e4b45131993b3f521"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase1-20261004.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase1-20261004.md",
-      "sha256": "f5641188abc267039338bed264252ff2182bb8cfa0590f7c40157d006671ca45"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase1-20261004/execution-binary-buildinfo.txt",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase1-20261004/execution-binary-buildinfo.txt",
-      "sha256": "7772a338d55788b761c170c2c22bc1d21ea62e7220cc81ac305c1eba86b4da32"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase1-20261004/execution-binary-sha256.txt",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase1-20261004/execution-binary-sha256.txt",
-      "sha256": "5e286f128e323ea1659bef6192d35ac36913faeeee4b20bb9bc5598874c866bf"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase1-20261004/halt-marker.txt",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase1-20261004/halt-marker.txt",
-      "sha256": "9da081a21a74d9f0df2f4df06397f7d20676672cf967b979ee7d7353d5a08cba"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase1-20261004/netbird-post-stop-dry-run.txt",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase1-20261004/netbird-post-stop-dry-run.txt",
-      "sha256": "42c701e52f8de600dc1d0ef39785021b782548dfc3310fce96b65dc2c2baf73d"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase1-20261004/netbird-preapply.txt",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase1-20261004/netbird-preapply.txt",
-      "sha256": "42c701e52f8de600dc1d0ef39785021b782548dfc3310fce96b65dc2c2baf73d"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase1-20261004/verified-home-region.txt",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase1-20261004/verified-home-region.txt",
-      "sha256": "b3766cd98c83e0aa9aee767b5d825a1f2bd72ba53e4c88f7ac7a7b5a9ba32ceb"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase1-completion-20261004.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase1-completion-20261004.md",
-      "sha256": "568ad3a6dcd5b5a4a77accbd8945fd6c27f65d95c67e454cddd9c746dc04c1d8"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase1-completion-20261004/final-admission-output.txt",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase1-completion-20261004/final-admission-output.txt",
-      "sha256": "9731743c09f70b337f430b1591324cc5a1f9ded1586ca07bdb45ef753144ca47"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase1-completion-20261004/image-inputs-validation.txt",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase1-completion-20261004/image-inputs-validation.txt",
-      "sha256": "efa8281f1fc03637ac59e9948bd877d5740587aee879d1a9f691efc8ed505fbd"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase1-completion-20261004/netbird-final-dry-run.txt",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase1-completion-20261004/netbird-final-dry-run.txt",
-      "sha256": "d518f60de5bc909104bf429e9ec99844628a7c5ecdfd1118442a21b592476674"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase1-completion-20261004/netbird-immediate-preapply.txt",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase1-completion-20261004/netbird-immediate-preapply.txt",
-      "sha256": "42c701e52f8de600dc1d0ef39785021b782548dfc3310fce96b65dc2c2baf73d"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase1-completion-20261004/netbird-post-sync-dry-run.txt",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase1-completion-20261004/netbird-post-sync-dry-run.txt",
-      "sha256": "50b6d38fc5c8acbd858ded062abfd623056030c222cf3dbd592cb3b7ed6cb191"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase1-completion-20261004/netbird-preapply.txt",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase1-completion-20261004/netbird-preapply.txt",
-      "sha256": "42c701e52f8de600dc1d0ef39785021b782548dfc3310fce96b65dc2c2baf73d"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase1-completion-20261004/netbird-sync-apply.txt",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase1-completion-20261004/netbird-sync-apply.txt",
-      "sha256": "8e64f079ba70b23841ace3a0bdba4747726b6b1f0ffdca200945848caa1947ed"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase1-completion-20261004/setup-key-apply.txt",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase1-completion-20261004/setup-key-apply.txt",
-      "sha256": "d9128fbdb5bd0f39ae3c0818e19b40174c957bcb935a96b39a1dfdc17d7153ae"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase1-completion-20261004/setup-key-dry-run.txt",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase1-completion-20261004/setup-key-dry-run.txt",
-      "sha256": "d1599affdb75e9f03ba00496a3c35b213d4f1c167f25da5e35fe1ef0cc6bc76c"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-1-phase2-gates-20261004.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-1-phase2-gates-20261004.md",
-      "sha256": "355943062f38c2449e378530a5f41aea6241f199e956129dc0eb5726e0ecd1ec"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-rebuild-plan-20261004.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-rebuild-plan-20261004.md",
-      "sha256": "bb734a08ecf4003be7695857129ad33efb41ca61815d4a4d25dd0bd67a8e6b9d"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-teardown-20261004-dry-run.txt",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-teardown-20261004-dry-run.txt",
-      "sha256": "c67c0e5822a67112f00db20ff8faed52b889652e1e62cb6ab5b6fbc69beb0b49"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-teardown-20261004.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-teardown-20261004.md",
-      "sha256": "90cc1789643724a26e8e64459f648a2549a6c8ef105792ffa6136a5783e5b633"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/gru-teardown-dryrun-20261004.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/gru-teardown-dryrun-20261004.md",
-      "sha256": "5cf432c53348a68005f3d5290d7d4975af9a52856b5765d3670c95e0a83f6694"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/evidence/oci-preview-20260926.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/evidence/oci-preview-20260926.md",
-      "sha256": "ea1fc4b0fc2d6ba08045666dd36b743b429c4c6e1515337c8687ae42da8ca6c1"
+      "sha256": "a43348770c5c9e78e9b436a8d8ecbf0094cdc8c5ca062b03b035ea90218e6c6b",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/evidence/pipeline/p1.md",
@@ -4207,28 +4090,32 @@
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/evidence/pipeline/p5.md",
-      "sha256": "de9afba98a6f380ed1d6e9773a9a6c580ec2ba8ad3ab99a20edfdfc1efdf75cf"
+      "sha256": "cc38f227ff00284416033ef776f74270cf60b2bf2edd8e6c69a7a5610ce435d6",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/evidence/pipeline/p6.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/evidence/pipeline/p6.md",
-      "sha256": "fb459ca6aa147c30ac35d51ab73a87fb8061b03fd4067171df805592328a6ec4"
+      "sha256": "299d4dcb180e028a7cb2cf796afe66b4da369873492361e2555d8583eb0a2747",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/evidence/shared-goal-acceptance-20260926.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/evidence/shared-goal-acceptance-20260926.md",
-      "sha256": "65b97ae14418726b08abf4b0a3043e29f76cfdb44a9ced6125876bb793ad42cc"
+      "sha256": "3b3c56a03bc9e9f4473cad6da0b8d01daab96f493545c3c4f1d0412377f6ff36",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/evidence/shared-goal-history.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/evidence/shared-goal-history.md",
-      "sha256": "12a93a615002dfae1c1e970d1ec7586c94aad921910d6e92b992acc7a786fd8d"
+      "sha256": "553141cdf7e85796108355ea17ab9d622aefa760644bab3162de4bc8e334eab2",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/evidence/terrabase-source-tree-identity-ci1004-20260928.md",
@@ -4236,13 +4123,6 @@
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/evidence/terrabase-source-tree-identity-ci1004-20260928.md",
       "sha256": "e908df5f692b6e39708eade3dc2f7fc17c6ba5087462ded5d9e0d9de30d2c1e4"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/founder-genesis-cli.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/founder-genesis-cli.md",
-      "sha256": "4d2408cd2987324d7772476488614ec2ded1ce66d44b52eaa62dc59a5268f9bd"
     },
     {
       "path": "sources/ts-orchestrator/docs/live-verification.md",
@@ -4256,105 +4136,96 @@
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/local-development.md",
-      "sha256": "fce81f615b1a28d76c601d542ccf96739afcc906777f8e0e7166fe26568db2a5"
+      "sha256": "22d3c02f8c3cddbf45856c20fec01e7141dce96f5de645e7f1e24eb7fc1cd892",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/multi-region.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/multi-region.md",
-      "sha256": "0deb6ebd1e1dcdfe9d30d3547aecef00c000c62b245a0fb0e87415b6b44d155b"
+      "sha256": "42775fda23d7aec2375e79a6a4072ff5c1aa0f5e6fb5a771b8d28cc12a1e9231",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/observability.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/observability.md",
-      "sha256": "5a4c68cb4e22832ececf09045a965021c840b92fbe44a75aaa60f69ad6a20028"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/oci-reconcile.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/oci-reconcile.md",
-      "sha256": "bc0c53514860948c8b8919cd7490e9db6c9dc7fb9cb19f7786ecf6ac011b3d16"
+      "sha256": "c2beec2ed351a911df26392469c1b511a44c89e528993a4f6e3a7159188fb1bb",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/production-readiness-plan.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/production-readiness-plan.md",
-      "sha256": "ff2ced02fe8d428b19bb85eb94d585aece3b34e0b447f8fb5c3d27447ec3376a"
+      "sha256": "36eb04b03ce95171603831443ccf4b77b9506cd9ee9da1484426e7bf237e819e",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/production-readiness.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/production-readiness.md",
-      "sha256": "ec60cd5e6946f59def769bec37a8fed3e3744ea7b75fd15c22abb840afaea90e"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/production-role-config.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/production-role-config.md",
-      "sha256": "2a1e601913a61ffb1ffedece052e2f9d898c29a0d9ad44ba3285bb8cd8f336e1"
+      "sha256": "1e218347d7ada1e654d1af4d9e06a46a3216841fe5111027fd3d82dce5032124",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/qualification-status-20260926.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/qualification-status-20260926.md",
-      "sha256": "640cf41b77be692db045f562d3b30424bc4aaf06a9f5ecc0ec4aa7584240fda0"
-    },
-    {
-      "path": "sources/ts-orchestrator/docs/region-bootstrap.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-orchestrator",
-      "source_path": "docs/region-bootstrap.md",
-      "sha256": "7575c6555716c7a76e3d9d0d524971bac8195ec24eeb699246d90b41b53430bb"
+      "sha256": "dbe251481aec053fec70279b80d6ded14211766bfed848045c4ecc9e5b07bc8c",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/releases.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/releases.md",
-      "sha256": "b34f5f6748a22ab93c442b06b0649ccf948c92f301761eef8c47ed5fbc342458"
+      "sha256": "f73e1af4f9d1f8d0e4272f50d0b09719630073514c11f40309c56b0de9fdb91c",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/storage.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/storage.md",
-      "sha256": "b1f327c1a6178cc76c84d4094d4f873da33c6106da3ef664b95ff01af2c8ce79"
+      "sha256": "abdb2fe57272dcf9bc0236fe3c98f3bce43109a84e03ea3e3a446e119a743efa",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/terrabase-deployment.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/terrabase-deployment.md",
-      "sha256": "4c69b346b0e3741bb66a5671367bc900aec89946a04341aef23198ee4b7a3fe4"
+      "sha256": "7fecdf5fa83c12f7003ecd377f2ce362a366f0bbade23124bd4b486628c7b593",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/terrabase-runtime-contract.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/terrabase-runtime-contract.md",
-      "sha256": "a5294a76332fe1fef55ac1943282783afb5950015306dc1d2ea7a5da85c9afc7"
+      "sha256": "dd927ac3ed9462e5c04f8530d7ed33d7389bbea56f46de34b6aabfabff527844",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/terrabase-serving-lifecycle-plan.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/terrabase-serving-lifecycle-plan.md",
-      "sha256": "d90cdf33c4ea5ba8bbd01e8d13737542e855756875d2365ae48cbace458a681c"
+      "sha256": "a6822e45d017f83374587bfd86ef8fa30247fb3db527381931427eff0d4f6e25",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/testing.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/testing.md",
-      "sha256": "47942e5ea78362a0e878010acdc9b20c92cc1a5d5fc226b9a79b75d01fdc9b82"
+      "sha256": "a7253dfb93494c433ceffe07b7b9a35e3c7ae7a73fa4560caab70b05c53d62e7",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-orchestrator/docs/ts-auth-deployment.md",
@@ -4467,7 +4338,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-status",
       "source_path": "README.md",
-      "sha256": "522522a767a508b7ce372189d4f47e576de857042ab12c6745a1b3da4d805ea7"
+      "sha256": "16d480a6e8bc39687897eef2ab28e91f2fb8c3bcc958c9097a3779197ffa561e",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-status/public/fonts/OFL-oxanium.txt",
@@ -5756,7 +5628,8 @@
       "kind": "docs",
       "source_repository": "archive/TerraScale.Infrastructure",
       "source_path": "README.md",
-      "sha256": "ec388ecb05bf94b7f718e891b7678bbd28da6e0249f620f0df2e3d22760b0a35"
+      "sha256": "2788de5136df166ed30c645ab3750509912f246b1371ba0334d100f1b8d6430b",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Infrastructure/docs/agents/domain.md",
@@ -6155,7 +6028,8 @@
       "kind": "docs",
       "source_repository": "archive/TerraScale.Internals",
       "source_path": "docs/dashboard-next-architecture.md",
-      "sha256": "9e555fc03a1beb14f4bb7b88b9e3367161fe7b127c5fa63bf720a15d6cc3b2dc"
+      "sha256": "dc6fe76057e6785b26d5865848f432d2a72f4b364ce4a368e558ef6fde1372da",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Internals/docs/dashboard-next-parity.md",
@@ -6197,7 +6071,8 @@
       "kind": "docs",
       "source_repository": "archive/TerraScale.Internals",
       "source_path": "docs/databases/service-databases-sharding-and-backups.md",
-      "sha256": "e2cb3f4176b99068bf6ce251475b1dabc39b4e993fe04b32e6f924ac24b18891"
+      "sha256": "97b5f5588a78f5072babaa341610ebc2d9213bcbb9bde21e3d9f27a9fc4cd565",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Internals/docs/databases/virtual-databases.md",
@@ -6569,21 +6444,24 @@
       "kind": "docs",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "CONTEXT.md",
-      "sha256": "760420018ac42dca92f35fd3e6c032f6449a4dd406f4c6efc421ba388167e1d0"
+      "sha256": "0b364440899505835a4f5322ddd05a478bff5ac687a2f3e90c21ad674811820a",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/ORCHESTRATOR.md",
       "kind": "docs",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "ORCHESTRATOR.md",
-      "sha256": "ccf93cd112ea5229e021b26ea115b5a2e0cd63ff639ed299c957930f2afec9b9"
+      "sha256": "104029f9e8b25a783d622636156ba28a8e773e21f5aa0f699f09e6e1cae4d138",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/README.md",
       "kind": "docs",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "README.md",
-      "sha256": "68c7b581d5430a9124dcb511ecb7c3085f9028755bb06b552c883e7485acfa6b"
+      "sha256": "d835213c0f744b1e17e9028cc17ea9bc61aee8807ba9f98dd2e0c8a0aeaa014a",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/README.md",
@@ -6597,7 +6475,8 @@
       "kind": "docs",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "docs/adr/0004-pulumi-provider-ownership.md",
-      "sha256": "0cea6fb12c1cfaefb5f18622fa315949b8f22edc0f0880a64621a4f08aa70a9c"
+      "sha256": "9953808e9fa48720cd7a4b1dda157b803ebeadc01e21581087cb8eb840bdbee5",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/adr/0013-native-gitops.md",
@@ -6618,14 +6497,8 @@
       "kind": "docs",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "docs/adr/0020-provider-actuator-threat-model.md",
-      "sha256": "44f62c11c911b084b795218bcfbe4d9ce7dd5b83d93524871ff4df1d0fb9cb34"
-    },
-    {
-      "path": "archive/TerraScale.Orchestrator/docs/adr/0024-greenfield-bringup.md",
-      "kind": "docs",
-      "source_repository": "archive/TerraScale.Orchestrator",
-      "source_path": "docs/adr/0024-greenfield-bringup.md",
-      "sha256": "8a1b5d19efd3399f6a3bb22bccf6bc8e34de3ee61b72e9f2bfe44e6f05c477dd"
+      "sha256": "4269d4ba1685238459dd44edb2f720bc46c9e91477306b96446c9b93626279eb",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/adr/0025-rollback-on-customer-gate-failure.md",
@@ -6646,14 +6519,16 @@
       "kind": "docs",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "docs/adr/0027-open-workload-admission.md",
-      "sha256": "3a2f9726ae91955c56770d89a322d7f2184aa0aaaee7225230e8434ba43d0499"
+      "sha256": "deae23fba231a5874a88b0fe43111b4141c5d1e04d89a5494cf2054cd2b7fb5b",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/adr/0028-isolate-tenant-workloads-with-microvms.md",
       "kind": "docs",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "docs/adr/0028-isolate-tenant-workloads-with-microvms.md",
-      "sha256": "72e7f956ac341855332978d3d5610976a81fc27474b8fd360419454b56fdd1bc"
+      "sha256": "5069e1bc4371765a4472f64e42ea33d008fb12ce7eaf5606a207575b119ebab6",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/adr/0029-offer-stateless-tenant-compute.md",
@@ -6667,7 +6542,8 @@
       "kind": "docs",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "docs/adr/0030-run-customer-workloads-as-wasi-components.md",
-      "sha256": "21b28978034ab89c4c9ec6406c43b41a651d68af8f86131c2e993efc44659d31"
+      "sha256": "c4c7c1182e27fb6dfd75074a0e737f981a6f2e4037ece7be5b858b26db49c85f",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/adr/0031-run-tenant-workloads-as-unprivileged-oci-containers.md",
@@ -6695,7 +6571,8 @@
       "kind": "reference",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "docs/adr/readiness-index.yaml",
-      "sha256": "01692f9d4f039fbfab86dbaffeac6fcd2d5d437f43e25cef5c41963442d5f380"
+      "sha256": "7e2da0fbae1411c6238010d3a2a47cbc1d5138effd871879c412d7819b39aecd",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/agents/domain.md",
@@ -6765,49 +6642,56 @@
       "kind": "docs",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "docs/decisions/README.md",
-      "sha256": "cb3dae3ee09bd1d2847dcfa88e5c2a337cd923823d2b512b1d6d2afe92806e85"
+      "sha256": "34d09d000951a5cdb06e6e0fc084d257bbf80e14ef29447bb9ba1dd9a51e4b9e",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/decisions/owner-decision-packet.json",
       "kind": "reference",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "docs/decisions/owner-decision-packet.json",
-      "sha256": "96a78ffcf26fc31e9bb7d5f452d40f1dec514ffa5ce46228b4167fcc4e03468e"
+      "sha256": "1d728960f4663f54eae7e4078f56a3005146eb5b35c83e8c774ba0ee9587cdad",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/guides/architecture-boundaries.md",
       "kind": "docs",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "docs/guides/architecture-boundaries.md",
-      "sha256": "9394629b36c9387136e5c2a41bd04f8537e7e2768c881e96a7d86c729de2b34c"
+      "sha256": "160175e30d193c7bab11926c4ba056111e5d15363c2a48a7ce68d189061263b1",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/guides/nats-journal-production-prerequisites.md",
       "kind": "docs",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "docs/guides/nats-journal-production-prerequisites.md",
-      "sha256": "07766e117fb486afb789470430de4640fbefccb677bc30148a3e94b472ccd92a"
+      "sha256": "6d91f8dad85e1fdcc1d69d1d64696ca024f8f60e2f10c414b7ccdfc91ea62957",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/guides/phase0-evidence.md",
       "kind": "docs",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "docs/guides/phase0-evidence.md",
-      "sha256": "f2f2e0bd5d75f65c2b7d576057ee5280248beac7a7c399d4e597f783eaa56564"
+      "sha256": "68d121c79d6c484545765d8b16ec068edeca9712b586520b8608c4043f9d15b9",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/guides/phase1-contracts.md",
       "kind": "docs",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "docs/guides/phase1-contracts.md",
-      "sha256": "b741afeda93edd145d5815e4d11cc97adef144d25a7910281bb422f52740ad1d"
+      "sha256": "24e100981ab643565c28c0d71eda10ec63fd0cc2313404e159b5f82dc70a5398",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/guides/production-readiness-audit-2026-08-04.md",
       "kind": "docs",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "docs/guides/production-readiness-audit-2026-08-04.md",
-      "sha256": "d5c3985a85ef775a189bdd7cc314a618b5662aee9bf676f2df9ec34480afc64c"
+      "sha256": "27ea2e24ffd80b1d9886ecf3f348588910ade5f8e500139ec96c0c1cf098df2d",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/guides/public-alpha-program-map.md",
@@ -6821,28 +6705,32 @@
       "kind": "docs",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "docs/guides/public-alpha-release.md",
-      "sha256": "78fa590825345323d1fb7faf1f59ae47e3ae8a20d47c767e94896a28f60ea4ad"
+      "sha256": "2f418ba1136a2423dc455bdda3fca049c4c85422ae37a9b6df27db86b6a61ad1",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/guides/work-stream-catalog.md",
       "kind": "docs",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "docs/guides/work-stream-catalog.md",
-      "sha256": "bf81e2c10109720e4fd87483e04b097ce4fb8b0424bd5d2642b2dd89eb40578e"
+      "sha256": "c7801eac59d9968b0dd5c83007d0b9bb9cdf173a1756fc091046c73595894913",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/research/container-tenant-runtime-architecture.md",
       "kind": "docs",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "docs/research/container-tenant-runtime-architecture.md",
-      "sha256": "05802c2da3b955ddfd9089e0d41baef5857d9acc50e515708947cadf13100ea4"
+      "sha256": "32e223898bf597706be538f7dc7f5a939444896bd0dfce4fcb8962256f50604f",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/retirement/workaround-ledger.yaml",
       "kind": "reference",
       "source_repository": "archive/TerraScale.Orchestrator",
       "source_path": "docs/retirement/workaround-ledger.yaml",
-      "sha256": "152aae1c407e16f1435e3fac3ac58b33dbe62a1404a29715308a5332dd2c3d2d"
+      "sha256": "003dd99d5170bab045c9e508c39814c9463e5e6301b40a2eb32238b86bf8c92d",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/TerraScale.Orchestrator/docs/runbooks/direct-delivery.md",
@@ -7136,7 +7024,8 @@
       "kind": "docs",
       "source_repository": "archive/Terrascale.Documentation",
       "source_path": "docs/agentic-delivery/2026-08-04/README.md",
-      "sha256": "8b8dad724e2d8f61dc42fa136fc46286df877083e3aad91031c07b06ad6ef681"
+      "sha256": "8afa22f4bdea51ca007e39abf8d182df1d52de7e9e7f61fb5816a5dc1c1e1fee",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/Terrascale.Documentation/docs/agentic-delivery/2026-08-04/exploration-competitive-patterns.md",
@@ -7178,14 +7067,16 @@
       "kind": "docs",
       "source_repository": "archive/Terrascale.Documentation",
       "source_path": "docs/agentic-delivery/2026-08-04/exploration-orchestrator.md",
-      "sha256": "67c11ea526d46383591d3bdabcaf01879f81dbcc2c7cd09fb336b03e8f026aae"
+      "sha256": "12094898fe759702f59579c0abc24687aae87dbb7229c16184dfc4e4b725e228",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/Terrascale.Documentation/docs/agentic-delivery/2026-08-04/exploration-security-reliability.md",
       "kind": "docs",
       "source_repository": "archive/Terrascale.Documentation",
       "source_path": "docs/agentic-delivery/2026-08-04/exploration-security-reliability.md",
-      "sha256": "ef3c50dfa9ab18369ee33c0ba094b02da8eee48d807108cb61097e3b7fc17a4f"
+      "sha256": "266179827f720e0a59e2be518c9f4f4c6f1c60ae5ba86fd65877f578ae8d3239",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/Terrascale.Documentation/docs/agentic-delivery/2026-08-04/fix-sdk-snapshot-ref.md",
@@ -7270,7 +7161,8 @@
       "kind": "docs",
       "source_repository": "archive/Terrascale.Documentation",
       "source_path": "docs/agentic-delivery/2026-08-05/exploration-control-plane.md",
-      "sha256": "6c8e919b650fd74bfc7a4922979d35462730d4807d847fa4893612310a7b7711"
+      "sha256": "6e381950150092bdc333a0f8da21fb021fb8134f1010adc255ce398a78b41945",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/Terrascale.Documentation/docs/agentic-delivery/2026-08-05/exploration-dashboard-agent-capability-parity.md",
@@ -7326,7 +7218,8 @@
       "kind": "docs",
       "source_repository": "archive/Terrascale.Documentation",
       "source_path": "docs/agentic-delivery/2026-08-05/exploration-production-provider-actuator.md",
-      "sha256": "57a7a165ff4dad40f09b9cee30b5318bcdea07692be4bab64c3de0c855c93d08"
+      "sha256": "f5fa840a3394ecb046eef81d6ddd11b003a98150a9358d98dde0bffd37802feb",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/Terrascale.Documentation/docs/agentic-delivery/2026-08-05/implementation-mcp-agent-workflows.md",
@@ -7357,20 +7250,6 @@
       "sha256": "eb1a8e6b991baf3b895fea7d350b72d6a126888a30ff0239856c37bfaa89d155"
     },
     {
-      "path": "archive/Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-0/p0-02-independent-review.md",
-      "kind": "docs",
-      "source_repository": "archive/Terrascale.Documentation",
-      "source_path": "docs/agentic-delivery/2026-08-05/phase-0/p0-02-independent-review.md",
-      "sha256": "62cbe16f151b3f0ce3e05385bc12763c4fa4e965875c2f1e2b3317ccf4f39348"
-    },
-    {
-      "path": "archive/Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-0/p0-02-oci-residual-inventory.md",
-      "kind": "docs",
-      "source_repository": "archive/Terrascale.Documentation",
-      "source_path": "docs/agentic-delivery/2026-08-05/phase-0/p0-02-oci-residual-inventory.md",
-      "sha256": "cfa3d903eb16f301e74c027c27af0bea518750b1c9e6d00da82a51ecf79f9b7b"
-    },
-    {
       "path": "archive/Terrascale.Documentation/docs/agentic-delivery/2026-08-05/phase-0/p0-07-requirement-traceability.md",
       "kind": "docs",
       "source_repository": "archive/Terrascale.Documentation",
@@ -7398,21 +7277,24 @@
       "kind": "docs",
       "source_repository": "archive/Terrascale.Documentation",
       "source_path": "docs/agentic-delivery/2026-08-05/readiness-orchestrator-composition-audit.md",
-      "sha256": "48df2f51ffae2418fc6ced354662898f230229c241ec542eb5164b43f7aa078b"
+      "sha256": "a567d8dd364bc5b8f46dd3f93201c5cc8fd77c58f2bf12d1249aba6f3a01ccda",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/Terrascale.Documentation/docs/agentic-delivery/2026-08-05/readiness-orchestrator-production-actuator.md",
       "kind": "docs",
       "source_repository": "archive/Terrascale.Documentation",
       "source_path": "docs/agentic-delivery/2026-08-05/readiness-orchestrator-production-actuator.md",
-      "sha256": "7fc614ab82b89eb1253b2fc0f255921ca5d5f473f7b701349d951c84a84fa35d"
+      "sha256": "504d63a29140acf1275abaf6cafd376dd417990e834376f09e032ffe2e81507c",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/Terrascale.Documentation/docs/agentic-delivery/2026-08-05/readiness-orchestrator-production-gates.md",
       "kind": "docs",
       "source_repository": "archive/Terrascale.Documentation",
       "source_path": "docs/agentic-delivery/2026-08-05/readiness-orchestrator-production-gates.md",
-      "sha256": "44938589f153edf998001c136514bdfdaffe07123e9b881d25549e3e08b359f0"
+      "sha256": "b8bba46c38b9f5662e16d9539e86839e43d2e874b0cd803d0e8dd176bd382b48",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "archive/Terrascale.Documentation/docs/agentic-delivery/2026-08-05/readiness-provisioning-recovery-parity.md",
@@ -9723,14 +9605,16 @@
       "kind": "docs",
       "source_repository": "sources/ts-internals",
       "source_path": "docs/databases/regions-and-replication.md",
-      "sha256": "0fb964f00c5ee4074df4203b1b17935c3af2fa384cbb096c09eb776b7fc3f1d9"
+      "sha256": "a719c4b4f501791353d4af69591e7b49e3f0a51aa1dcfcef4b4e97e4ad8d50ae",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-internals/docs/databases/service-databases-sharding-and-backups.md",
       "kind": "docs",
       "source_repository": "sources/ts-internals",
       "source_path": "docs/databases/service-databases-sharding-and-backups.md",
-      "sha256": "50e52e2f997e5f3954261cad8b22d01ae9b5d849700ff7b178af6cc0c752f5c0"
+      "sha256": "7967f18c6e10259f30134aa6f12ae4b94fc1411bb2ac290ff952e00e29e58cf2",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
     },
     {
       "path": "sources/ts-internals/docs/databases/virtual-databases.md",
