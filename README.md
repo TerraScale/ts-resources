@@ -71,8 +71,7 @@ github.com. TerraScale tickets use Ku (ku MCP, ku.mariogk.com). Forgejo and
 `git.terrascale.tech` have been dead since 2026-10-11. The
 [contributor instructions](AGENTS.md) define ready-for-review PRs, optional
 local checks, CI on GitHub-hosted runners, and merging only a green latest
-head rebased on current main. ts-reviewer is not deployed and no review
-approval is required.
+head rebased on current main. No review approval is required.
 
 Dated evidence and original provenance remain historical. Retired repositories
 without a verified GitHub copy are named as plain text. See the

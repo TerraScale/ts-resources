@@ -15,8 +15,8 @@ Do not use its CLI, MCP, API, package registry, or the retired COS script.
   must use GitHub-hosted runners only.
 - Rebase on current `origin/main`. Merge only when CI is green on the exact
   latest head. Address and answer every reviewer finding.
-- No review approval is required: ts-reviewer is not deployed. Do not request
-  mariogk or the retired bot as reviewers.
+- No review approval is required. Do not request mariogk or any bot as
+  reviewers.
 - This repository merges directly when green. `terrascale` and `ts-dashboard`
   use the merge queue through `gh pr merge --auto --squash`.
 - Use the T3 PR watcher for pending checks or reviews; do not poll `gh` in loops.

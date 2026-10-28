@@ -50,7 +50,7 @@ checks when moving operations into the CLI.
 Open ready-for-review GitHub PRs, never drafts. CI on GitHub-hosted runners
 is the gate; the commands below are optional local diagnostics before push.
 Rebase on current main and merge only when the exact latest head is green.
-No review approval is required; ts-reviewer is not deployed. Address and
+No review approval is required. Address and
 answer every finding and use the T3 PR watcher while waiting.
 
 The repository pins its Go toolchain through `.mise.toml`:

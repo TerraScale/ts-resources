@@ -25,7 +25,7 @@ request; do not copy a Ku ticket into GitHub unless explicitly requested.
 
 Use ready-for-review GitHub PRs for code changes; never drafts. CI is the gate,
 with no local tests required before push and no required review approval.
-ts-reviewer is not deployed. Address and answer every reviewer finding. Keep
+Address and answer every reviewer finding. Keep
 at most one open PR per repository per thread. Rebase on current main and
 merge only when CI is green on the exact latest head. Use the T3 PR watcher
 instead of polling. See the root [workflow](../../../../AGENTS.md).

@@ -25,8 +25,7 @@ Issues in that repository.
 
 Open ready-for-review PRs, never drafts, with at most one open PR per repository
 per thread. CI runs on GitHub-hosted runners and is the gate; local tests are
-optional before push. No review approval is required and ts-reviewer is not
-deployed. Fix and answer every finding, rebase on current main, and merge only
+optional before push. No review approval is required. Fix and answer every finding, rebase on current main, and merge only
 when the exact latest head is green. `terrascale` and `ts-dashboard` use
 `gh pr merge --auto --squash` for their merge queues; other repositories merge
 directly when green. Use the T3 PR watcher for pending checks.
