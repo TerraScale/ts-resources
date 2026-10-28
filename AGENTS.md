@@ -13,8 +13,8 @@ Do not use its CLI, MCP, API, package registry, or the retired COS script.
   per repository per thread. Do not add AI attribution to commits or PRs.
 - CI is the gate; local tests are optional before pushing. GitHub Actions
   must use GitHub-hosted runners only.
-- Rebase on current `origin/main`. Merge only when CI is green on the exact
-  latest head. Address and answer every reviewer finding.
+- **Start from latest main.** Base every change on the most recent `main`: before starting, `git fetch origin` and branch from `origin/main`, never from a stale local `main`, another feature branch or an old worktree. Before every push, `git fetch origin && git rebase origin/main` again; right before merging, rebase once more and merge only when CI is green on that exact head.
+- Address and answer every reviewer finding.
 - No review approval is required. Do not request mariogk or any bot as
   reviewers.
 - This repository merges directly when green. `terrascale` and `ts-dashboard`
