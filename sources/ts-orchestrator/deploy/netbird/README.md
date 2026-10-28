@@ -2,17 +2,18 @@
 
 Current state: the GRU testing reset removed its server peers, setup keys,
 group, access policies, routing network and `gru.ts.internal` zone. The manager,
-ts-ops peer, operator devices and Forgejo access policies are preserved.
-The GRU cell is wiped entirely and rebuilt as `gru-1` while ts-ops (Forgejo
-and the manager) stays: follow [Fresh cell enrollment](#fresh-cell-enrollment).
+ts-ops peer and operator devices are preserved. Repository access now uses
+GitHub directly; old code-host access policies are retired.
+The GRU cell is wiped entirely and rebuilt as `gru-1` while the ts-ops
+manager stays: follow [Fresh cell enrollment](#fresh-cell-enrollment).
 See
 [current regional reset](../../docs/region-bootstrap.md#current-gru-reset).
 
 Self-hosted NetBird at `https://netbird.terrascale.tech` gives enrolled
 operator devices private access to ts-ops. The intended GRU topology below
 adds access to the cell (private subnet
-`10.251.0.0/25`) and to Forgejo on ts-ops. The manager (combined server and
-dashboard) and the routing peer run on ts-ops, next to Forgejo. Every GRU
+`10.251.0.0/25`). The manager (combined server and dashboard) and the routing
+peer run on ts-ops. GitHub uses public HTTPS/SSH, with no private code-host route. Every GRU
 controller and managed host is also a NetBird peer, reached with NetBird SSH.
 
 ```mermaid
@@ -48,7 +49,7 @@ OpenTofu manages infrastructure only, and HomeLab no longer owns NetBird.
 | Groups, policies, network, DNS zone and records, DNS and account settings | Desired state embedded in the `ts-orch` binary; [reconciliation](#desired-state-and-reconciliation) |
 | Manager host bundle: Quadlets, systemd units, installers, backup, firewall, Caddy block | [`manager/`](manager), staged at `/opt/ts-ops/netbird` |
 | Server client install and automatic enrollment | [Server enrollment](#server-enrollment), `deploy/systemd`, image inputs |
-| ts-ops host (Forgejo, Caddy, ports, backups) | ts-ops host runbook |
+| ts-ops host (Caddy, ports, backups) | ts-ops host runbook |
 
 Do not edit groups, policies, networks or settings in the dashboard. A
 dashboard edit is drift: the next reconciliation reverts it.
@@ -124,7 +125,6 @@ masquerade on, metric 100. The router must be in `ts-ops-gateway`.
 | --- | --- | --- | --- |
 | `operators-to-gru-cell-ops-ports` | `operators` → resource `gru-cell-private-subnet` | TCP 22, 4222, 9465 | one-way |
 | `operators-to-gru-servers-ssh` | `operators` → `gru-servers` | `netbird-ssh` | one-way |
-| `operators-to-ts-ops-forgejo` | `operators` → `ts-ops-gateway` | TCP 22, 443, 2022 | one-way |
 | `operators-to-ts-ops-ping` | `operators` → `ts-ops-gateway` | ICMP | one-way |
 
 There is no default `All` policy. Do not allow 6222 or 8443 to operators. The
@@ -183,9 +183,8 @@ netbird ssh -L 9464:127.0.0.1:9464 root@gru-1-db-1.nb.ts.internal
 curl -fsS http://127.0.0.1:9464/readyz
 ```
 
-Forgejo (`git.terrascale.tech`) and the dashboard keep their public names,
-because Caddy routes by Host; over NetBird, pin the name to ts-ops' NetBird IP
-(`curl --resolve git.terrascale.tech:443:10.200.106.253 ...`).
+Repository access uses github.com over public HTTPS/SSH. Do not pin GitHub
+to a ts-ops or NetBird address. Private service DNS remains separate.
 
 ### Stable peer names
 
@@ -262,7 +261,7 @@ device's resolver.
 resolvectl query alpha.tail057f.ts.net ts-ops.nb.ts.internal ctl-1.gru.ts.internal
 ip route get 10.200.106.253
 ssh -p 2022 mariogk@ts-ops.nb.ts.internal hostname
-curl --resolve git.terrascale.tech:443:10.200.106.253 https://git.terrascale.tech/api/v1/version
+gh api repos/TerraScale/ts-orchestrator --jq .html_url
 ```
 
 Headless NixOS dev VMs use HomeLab `fleet/nix/modules/common/netbird-vm.nix`
@@ -302,10 +301,9 @@ last 365 days, the NetBird maximum. The operator automation PAT was created
 
 If step 2 fails, delete the new token and keep the old one.
 
-PAT `ts-infra-ci` (minted 2026-10-02 for the abandoned ts-infra OpenTofu
-adoption) is being retired. Once ts-infra no longer reads it, delete its
-Forgejo secret `NETBIRD_PAT`, revoke the token, and shred its root-only copy:
-`sudo shred -u /root/netbird-ts-infra-ci.pat` on ts-ops. Do not reuse it.
+The former ts-infra CI credential is retired. Do not provision replacement
+repository secrets or reuse old tokens from that abandoned integration.
+Credential cleanup requires a separate authorized operation.
 
 ### Setup keys
 
@@ -337,9 +335,9 @@ Create or rotate it:
 | Routing peer | `netbird` 0.79.0 apt package, held | `wt0` `10.200.106.253`, UDP `51820`, routes `10.251.0.0/25` with masquerade |
 | Store backup | `netbird-backup.timer` 03:30 | SQLite online backup to `/var/srv/appdata/netbird/backups`, keeps 7 |
 
-The bundle is additive to the Forgejo stack and never restarts Forgejo,
-Postgres or Caddy; `uninstall.sh` returns the host to its Forgejo-only
-baseline. Helper scripts install to `/usr/local/libexec/homelab/netbird`, the
+The NetBird bundle is separate from repository hosting. It must not restart
+unrelated services; review the current host baseline before using install
+or uninstall scripts. Helper scripts install to `/usr/local/libexec/homelab/netbird`, the
 path the live units use. Every NetBird unit runs at `CPUWeight=50`; memory is
 capped at 384M (server), 128M (dashboard) and 192M (client).
 
@@ -349,7 +347,7 @@ the installers refuse any other directory or host.
 ### Install
 
 Prerequisites: `netbird.terrascale.tech` A record → `163.176.73.79`
-(DNS-only), UDP 3478 open in the Forgejo NSG, and `/etc/netbird/config.yaml`
+(DNS-only), UDP 3478 open in the ts-ops network security group, and `/etc/netbird/config.yaml`
 rendered.
 
 ```sh
@@ -385,7 +383,7 @@ mint its PATs ([PATs](#pats)), and delete the setup PAT. Delete the default
 ### Routing peer
 
 After [Operator gateway peering](../../docs/region-bootstrap.md#operator-gateway-peering)
-has connected the LPGs, open UDP 51820 in the Forgejo NSG and create a
+has connected the LPGs, open UDP 51820 in the ts-ops network security group and create a
 one-off setup key that auto-assigns `ts-ops-gateway`:
 
 ```sh

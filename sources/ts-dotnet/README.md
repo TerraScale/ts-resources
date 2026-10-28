@@ -130,7 +130,7 @@ If startup cleanup fails, the original exception retains the server in
 `Data[nameof(TerraBaseTestServer)]` so its cleanup can be retried.
 
 ```bash
-ORG_READ_TOKEN=<forgejo read token> nice -n 19 dotnet run \
+nice -n 19 dotnet run \
   --project tests/TerraScale.DotNet.Tests/TerraScale.DotNet.Tests.csproj \
   --framework net10.0 --configuration Release
 ```

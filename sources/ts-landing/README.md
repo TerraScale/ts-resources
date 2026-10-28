@@ -39,7 +39,7 @@ npm run cf:pages:dev
 
 ## Deployment
 
-This repository's Forgejo Actions workflow (`.forgejo/workflows/ci.yml`)
+This repository's GitHub Actions workflow (`.github/workflows/ci.yml`)
 verifies every push to `main` and every pull request targeting `main`
 (checkout, `npm ci`, `npm run check`, `npm run lint`). A merged push to
 `main` then publishes the verified `build/` output to the Cloudflare Pages
@@ -91,14 +91,16 @@ query, failed query cancellation, and both requests' Bearer/redirect options.
 It creates temporary local credentials and databases; it never calls production
 or substitutes API responses.
 
-Download the pinned Linux amd64 release using your existing Forgejo login:
+Download the exact pinned Linux amd64 asset from the current GitHub publishing
+repository, verified through `gh api`. The former standalone TerraBase
+repository has no verified GitHub copy; do not substitute an unverified release.
 
-```bash
-fj release asset download -r TerraScale/terrabase \
-  ci-ff256067015433c8c40b59879f1282d2a40480ce-run-13258 \
-  terrabase-linux-amd64 -o /tmp/ts502-terrabase
-chmod +x /tmp/ts502-terrabase
-TERRABASE_TEST_BINARY=/tmp/ts502-terrabase nice -n 19 npm run test:slow
+```sh
+TAG=ci-ff256067015433c8c40b59879f1282d2a40480ce-run-13258
+gh release download "$TAG" --repo "$RELEASE_REPOSITORY" --pattern terrabase-linux-amd64 --pattern terrabase-linux-amd64.sha256
+sha256sum -c terrabase-linux-amd64.sha256
+chmod +x terrabase-linux-amd64
+TERRABASE_TEST_BINARY="$PWD/terrabase-linux-amd64" nice -n 19 npm run test:slow
 ```
 
 The runner verifies SHA-256

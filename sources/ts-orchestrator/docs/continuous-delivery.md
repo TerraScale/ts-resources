@@ -13,12 +13,12 @@ default. Image-based orchestrator replacement is still a proposed follow-up.
 Use one operator-host timer per deployed TerraBase placement, with a reviewed
 inventory covering every placement in each cell. Poll every minute; a
 publication notification can wake the same timer sooner. CI only publishes
-inputs. The operator host reaches Forgejo and controllers through existing
+inputs. The operator host reaches GitHub over public HTTPS and controllers through existing
 TLS/Bastion access, holds the narrowly scoped online operator keys, and runs
-the single orchestrator binary. Controllers and hosts need no Forgejo route.
+the single orchestrator binary. Controllers and hosts need no GitHub route.
 Do not put operator, compatibility, release-leaf or root keys in Actions.
 
-Publication is not deployment authorization. Forgejo metadata and assets are
+Publication is not deployment authorization. GitHub metadata and assets are
 untrusted inputs until their source lineage, qualification and byte digests
 are checked. The existing operator signature admits a TerraBase artifact;
 the independent compatibility signature certifies the exact old/candidate
@@ -49,8 +49,9 @@ binary-only self-update below replaces the executable, not the image):
 | Orchestrator binary update receipt (opt-in) | Offline root issues a time-bounded (at most 31 days) binary update delegation scoped to environment, cells, architectures and descendants of a reviewed main revision (`ts-orch release sign-update-delegation`). The online leaf then signs any `ci.yml`-qualified descendant automatically (`ts-orch release sign-binary-update`). Nodes accept these receipts only with `--allow-scoped-auto-sign`. |
 | Running-cell replacement plan | Proposed new offline-root-signed authorization pins predecessor install/instance, successor manifest/image receipt, same cell/deployment/slot, increasing generation, credentials/config digests, validity, resource budget and explicit rollback target. Existing continuity does not supply this authority. Root private keys stay offline. |
 
-Forgejo has no authenticated protected-environment reviewer gate here
-([releases.md](releases.md)). Retain independent review evidence externally.
+Repository PRs require no review approval; CI is the merge gate. Release
+signing authority remains separate ([releases.md](releases.md)); retain its
+independent evidence without treating it as a PR-review requirement.
 Immediate automatic delivery of *arbitrary* orchestrator publications is
 incompatible with the present per-source/per-image human signing gates.
 Automatically discover and prepare candidates, then automatically execute
@@ -59,10 +60,12 @@ those gates would be a new trust decision, outside this change.
 
 ## Implemented TerraBase entry point
 
-After the decisions below, provision a full TerraBase checkout via `fj repo
-clone`, the pinned admission `fj` extension from
-`scripts/ci/prepare-fj-admission.sh`, operator config/keys and an existing
-Bastion forward on the operator host. Invoke this command from a one-minute
+After the decisions below, provision a full source checkout from the verified
+current GitHub repository using Git over SSH, `gh` for release/Actions reads,
+operator config/keys and an existing Bastion forward. The old standalone
+TerraBase repository has no verified GitHub copy. Before enabling this entry
+point, verify the current implementation supports GitHub provenance and the
+selected release inventory. Invoke it from a one-minute
 timer with a one-hour service deadline longer than `--timeout`:
 
 ```sh
@@ -77,7 +80,7 @@ terrascale-orchestrator operator terrabase-sync \
 ```
 
 The command checks the checkout's origin, fetches main without force,
-discovers non-draft `ci-<sha>-run-<id>` releases with `fj`, and selects the
+discovers non-draft `ci-<sha>-run-<id>` releases with `gh release list`, and selects the
 newest published descendant of the completed source on main. Commit ancestry,
 not run ID, determines newness. Rebuilds of identical source are ignored.
 Multiple publications can coalesce before a rollout starts; an active rollout
@@ -95,7 +98,7 @@ An owner-only state directory and kernel file lock serialize sync invocations
 for a placement. Synced, immutable `cd-complete-<generation>.json` receipts
 advance its source baseline only after both seats serve. Cancellation/timeouts
 leave the active pin for resume. Changed assets, bad provenance, unreachable
-Forgejo or unavailable forwarding never allow a different active candidate.
+GitHub or unavailable forwarding never allow a different active candidate.
 Input failures before admission retry without creating a stop marker.
 
 The updater waits for a fresh serving proof from each seat, then soaks it
@@ -241,10 +244,10 @@ every source revision. The scoped binary update delegation
   descendants of a pinned, reviewed `lineage_base` revision.
 
 The leaf signs a `terrascale.release.binary-update.v1` receipt only after the
-qualification manifest matches the binary, the Forgejo run succeeded and git
+qualification manifest matches the binary, the GitHub Actions run succeeded and git
 proves the source descends from the base and is on `origin/main`. The
 `--source-checkout` origin must resolve to
-`git.terrascale.tech/TerraScale/ts-orchestrator` (https or ssh), so a fork
+`github.com/TerraScale/ts-orchestrator` (https or ssh), so a fork
 cannot stand in for main. The delegated leaf must differ from the offline
 root. A receipt never outlives its delegation; signing is refused when the
 delegation has less than an hour left, and the CLI prints the effective

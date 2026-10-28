@@ -1,6 +1,10 @@
 # ADR 0004: one Forgejo provider for releases and Actions reads
 
-Status: Accepted
+Status: Superseded 2026-10-28 by the GitHub workflow.
+
+Use `gh` for releases, tags, Actions, and repository issues; see
+[the current command reference](../forgejo.md). The dated decision below is
+historical and must not be used as operational guidance.
 
 Date: 2026-09-10
 

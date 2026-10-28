@@ -1,5 +1,11 @@
 # Operations
 
+Repository workflow update (2026-10-28): use GitHub and GitHub-hosted Actions
+runners. This standalone component has no verified GitHub repository copy;
+resolve the current source and publishing repository from the release inventory
+before using the adapted examples below. GHCR references are target formats,
+not evidence that an image has been published.
+
 Running ts-router: subscription accounts and quota, authentication,
 shutdown, metering repair, configuration, commands, the bench, backups and
 deploys. Remote access to the deployed router is described in
@@ -167,8 +173,8 @@ The store refuses a database a newer build migrated, and migrations only
 run forward, so a rollback needs the database from before the deploy: take
 `ts-router backup` first wherever the deploy does not snapshot it.
 
-CI (`.forgejo/workflows/ci.yml`) verifies every push and, on `main`,
-publishes `git.terrascale.tech/terrascale/ts-router:<sha>`; it holds no
+CI (`.github/workflows/ci.yml`) verifies every push and, on `main`,
+publishes `ghcr.io/terrascale/ts-router:<sha>`; it holds no
 deploy credential. Alpha's homelab-deployer follows `main`: once the check
 `ts-router CI / Verify and build ts-router (push)` passes it stops the
 router (which drains), snapshots `router.db`, rolls the instance onto the

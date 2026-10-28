@@ -67,7 +67,7 @@ On boot
    controllers on 4222 (NATS).
 7. **Operator grant.** The operator's signer grant lists role `terrabase`
    and the target environment; if it lists repositories, it includes
-   `https://git.terrascale.tech/TerraScale/terrabase`.
+   the verified GitHub source URL in the current release inventory.
 
 ## Workload profile
 
@@ -89,7 +89,7 @@ profile differs. For cell `gru-1` with two members:
 ```
 
 `TERRABASE_REGION` is required outside Development starting with
-[TerraBase #18](https://git.terrascale.tech/TerraScale/terrabase/pulls/18).
+TerraBase #18.
 Without it the binary exits before opening storage. Use `gru-1` in both the
 signed controller profile and the operator's `--profile` file; the host
 preserves this environment setting when adding the member's local paths.
@@ -110,10 +110,13 @@ the [runtime contract](terrabase-runtime-contract.md#workload-profile).
 TAG=ci-<commit>-run-<run id>   # or v<Version>
 COMMIT=<full 40-character commit of the release>
 WORK=$(mktemp -d) && cd "$WORK"
-fj -H git.terrascale.tech release asset download -r TerraScale/terrabase "$TAG" terrabase-linux-arm64
-fj -H git.terrascale.tech release asset download -r TerraScale/terrabase "$TAG" terrabase-linux-arm64.sha256
+# Resolve RELEASE_REPOSITORY and SOURCE_REPOSITORY from the release inventory.
+# The old standalone TerraBase repo has no verified GitHub copy.
+gh api "repos/$RELEASE_REPOSITORY" --jq .html_url
+gh release download "$TAG" --repo "$RELEASE_REPOSITORY" --pattern terrabase-linux-arm64 --pattern terrabase-linux-arm64.sha256
 sha256sum -c terrabase-linux-arm64.sha256
-fj repo clone -H https://git.terrascale.tech TerraScale/terrabase "$WORK/terrabase"
+gh api "repos/$SOURCE_REPOSITORY/commits/$COMMIT" --jq .sha
+git clone "git@github.com:$SOURCE_REPOSITORY.git" "$WORK/terrabase"
 ```
 
 Keep the asset file names: the command checks them. `--commit` must be a

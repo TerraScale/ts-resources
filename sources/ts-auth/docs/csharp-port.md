@@ -29,10 +29,10 @@ and error reporting, not the persistence boundary.
 The sibling `ts-dotnet` and `ts-libs` checkouts are project references. Locally
 they are found at `../ts-dotnet` and `../ts-libs`, or under
 `~/Projects/TerraScale/`; pass `-p:TerraScaleRoot=<dir>` to use another
-location. CI checks out the revisions pinned in `.forgejo/workflows/ci.yml`
+location. CI checks out the revisions pinned in `.github/workflows/ci.yml`
 into a job-owned directory outside the repository.
 
-Both `.forgejo/workflows/ci.yml` and `.forgejo/workflows/slow.yml` pin ts-dotnet
+Both `.github/workflows/ci.yml` and `.github/workflows/slow.yml` pin ts-dotnet
 to `bdea1e8f4926e46367b751d8f633dcec04d760e9` (SDK merge #24). That revision's
 `src/TerraScale.DotNet.Testing/TerraBaseRelease.cs` pins the Linux x64 server:
 
@@ -43,8 +43,9 @@ to `bdea1e8f4926e46367b751d8f633dcec04d760e9` (SDK merge #24). That revision's
 | Binary SHA-256 | `e07d173fc2bbab19dcb1fde8b121b0207b07d55452a5b19a406871d220e05e13` |
 
 The helper verifies the binary's SHA-256 on every start. Provide a matching
-`TERRABASE_BINARY`, a verified cached binary, or `TERRABASE_DOWNLOAD_TOKEN` /
-`ORG_READ_TOKEN` to download the private release. `TERRABASE_CACHE_DIRECTORY`
+`TERRABASE_BINARY` or a verified cached binary downloaded from the current
+GitHub publishing repository with `gh release download`. Public release reads
+need no token. `TERRABASE_CACHE_DIRECTORY`
 overrides the cache location. The ts-auth fixture fails when the binary is
 unavailable, including locally; it never skips these tests. The SDK's
 `docs/terrabase-consumers.md` describes the adoption procedure but reflects
@@ -209,12 +210,12 @@ Every auth replica must use the same single configured storage authority,
 without automatic write retries or failover to another copy. Atlas endpoint
 discovery (TS-507) does not supply replication or failover guarantees.
 
-The pinned server's [decision 0003](https://git.terrascale.tech/TerraScale/terrabase/src/commit/ff256067015433c8c40b59879f1282d2a40480ce/docs/decisions/0003-sqlite-synchronous-normal.md)
+The pinned server's decision 0003
 uses SQLite WAL with `synchronous=NORMAL`. A TerraBase process crash alone
 preserves committed writes, but an OS crash or power loss can roll back
 acknowledged PUT/DELETE transactions since the WAL was last synced. Thus
 uniqueness claims and consumed-challenge records can be rolled back.
-[Decision 0005](https://git.terrascale.tech/TerraScale/terrabase/src/commit/ff256067015433c8c40b59879f1282d2a40480ce/docs/decisions/0005-multi-tenancy.md)
+Decision 0005
 states that replication `Sync` is rejected by a bootstrap stub and committed
 batches do not yet carry database identity. There is no supported replication
 or regional failover for this pin.

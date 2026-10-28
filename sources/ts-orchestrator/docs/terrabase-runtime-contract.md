@@ -36,7 +36,7 @@ controller's artifact admission limit), and matches the single line of its
 `.sha256` asset. The verified digest is the
 artifact digest the rollout pins. TerraBase publishes no source digest, so
 the artifact's source claim is repository
-`https://git.terrascale.tech/TerraScale/terrabase`, the commit, and the
+the verified GitHub source URL in the current release inventory, the commit, and the
 SHA-256 of `git archive --format=tar <commit>` in a TerraBase checkout.
 
 ## The binary

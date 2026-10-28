@@ -6,7 +6,7 @@ the signing and authorization decisions policy requires.
 
 ## Stages
 
-### 1. Orchestrator CI (`.forgejo/workflows/ci.yml`)
+### 1. Orchestrator CI (`.github/workflows/ci.yml`)
 
 Runs on every push to `main` or `develop` except documentation-only changes
 (`docs/**`, `**/*.md`). A newer push cancels a running check of the same
@@ -21,7 +21,7 @@ marker) on `ci-<sha>-run-<id>`. On `main` its last step dispatches
 slot while the checks run. Pull requests run the fast test tier (`-short`)
 and skip the admission client; pushes run every tier (CONTRIBUTING.md).
 
-### 2. TerraBase CI (`terrabase/.forgejo/workflows/fast.yml`)
+### 2. TerraBase CI (`terrabase/.github/workflows/fast.yml`)
 
 `fast` (format, Clippy, Fast suite) and `release` (static x86_64 and ARM64
 build, smoke run under qemu) run in parallel. On `main`, `release` retains
@@ -29,10 +29,12 @@ the exact bytes it tested on `ci-<sha>-run-<id>`; `publish` reads them back
 once Fast passes, checks them against the release job's manifest, uploads
 `qualification.json` and never rebuilds. It then pins the release in this
 repository's `deploy/image/image-inputs.json` through
-`scripts/ci/pin-terrabase.sh`, a data-only commit to `main` that runs
+`scripts/ci/pin-terrabase.sh`, adapted to open a ready-for-review GitHub PR.
+Its exact latest head must pass CI after
+rebasing on current main. Merge it directly when green; publication then runs
 stage 1 and images the new pin.
 
-### 3. Image (`.forgejo/workflows/image.yml`, `deploy/image/`)
+### 3. Image (`.github/workflows/image.yml`, `deploy/image/`)
 
 `build-image.sh` checks out the named revision and reads every other input
 from `deploy/image/image-inputs.json`: the base QCOW2 retained once on
@@ -64,7 +66,7 @@ roll out through the managed update path and signed desired state.
 ## Operator commands
 
 To rebuild a named revision in CI, run the "Qualified GRU ARM64 image"
-workflow on `main` from the Forgejo Actions page with `source_revision` set;
+workflow on `main` from the GitHub Actions page with `source_revision` set;
 it needs no other input. `--sign-binary --signing-key leaf.pem` also signs the
 binary receipt when the candidate's CI release has none. Local builds are
 promoted with `--image-dir`.
@@ -96,14 +98,13 @@ promoted with `--image-dir`.
 ## Open decisions
 
 2. **Cross-repository pin bump token.** The Actions token cannot write to
-   another repository. A `TS_PIN_BUMP_TOKEN` for `terrascale-bot` scoped to
-   `write:repository` on ts-orchestrator, stored as a TerraBase secret,
-   enables stage 2's pin bump; until then the step skips itself.
-3. **KVM for image jobs.** The runner container has no `/dev/kvm`, so each
-   libguestfs appliance boots under TCG (about 70 s instead of 4 s measured
-   locally). Passing `/dev/kvm` to the runner's job containers would cut the
-   image build to about a minute.
+   another repository. Use a narrowly scoped GitHub App installation token
+   or fine-grained token with contents and PR write permissions for the target
+   repository, stored as a GitHub Actions secret. Open a ready-for-review PR
+   for the pin update; never bypass its CI gate or assign the retired reviewer.
+3. **Image job capacity.** Use GitHub-hosted runners only. Choose supported
+   architecture and virtualization capabilities; do not reintroduce private
+   runners to obtain `/dev/kvm`. Retained timings above are historical.
 4. **Builder image tools.** The image tools come from the pinned nixpkgs
-   revision through `/cache/nix`. Baking them into ts-builder removes the
-   first-run build but needs the runner to re-pull the builder image, which
-   is a manual step today.
+   revision with a lockfile-keyed GitHub Actions cache. Do not depend on a
+   persistent runner filesystem or manual runner image refreshes.

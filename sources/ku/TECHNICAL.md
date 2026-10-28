@@ -19,7 +19,7 @@ Dev Machines target trusted self-hosted workspaces. Docker hardening reduces ris
 - Machine services never publish host ports. Caddy and the Machine Gateway are the only public ingress path.
 - Every machine has an isolated internal Docker network and a dedicated workspace volume.
 - code-server and ttyd run in the same developer container with a shared filesystem, processes, `HOME`, tools, and tmux.
-- Human browser sessions, machine tokens, and Forgejo credentials are distinct credentials with different scopes and lifetimes.
+- Human browser sessions, machine tokens, and GitHub credentials are distinct credentials with different scopes and lifetimes.
 - Top-level browser launches and native terminal WebSockets use distinct one-time ticket flows.
 - PostgreSQL is the durable source of truth. Runtime operations are leased, retried, idempotent, and reconcilable after process restarts.
 - Agent providers produce a common Ku result model regardless of CLI implementation.
@@ -248,7 +248,14 @@ An autonomous run receives:
 - explicitly allowed secret names;
 - push and pull-request policy.
 
-Ku adds an execution contract instructing the provider to work inside the selected workspace path, avoid credential output, run the requested tests, and use the configured working branch. After provider success, the manager independently runs the exact configured test argv in the developer container and records its actual exit status. It inspects committed, dirty, and untracked Git files, rejects changed forbidden paths or an unexpected working branch, then commits outstanding changes and pushes to the selected linked Forgejo repository before opening a pull request. A failed test or verification check blocks publication. An absent test command is recorded as `not_run`; model-reported test success is never treated as verification.
+For the current contribution workflow, providers work on the configured branch
+without printing credentials, then publish a ready-for-review GitHub PR. Local
+tests may be requested for diagnosis but are not a prerequisite to push. GitHub
+Actions on GitHub-hosted runners gates merging on the exact latest head after
+rebasing on current main. The old manager-controlled publication contract in
+this snapshot does not establish a deployed GitHub implementation. Retain
+actual test exit status and Git state as evidence; never treat model-reported
+test success as verification.
 
 Allowed-command instructions remain advisory. Forbidden paths are a publication check, not a filesystem access sandbox; edits can occur before validation. The shared workspace remains editable through the IDE, so operators should avoid concurrent edits during a run and publication. Tests use the developer image toolchain and do not receive Git publishing tokens in their exec environment.
 
@@ -339,11 +346,11 @@ Secret flow:
 6. Browser and egress containers receive no workspace secrets.
 7. Manager-captured provider logs are redacted with the exact injected values. IDE command telemetry redacts common key/token/secret/password patterns.
 
-Reserved `KU_*` variables, `GITHUB_TOKEN`, and `FORGEJO_TOKEN` cannot be supplied by users.
+Reserved `KU_*` variables, `GITHUB_TOKEN`, and other reserved publishing credentials cannot be supplied by users.
 
 ## Scoped Settings, Worktrees, and Environments
 
-Development defaults are stored in `dev_machine_scope_settings`. A setting may provide a linked Forgejo repository, base branch, and/or development environment for a workspace, team, project, or issue. Repository and environment values are resolved independently in this order: issue, project, team, workspace. This lets an issue override only the repository while inheriting an environment, or vice versa.
+Development defaults are stored in `dev_machine_scope_settings`. A setting may provide a linked GitHub repository, base branch, and/or development environment for a workspace, team, project, or issue. Repository and environment values are resolved independently in this order: issue, project, team, workspace. This lets an issue override only the repository while inheriting an environment, or vice versa.
 
 Machine creation accepts optional issue/project/repository information but does not require it. If no repository resolves, legacy repository fields remain empty and the machine starts as a generic developer workspace. When an issue is opened, `POST /dev-machines/:machineId/checkouts` resolves the issue's development settings, enforces the machine's repository affinity, and creates an idempotent issue worktree under `/workspace/tasks/{issue-key}`. A machine can hold multiple ready checkouts from the same repository; checkouts from another repository or environment require a separate machine.
 
@@ -351,17 +358,19 @@ Development Environments are immutable local OCI images created from owner/admin
 
 Environment deletion is two-phase. The API marks an environment `delete_requested`; the manager removes only the immutable local image ID after verifying the Ku environment/workspace labels and only then deletes the database record. Operators migrating hosts must move any required local OCI images separately from PostgreSQL and Docker volumes.
 
-## Forgejo Integration
+## GitHub workflow
 
-Dev Machines use the workspace (or globally configured) Forgejo token for clone, push, and pull-request creation. Generic machines may start without a repository; issue checkouts resolve the linked repository through issue, project, team, then workspace development settings. Once a machine has repository affinity, additional issue worktrees must use the same linked repository.
+Use Git over SSH to github.com for source and `gh` for PRs, repository issues,
+Actions, and releases. Public source reads do not need repository credentials.
+TerraScale tickets use Ku MCP at ku.mariogk.com. Confirm the selected repository
+before publishing, keep credentials out of provider processes and telemetry,
+and use only features verified in the deployed Ku version.
 
-The token needs repository write scope for push and pull-request creation. Forgejo has no per-repository installation tokens, so the manager reuses the connection token itself: the global `FORGEJO_TOKEN` when configured, otherwise the workspace connection token decrypted at use time (it is stored AES-256-GCM encrypted). The manager only hands it out for repositories linked to the workspace, registers it as a runtime credential for telemetry redaction, and delivers it through the tmpfs secret flow to the developer container when needed for Git. Autonomous provider containers do not receive the Forgejo publishing token; manager-controlled publication supplies a fresh token to a short-lived Git process after verification, with repository hooks disabled.
-
-The developer and agent containers install a Git credential helper that only supplies Forgejo credentials for the selected HTTPS host and repository (GitHub tokens are limited to github.com). Issue checkouts use a temporary credential helper and token file that are removed on success or failure, and resolve the clone URL from the linked Forgejo instance. Publication uses the authorized repository URL instead of a mutable origin remote. Ku resolves the workspace or global Forgejo connection again before creating a pull request after a successful run.
-
-Branches, commits, and pull requests are persisted in `dev_machine_git_refs` with workspace, machine, run, issue, repository, and URL linkage. Existing Forgejo webhooks continue to populate the issue development timeline.
-
-Each issue checkout is an idempotent `dev_machine_checkouts` record with its own working branch and workspace path under `/workspace/tasks/{issue-key}`. Agents and terminal sessions can target a checkout; if multiple checkouts exist, agent runs must name the checkout to avoid ambiguous writes.
+The previous manager integration, connection-token flow, and webhook contract
+are retired. This resource-only change does not port the manager or assert that
+GitHub publishing or ticket automation is deployed. See
+[repository guidance](BE/docs/forgejo-integration.md). Do not reuse old tokens,
+API routes, or webhook configuration.
 
 ## Activity and Logs
 
@@ -414,7 +423,7 @@ Migration `000033_dev_machines` creates:
 | `dev_machine_terminal_sessions` | User terminal tabs mapped to runtime tmux sessions and optional checkouts |
 | `dev_machine_runtime_credentials` | Encrypted, expiring runtime-secret registrations used for telemetry redaction |
 
-Migration `000042_forgejo_integration` retargets the repository references in `dev_machines`, `dev_machine_scope_settings`, and `dev_machine_checkouts` from the removed GitHub tables to `forgejo_repos`. Composite foreign keys bind workspace, machine, service, checkout, run, session, and environment tuples so cross-workspace identifiers are rejected by PostgreSQL rather than relying only on application checks. Rolling migration `000033` back is destructive for all Dev Machine control-plane records.
+Historical schema record (not current integration setup): migration `000042_forgejo_integration` retargets the repository references in `dev_machines`, `dev_machine_scope_settings`, and `dev_machine_checkouts` from the removed GitHub tables to `forgejo_repos`. Composite foreign keys bind workspace, machine, service, checkout, run, session, and environment tuples so cross-workspace identifiers are rejected by PostgreSQL rather than relying only on application checks. Rolling migration `000033` back is destructive for all Dev Machine control-plane records.
 
 All user-facing repository access is constrained by both `workspace_id` and resource ID. Internal manager lookups are limited to the trusted manager process.
 
@@ -525,7 +534,7 @@ Prerequisites:
 - wildcard DNS for `*.${DEV_MACHINE_DOMAIN}`;
 - production wildcard TLS via a custom Caddy build with a DNS-01 module or an operator-provided wildcard certificate (stock Caddy cannot issue wildcard certs via HTTP-01);
 - sufficient host CPU, memory, and disk for configured concurrency;
-- a Forgejo token with repository write permissions for autonomous push/PR workflows;
+- an authorized GitHub publication path for push/PR workflows; do not enable the retired integration;
 - runtime images built locally or available from a trusted registry.
 
 The checked-in Caddy wildcard block uses `tls internal` (Caddy's local CA), which is suitable for local or internal-network installations. For a public production machine domain, the profile prerequisite inspects the mounted Caddyfile and fails before grants or control-plane startup while an active `tls internal`, `issuer internal`, or `local_certs` directive remains. Replace it with a DNS-01 issuer supported by a custom Caddy build or mount an operator-provided wildcard certificate. `machines.localhost` is the local-development exception.
@@ -579,7 +588,7 @@ For focused agent runtime qualification, build `devmachine/agent/Dockerfile` wit
 ## Security Limitations
 
 - Docker hardening is not hostile multi-tenant isolation.
-- Pinned Chrome Stable packages for amd64 and arm64 run through KasmVNC in a separately hardened non-root container. The browser's internal sandbox is disabled because Docker namespace restrictions conflict with its setup. The browser must not receive provider or Forgejo secrets.
+- Pinned Chrome Stable packages for amd64 and arm64 run through KasmVNC in a separately hardened non-root container. The browser's internal sandbox is disabled because Docker namespace restrictions conflict with its setup. The browser must not receive provider or GitHub Actions secrets.
 - Domain egress controls cannot prevent exfiltration to an explicitly allowed destination.
 - Command and filesystem collection is best-effort and can be bypassed by trusted workspace code.
 - Provider adapters can construct interactive invocations, but current product dialogs queue autonomous agent runs and no interactive-agent attach endpoint is exposed. Direct interactive use of the built-in CLIs is available through Ku's native xterm terminal; ttyd's web page is not exposed.

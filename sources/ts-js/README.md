@@ -143,7 +143,8 @@ consume its official asset read-only when the version, source revision, size and
 SHA-256 are verified; publication is not required. Draft status does not establish
 that the producer's source qualification passed.
 The acquisition script verifies the official release, revision, asset size and
-digest. Private downloads require `FORGEJO_TOKEN`. Missing or mismatched official
+digest. Public GitHub downloads need no read token; use `gh release download` for
+release assets from the verified current publishing repository. Missing or mismatched official
 assets block qualification rather than selecting older bytes.
 
 ```sh

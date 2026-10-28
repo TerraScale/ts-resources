@@ -7,7 +7,7 @@ Each `ts-atlas` release publishes only the deterministic
 manifest binds the source commit, byte count, and SHA-256 digest of the
 contract bundle. Normalized tar metadata makes the archive reproducible.
 
-The Forgejo release job requires the managed
+The GitHub release job requires the managed
 `TS_ATLAS_RELEASE_SIGNING_KEY_B64` secret and the trusted
 `TS_ATLAS_RELEASE_KEY_SHA256` fingerprint before publication. Consumers can
 verify the signature, expected source revision, trusted key, and artifact bytes

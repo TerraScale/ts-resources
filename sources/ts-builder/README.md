@@ -1,12 +1,13 @@
-AI IS NOT ALLOWED TO EDIT THIS FILE ONLY HUMANS CAN!
-
 # ts-builder
 
-Forgejo Actions job image for **every** TerraScale repository. Runs on the
-`terrascale-builder` runner label. Built by the Nix flake as an OCI image.
+Optional job container for GitHub Actions on GitHub-hosted runners only.
+The old dedicated runner is retired. Built by the Nix flake as an OCI image.
+This snapshot does not prove a current published image or GitHub repository;
+verify the publishing workflow and digest in the current release inventory
+before using the GHCR reference below.
 
-**Main registry: Forgejo** — published as
-`git.terrascale.tech/terrascale/ts-builder:latest`
+**Registry: GHCR** — published as
+`ghcr.io/terrascale/ts-builder:latest`
 
 The image includes **Nix** (flakes, writable store, `initializeNixDatabase`)
 so jobs can `nix build` inside ts-builder. When CI sets `HOMELAB_NIX_CACHE=1`
@@ -40,11 +41,7 @@ podman run --rm ts-builder:latest ts-builder-verify
 ## Publish
 
 CI on `main` runs `nix build .#oci` and `skopeo copy` to
-`git.terrascale.tech/terrascale/ts-builder:latest`.
+`ghcr.io/terrascale/ts-builder:latest`.
 
-After publish, re-warm the runner (`force_pull: false`):
-
-```bash
-incus exec terrascale-builder-runner -- docker pull \
-  git.terrascale.tech/terrascale/ts-builder:latest
-```
+GitHub-hosted jobs pull the pinned GHCR image when they start; no persistent
+runner warm-up or host access is required.

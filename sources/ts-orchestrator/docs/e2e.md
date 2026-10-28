@@ -20,8 +20,7 @@ The suite owns temporary data, certificates, credentials and child processes.
 
 ```sh
 cd e2e
-# Set TERRABASE_TOKEN and E2E_FORGEJO_TOKEN in your environment if Forgejo
-# requires read credentials. These are read-only artifact/source credentials.
+# Read public source and release assets from GitHub; no read token is required.
 nice -n 19 go test -race ./...
 nice -n 19 go vet ./...
 nice -n 19 go build ./...
@@ -106,7 +105,7 @@ inspect the dedicated organization before retrying if a request outcome was lost
 
 ## CI
 
-`.forgejo/workflows/e2e.yml` runs the local target for PRs touching `e2e/`,
+`.github/workflows/e2e.yml` runs the local target for PRs touching `e2e/`,
 nightly at 03:00 UTC, and manual dispatch with `target=local` (default).
 A separate job runs production only on manual dispatch with `target=prod`.
 Both retain the JSON report even on failure. CI uses normal CPU priority.
@@ -140,11 +139,12 @@ Switch auth from pinned source to the TS-488 release artifact once available.
 The SDK is pinned in `e2e/go.mod` to the merged ts-go#16 `main` commit
 `57a36b6d6aa08efbaa0617b7c6efd9cfbf26da05`, pseudo-version
 `v0.0.0-20261005010400-57a36b6d6aa0`. Its vanity path is not published, so a
-Forgejo replacement fetches that same commit. Update both version references
+GitHub replacement fetches that same commit; verify the pin with
+`gh api repos/TerraScale/ts-go/commits/<sha>` before updating it. Update both version references
 and run `go mod tidy` when bumping. Replace the pseudo-version with the release
 tag once the SDK release is published. Review newly shipped features and replace
-their pending entry with a real assertion in the same change; rerun local E2E
-before committing.
+their pending entry with a real assertion in the same change. CI is the merge
+gate; local E2E is optional before push.
 
 `E2E_CACHE` selects the artifact and bare-source cache (default
 `~/.cache/terrascale/e2e`). `E2E_TERRABASE_BINARY` accepts a previously downloaded

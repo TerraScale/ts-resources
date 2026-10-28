@@ -131,12 +131,12 @@ work from the repository contents.
 
 The SDK declares the `terrascale.tech/sdk` module path, but that vanity domain
 does not yet serve Go module metadata. A versioned `replace` in `go.mod`
-resolves it through the [public ts-go repository](https://git.terrascale.tech/TerraScale/ts-go).
+resolves it through the [public ts-go repository](https://github.com/TerraScale/ts-go).
 The pin keeps the dashboard's current API contract; it does not track the
 SDK's main branch. Downloads use the public Go proxy with direct HTTPS fallback
 and the public checksum database, without credentials or a local module proxy.
 The repository's `go-import` metadata points to
-`https://git.terrascale.tech/TerraScale/ts-go.git`. The public replacement,
+`https://github.com/TerraScale/ts-go.git`. The public replacement,
 including its pinned revision and checksum records, is intentionally part of
 the CI download check; it does not require a Codeberg mirror.
 

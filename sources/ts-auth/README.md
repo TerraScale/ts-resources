@@ -1,5 +1,11 @@
 # ts-auth
 
+Repository workflow update (2026-10-28): use GitHub and GitHub-hosted Actions
+runners. This standalone component has no verified GitHub repository copy;
+resolve the current source and publishing repository from the release inventory
+before using the adapted examples below. GHCR references are target formats,
+not evidence that an image has been published.
+
 A hosted identity provider in the Clerk / Auth0 / WorkOS category, built on
 TerraBase. The service is written in C# on .NET 10: ASP.NET Core with every
 API declared through `TerraScale.Endpoints` (ts-libs), TerraBase Documents v1
@@ -85,7 +91,7 @@ its S3 API. Packaged fonts and static assets are embedded in the executable.
 ## Running
 
 The build needs the .NET 10 SDK (see `global.json`) and the sibling `ts-dotnet`
-and `ts-libs` checkouts at the revisions pinned in `.forgejo/workflows/ci.yml`.
+and `ts-libs` checkouts at the revisions pinned in `.github/workflows/ci.yml`.
 They are looked up at `../ts-dotnet` and `../ts-libs`, or under
 `~/Projects/TerraScale/`; pass `-p:TerraScaleRoot=<dir>` or set the
 `TerraScaleRoot` environment variable to use another location. Both workflows
@@ -368,7 +374,7 @@ rotation.
 
 ## CI
 
-`.forgejo/workflows/ci.yml` runs two jobs in parallel.
+`.github/workflows/ci.yml` runs two jobs in parallel.
 - **`fast`** is the required gate. It checks out the pinned ts-dotnet and
   ts-libs revisions into a job-owned directory, then runs a locked restore,
   `dotnet format --verify-no-changes`, a Release build with analyzers as
@@ -389,15 +395,15 @@ rotation.
   proves the bundled libsodium loads on arm64).
 
 On pushes to `main`, `release` stages the smoke-checked image in
-`git.terrascale.tech/<owner>/ts-auth-ci` and passes its registry manifest
+`ghcr.io/<owner>/ts-auth-ci` and passes its registry manifest
 digest to `publish` (`scripts/ci/transfer-image.sh`). Once both jobs pass,
-`publish` tags that exact image as `git.terrascale.tech/<owner>/ts-auth:<commit>`.
+`publish` tags that exact image as `ghcr.io/<owner>/ts-auth:<commit>`.
 The daily `registry-retention.yml` workflow removes staging candidates older
 than 30 days.
 
 On pushes to `main`, once `fast` and `release` pass, `publish-binary`
 (`scripts/ci/publish-binary.sh`) attaches `ts-auth-linux-arm64` and
-`ts-auth-linux-arm64.sha256` to the Forgejo release `v<version>-dev.<commit>`,
+`ts-auth-linux-arm64.sha256` to the GitHub release `v<version>-dev.<commit>`,
 which ts-orchestrator downloads to run ts-auth natively. The exact bytes are
 smoke-checked under emulation before any upload. New uploads succeed only
 once both downloads match the smoke-checked executable and its checksum byte for byte;
@@ -414,6 +420,6 @@ Argon2id) at startup into `DOTNET_BUNDLE_EXTRACT_BASE_DIR` (default
 user, for example a systemd `StateDirectory`: files planted in a shared
 extraction directory would be loaded.
 
-`.forgejo/workflows/slow.yml` runs the slow suite after pushes, nightly and on
+`.github/workflows/slow.yml` runs the slow suite after pushes, nightly and on
 demand. It never blocks merges or releases. A failure files or updates the
-open "Slow test suite failed" Forgejo issue with `fj`. The issue lists the failing test names and links the run; it never contains log text, which stays in the run behind the repository's permissions.
+open "Slow test suite failed" GitHub issue with `gh issue`. The issue lists the failing test names and links the run; it never contains log text, which stays in the run behind the repository's permissions.

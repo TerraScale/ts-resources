@@ -2,8 +2,9 @@
 
 TerraScale Orchestrator is a Go control plane distributed as one binary. A
 regional controller embeds its NATS server and JetStream store; hosts connect
-to the regional cell to receive signed, digest-pinned desired state. Forgejo
-Actions owns source verification and binary builds. The orchestrator owns
+to the regional cell to receive signed, digest-pinned desired state. GitHub
+Actions on GitHub-hosted runners owns source verification and binary builds.
+The orchestrator owns
 artifact admission and rollout authority. `ts-deploy` is not the build or
 rollout engine for this repository.
 
@@ -53,7 +54,7 @@ the controller, host agent, and operator tooling:
 
 See [the unified CLI](docs/cli.md) for command migration and feature boundaries.
 `make release-linux` creates static Linux amd64 and arm64 executables and
-requires no Go runtime on the target machine. Forgejo CI repeats the checks
+requires no Go runtime on the target machine. GitHub Actions repeats the checks
 against the event's exact commit, verifies both ELF architectures and the
 embedded Git revision, and prints SHA-256 digests.
 

@@ -1,11 +1,17 @@
 # ts-deploy
 
-`ts-deploy` is a small C# helper CLI for three specific jobs: validating
-version-1 delivery documents offline, announcing finished production
-deployments on Discord once they are actually online, and inspecting — or
-manipulating — Forgejo through the pinned `fj` CLI. It is built as one
-self-contained binary from `src/TerraScale.Deploy/` with a focused test
-project under `tests/TerraScale.Deploy.Tests/`.
+Repository workflow update (2026-10-28): use GitHub and GitHub-hosted Actions
+runners. This standalone component has no verified GitHub repository copy;
+resolve the current source and publishing repository from the release inventory
+before using the adapted examples below. GHCR references are target formats,
+not evidence that an image has been published.
+
+`ts-deploy` is a small C# helper CLI for validating version-1 delivery
+documents offline and announcing finished production deployments on Discord
+once they are actually online. It is built as one self-contained binary from
+`src/TerraScale.Deploy/` with a focused test project under
+`tests/TerraScale.Deploy.Tests/`. Use `gh` directly for GitHub metadata; the
+commands below do not imply a port of this CLI's retired repository provider.
 
 It is deliberately not a workflow engine and not a deployer. Repository
 workflows own their verification and release steps explicitly in their own
@@ -39,29 +45,28 @@ file.
   targets only, cannot be combined with health options, and does not enable
   non-production notifications. Failed production receipts still skip without
   needing a health URL.
-- `ts-deploy forgejo release-list --repo <owner/name>` lists releases,
-  including drafts and prereleases.
-- `ts-deploy forgejo release-view --repo <owner/name> --tag <tag>` reads one
-  release by tag.
-- `ts-deploy forgejo tag-commit --repo <owner/name> --tag <tag>` resolves a
-  tag to its commit.
-- `ts-deploy forgejo variables --repo <owner/name>` lists repository Actions
-  variables.
 - `ts-deploy help [command]` prints command help.
 
-Forgejo operations run through the pinned `fj` CLI, which owns the host,
-credential store, and output format; the CLI never speaks the Forgejo API.
-The exposed Forgejo operations accept `--host`, `--repo owner/name`,
-`--working-directory`, and `--json` where a structured result exists. The
-`ForgejoProvider` additionally exposes the manipulation surface used by earlier
-workflow lanes — idempotent release creation, release asset upload and download
-with digest comparison, issue search, creation, labeling, commenting, and
-closing, and workflow dispatch — so future lanes can drive Forgejo without
-reassembling `fj` argument vectors. See `docs/adr/0004-forgejo-provider.md`.
+## Repository operations
+
+Use `gh` directly; the dated provider ADR is superseded.
+
+```sh
+gh release list --repo TerraScale/<repo>
+gh release view TAG --repo TerraScale/<repo> --json tagName,assets
+gh api repos/TerraScale/<repo>/commits/TAG --jq .sha
+gh variable list --repo TerraScale/<repo>
+gh release download TAG --repo TerraScale/<repo> --pattern ASSET
+gh workflow run WORKFLOW --repo TerraScale/<repo> --ref main
+```
+
+Replace placeholders with the verified current repository and release. The
+standalone ts-deploy snapshot has no verified GitHub copy. Keep release-byte
+digest checks and signing authority separate from metadata reads.
 
 ## Repository workflow
 
-`.forgejo/workflows/ci.yml` runs on pushes to `main` and manual dispatch. Its
+`.github/workflows/ci.yml` runs on pushes to `main` and manual dispatch. Its
 `ci` job verifies the client directly:
 
 ```yaml
@@ -84,12 +89,12 @@ reassembling `fj` argument vectors. See `docs/adr/0004-forgejo-provider.md`.
 
 The `release` job then publishes the Deploy CLI for linux/amd64 and
 linux/arm64 with `dotnet publish` as self-contained single files. Each commit
-becomes a `v<version>-dev.<commit>` Forgejo release carrying both binaries,
+becomes a `v<version>-dev.<commit>` GitHub release carrying both binaries,
 their metadata, and a manifest signed with `TS_DEPLOY_RELEASE_SIGNING_KEY_B64`
 (checked against the `TS_DEPLOY_RELEASE_KEY_SHA256` variable); an existing
 release for the tag is left untouched.
 
 See:
 
-- `docs/forgejo.md` (Forgejo Actions logs API)
+- `docs/forgejo.md` (GitHub Actions logs API)
 - `docs/adr/README.md`

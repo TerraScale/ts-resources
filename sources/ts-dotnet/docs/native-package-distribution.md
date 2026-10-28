@@ -1,7 +1,7 @@
 # Native package distribution
 
 The official source repository is
-`https://git.terrascale.tech/TerraScale/ts-dotnet`. CI builds and tests both
+`https://github.com/TerraScale/ts-dotnet`. CI builds and tests both
 frameworks, packs once and qualifies package-only consumers from those exact
 bytes. The candidate version is `0.1.0-native.g<FULL_SOURCE_SHA>`; it is a CI
 candidate identity, not a published NuGet version.
@@ -14,15 +14,18 @@ installed-consumer receipts. Metadata records the package hash/size, source
 revision and hashes of native inputs and assemblies. CI exports only after
 both package consumers pass.
 
-The workflow pins Forgejo's `upload-artifact` fork at v3-node20 commit
-`ed48a7bb0c8a9079492c354d37994c413423c83e`, which uses Node 20 and the legacy
-artifact protocol (`@actions/artifact` 1.1.2). It does not use GitHub's v4
-protocol. The first normal PR CI run must confirm this instance's actual
-artifact upload and download; source inspection alone is not delivery evidence.
-The artifact name includes the full source SHA and run ID. Use `fj` to inspect
-the official repository's run, then download that run's artifact from Forgejo's
-Actions UI. Retain its run URL and independently reviewed package identity.
-The installed `fj` has no artifact-download subcommand.
+Use GitHub's supported `actions/upload-artifact` and `actions/download-artifact`
+implementations, pinned to reviewed commits, on GitHub-hosted runners. Inspect
+and download the exact run's artifact with the supported GitHub CLI:
+
+```sh
+gh run view RUN_ID --repo TerraScale/ts-dotnet
+gh run download RUN_ID --repo TerraScale/ts-dotnet --name ARTIFACT_NAME --dir /owned/downloaded-artifact
+```
+
+The artifact name must bind the full source SHA and run ID. Retain the run URL
+and independently reviewed package identity. Confirm upload and download in a
+real GitHub CI run; this snapshot does not prove artifact delivery.
 
 After downloading and extracting into an owned directory, verify against the
 independently retained package SHA-256, version and source SHA. The verifier

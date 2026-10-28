@@ -1,8 +1,8 @@
 # Triage labels
 
-The engineering skills use five canonical triage roles. This table maps each role to its Forgejo label.
+The engineering skills use five canonical triage roles. This table maps each role to its GitHub label.
 
-| Skill role        | Forgejo label     | Meaning                                   |
+| Skill role        | GitHub label     | Meaning                                   |
 | ----------------- | ----------------- | ----------------------------------------- |
 | `needs-triage`    | `needs-triage`    | A maintainer needs to evaluate the issue  |
 | `needs-info`      | `needs-info`      | Waiting for information from the reporter |
@@ -10,4 +10,4 @@ The engineering skills use five canonical triage roles. This table maps each rol
 | `ready-for-human` | `ready-for-human` | Requires human implementation             |
 | `wontfix`         | `wontfix`         | Will not be implemented                   |
 
-When a skill names a triage role, use the corresponding Forgejo label from this table.
+When a skill names a triage role, use the corresponding GitHub label from this table.

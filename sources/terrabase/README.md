@@ -15,7 +15,7 @@ implementation; product goals and contracts are in `../terrabase-rust`
 nice -n 19 make build       # build with analyzers as errors
 nice -n 19 make test-fast   # blocking integration suite
 nice -n 19 make test-slow   # non-blocking integration suite
-nice -n 19 make check       # everything required before a push
+nice -n 19 make check       # optional local verification; CI gates merging
 nice -n 19 make publish     # native binary in artifacts/publish/terrabase
 ```
 
