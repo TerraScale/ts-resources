@@ -1,10 +1,10 @@
 # Build and release boundaries
 
-The Forgejo verification workflow checks out the event's exact Git revision and
+The GitHub verification workflow checks out the event's exact Git revision and
 requires a clean tree. Its single job runs `make verify`: Go formatting
 checks, `go vet`, and the complete Go test suite with race detection, including
 deployment and qualification driver contracts. The workflow uses Go 1.27.1;
-the `terrascale-builder` image supplies that exact version and `.mise.toml`
+GitHub-hosted jobs install that exact version and `.mise.toml`
 pins the same version for local development.
 
 The same job then cross-compiles one static executable for Linux amd64 and one
@@ -33,10 +33,11 @@ and compares their exact bytes before uploading `qualification.json`. The
 binary qualification manifest retains its strict two-binary schema; the
 D15 probe is not a signed release binary or an image input. For D15, an
 operator downloads the probe, descriptor, and completed binary qualification
-manifest with `fj release asset download`, saves
-`fj actions run-detail "$RUN_NUMBER" -r TerraScale/ts-orchestrator`, then
-fetches that readback's one producing job log with
-`fj actions job-logs "$JOB_ID" -r TerraScale/ts-orchestrator`. The
+manifest with `gh release download`, saves run and job JSON with
+`gh api repos/TerraScale/ts-orchestrator/actions/runs/"$RUN_ID"` and
+`gh api repos/TerraScale/ts-orchestrator/actions/runs/"$RUN_ID"/jobs`, then
+fetches the producing job log with
+`gh run view "$RUN_ID" --repo TerraScale/ts-orchestrator --job "$JOB_ID" --log`. The
 `ts-orch runtime-priority probe-admission` check requires exact timestamped
 probe and binary qualification digest markers in that job log and binds their
 exact hashes, source/tree, successful run, producing job ID, attempt, and job
@@ -46,16 +47,13 @@ for the readback commands, temporary root-owned path, and manifest fields.
 This source route permits qualifying the unchanged cc9a ARM image. It does
 not establish that the image's runtime or any live guest passed D15 pressure.
 
-The deployed Forgejo 16.0.4 backend has no protected-environment reviewer gate
-or environment-scoped Actions secrets; the reviewed 16.0.5 source has the same
-limitation. The former `release.yml` signing and publishing job is retired.
-Canary signing therefore runs in a locally authorized operator process, with
-an independent reviewer using the existing review/evidence channel. A public
-JSON `reviewer` field is an audit assertion only; it does not authenticate a
-review or provide a Forgejo approval. Retain the actual review decision and
-operator log separately. Do not claim that Forgejo approved a release.
+CI is the gate for GitHub PR merging; ts-reviewer is not deployed and no
+review approval is required. Release signing remains an independently
+authorized operator operation, with root and delegated keys outside Actions.
+A public JSON `reviewer` field is an audit assertion, not authenticated
+approval. Retain signing authorization and the operator log separately.
 
-Before signing, confirm through `fj` that the live `refs/heads/main` still
+Before signing, confirm through `gh api repos/TerraScale/ts-orchestrator/git/ref/heads/main` that the live `refs/heads/main` still
 matches the exact qualified source commit and tree. Independently record the
 source and tree, CI run ID and number, workflow, successful job name and exact
 attempt, binary size and digest, qualification-manifest digest, delegation
@@ -73,17 +71,16 @@ Build the local signing helper from the same clean source checkout with Go
 1.27.1, low priority, and embedded VCS metadata. Check `go version -m` for the
 exact `vcs.revision` and `vcs.modified=false` before using it. This helper is
 not the deployed orchestrator binary; deployments use the CI-retained bytes.
-For the signer's live Forgejo check, prepare the pinned `fj` extension locally
-with `nice -n 19 bash scripts/ci/prepare-fj-admission.sh
-/ABSOLUTE/PRIVATE/fj-admission` and use that directory in `PATH`; stock `fj`
-does not provide the `actions run-detail` and `actions logs` commands required
-by `ts-orch release`. Keep root-key and delegated-key operations with their
+For live provenance, use `gh` against the exact GitHub run, job attempt,
+source commit and log marker. The old admission extension is retired. Verify
+the current signing helper supports GitHub before invoking it; replacing these
+documentation commands does not port a source verifier or authorize signing.
+Keep root-key and delegated-key operations with their
 respective local key owners; pass only the public root PEM, leaf PEM, and
 delegation between those steps. Do not transfer either private key.
 
 Choose `SOURCE_SHA`, `RUN_ID`, and `RUN_NUMBER` from the successful `ci.yml`
-run under review, then download its two retained inputs with `fj release asset
-download`. Clone the live repository with `fj` and confirm the checked-out
+run under review, then download its two retained inputs with `gh release download`. Clone the live repository with Git over SSH and confirm the checked-out
 `main` commit and tree equal the qualification manifest before signing. Build
 the local helper from that same clean checkout and require the embedded
 revision and clean-tree metadata to match:
@@ -93,25 +90,23 @@ set -euo pipefail
 umask 077
 # Export these from the selected successful CI run and use a new private work directory.
 : "${SOURCE_SHA:?set the selected full CI source SHA}"
-: "${RUN_ID:?set the selected Forgejo run ID}"
-: "${RUN_NUMBER:?set the selected Forgejo run number}"
+: "${RUN_ID:?set the selected GitHub Actions run ID}"
+: "${RUN_NUMBER:?set the selected GitHub Actions run number}"
 : "${ISSUED_AT_UTC:?set a canonical UTC delegation start time}"
 : "${EXPIRES_AT_UTC:?set a canonical UTC delegation expiry}"
 [[ $SOURCE_SHA =~ ^[0-9a-f]{40}$ && $RUN_ID =~ ^[1-9][0-9]*$ &&
    $RUN_NUMBER =~ ^[1-9][0-9]*$ ]]
 WORK=$(mktemp -d)
-export PATH="/ABSOLUTE/PRIVATE/fj-admission:$PATH"
 TAG="ci-${SOURCE_SHA}-run-${RUN_ID}"
-fj release asset download "$TAG" qualification.json \
-  -r TerraScale/ts-orchestrator -o "$WORK/qualification.json"
-fj release asset download "$TAG" terrascale-orchestrator-linux-arm64 \
-  -r TerraScale/ts-orchestrator -o "$WORK/terrascale-orchestrator-linux-arm64"
+gh release download "$TAG" --pattern qualification.json \
+  --repo TerraScale/ts-orchestrator --dir "$WORK"
+gh release download "$TAG" --pattern terrascale-orchestrator-linux-arm64 \
+  --repo TerraScale/ts-orchestrator --dir "$WORK"
 test "$(jq -r .source_revision "$WORK/qualification.json")" = "$SOURCE_SHA"
 test "$(jq -r .verification.run_id "$WORK/qualification.json")" = "$RUN_ID"
 test "$(jq -r .verification.run_number "$WORK/qualification.json")" = "$RUN_NUMBER"
 
-fj repo clone -H https://git.terrascale.tech \
-  TerraScale/ts-orchestrator "$WORK/source-main"
+git clone --branch main git@github.com:TerraScale/ts-orchestrator.git "$WORK/source-main"
 test "$(git -C "$WORK/source-main" branch --show-current)" = main
 test "$(git -C "$WORK/source-main" rev-parse HEAD)" = "$SOURCE_SHA"
 SOURCE_TREE=$(jq -r .source_tree "$WORK/qualification.json")
@@ -138,8 +133,10 @@ test "$(sha256sum /LOCAL/PINNED/canary-release-leaf.pub | awk '{print $1}')" = \
   --source-revision "$SOURCE_SHA" --arch arm64 --environment canary \
   --issued-at "$ISSUED_AT_UTC" --expires-at "$EXPIRES_AT_UTC" \
   --out "$WORK/canary-release-delegation.json"
-fj actions run-detail "$RUN_NUMBER" -r TerraScale/ts-orchestrator \
+gh api repos/TerraScale/ts-orchestrator/actions/runs/"$RUN_ID" \
   > "$WORK/ci-run-detail.json"
+gh api repos/TerraScale/ts-orchestrator/actions/runs/"$RUN_ID"/jobs \
+  > "$WORK/ci-run-jobs.json"
 
 "$WORK/ts-orch" release binary-candidate \
   --binary "$WORK/terrascale-orchestrator-linux-arm64" \
@@ -168,11 +165,11 @@ fj actions run-detail "$RUN_NUMBER" -r TerraScale/ts-orchestrator \
 instants ending in `Z`; a delegation can last no more than 365 days. The root
 key owner runs `sign-delegation` locally and provides only the resulting public
 delegation to the delegated-key owner, who runs `sign-binary`. Record the
-successful job attempt from the `fj actions run-detail` output as part of the
+successful job attempt from the GitHub run and jobs readback as part of the
 independent review evidence.
 
 `sign-binary` checks that the candidate, retained binary, and exact
-qualification bytes agree, then uses the pinned `fj` extension to confirm the
+qualification bytes agree, then uses verified GitHub run and job readbacks to confirm the
 CI run's ID, number, full source revision, workflow, successful job, and one
 exact manifest-digest marker in its log. It also requires a current
 root-signed delegation with the matching canary scope. `verify-binary` checks
@@ -182,11 +179,11 @@ main ref and pinned key identities.
 
 The signed receipt, delegation and root key may be published on the same CI
 tag (`canary-linux-arm64.receipt.json`, `canary-release-delegation.json`,
-`canary-release-root.pub`) with `fj release asset create`, reading each back
-with `fj release asset download` and `cmp`; `ts-orch image promote`
+`canary-release-root.pub`) with `gh release upload`, reading each back
+with `gh release download` and `cmp`; `ts-orch image promote`
 uses a receipt found there. It can also sign the binary itself
 (`--sign-binary --signing-key`), after the same `binary-candidate` and
-Forgejo run checks. Any optional JSON copy of the review record is audit-only
+GitHub Actions run checks. Any optional JSON copy of the review record is audit-only
 and must not be represented as authenticated approval.
 
 ### Image CI provenance
@@ -207,8 +204,7 @@ runs locally) finds its candidate by source revision:
 - it looks up the successful `ci.yml` run on `main` for that revision through
   the Actions API, downloads `qualification.json` and the arm64 binary from
   `ci-${SOURCE_SHA}-run-${RUN_ID}`, and requires the manifest's source, tree,
-  module digests, run identity and binary digest to match, the pinned `fj
-  actions run-detail` readback to show the successful job, and the job log to
+  module digests, run identity and binary digest to match, the GitHub run and jobs readback to show the successful job, and the job log to
   carry the exact `TS_RELEASE_QUALIFICATION_V1` marker for the manifest bytes;
 
 The build checks the binary with `ts-orch release binary-candidate` (static ARM64
@@ -217,7 +213,7 @@ qualification). The signed binary receipt is not an image input any more: it
 is verified when the image is promoted. The tools (qemu, libguestfs with its
 appliance, guestfs-tools, systemd, gnupg) come from one pinned nixpkgs
 revision through `deploy/image/tools.sh`, which keeps their closure in the
-runner's `/cache/nix` binary cache.
+GitHub Actions cache keyed by the toolchain lockfile.
 
 The job retains the image under
 `image-${SOURCE_SHA}-run-${GITHUB_RUN_ID}-attempt-${run_attempt}`
@@ -248,10 +244,9 @@ It stops at the first failed gate:
 candidate's CI release has none.
 
 The command re-executes
-itself under `deploy/image/tools.sh` for `virt-cat`, and requires the pinned
-`fj` with `actions run-detail` and `actions logs` (`--fj`, `TS_FJ`, or the
-admission build under `~/.local/share/terrascale-controller-bootstrap-20260927`);
-the receipt records both tools' digests. `sign-image` does not itself
+itself under `deploy/image/tools.sh` for `virt-cat`, and requires `gh` for
+GitHub run, job, and log reads; confirm the current implementation supports
+those checks before promotion. The receipt records both tools' digests. `sign-image` does not itself
 consume `image-qualification.json`; the image-run and marker checks are the
 promotion command's and are recorded in its receipt.
 

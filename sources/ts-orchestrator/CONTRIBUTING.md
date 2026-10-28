@@ -9,7 +9,7 @@ create Python operational scripts or a separate project for these features.
 
 Before adding automation, check whether a `ts-orch` command already provides
 the operation. Extend that command or its feature package when appropriate.
-Forgejo workflows and shell entry points should call the CLI; validation,
+GitHub workflows and shell entry points should call the CLI; validation,
 signing, provider operations, retry policy, and durable progress belong in Go.
 Thin wrappers may select tools or pass arguments, but must not duplicate the
 command's operational logic.
@@ -46,6 +46,12 @@ reviewed inputs, signed object validation, file permissions, and overwrite
 checks when moving operations into the CLI.
 
 ## Verify changes
+
+Open ready-for-review GitHub PRs, never drafts. CI on GitHub-hosted runners
+is the gate; the commands below are optional local diagnostics before push.
+Rebase on current main and merge only when the exact latest head is green.
+No review approval is required; ts-reviewer is not deployed. Address and
+answer every finding and use the T3 PR watcher while waiting.
 
 The repository pins its Go toolchain through `.mise.toml`:
 

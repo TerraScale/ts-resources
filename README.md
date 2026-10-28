@@ -51,16 +51,32 @@ effect. Files in `archive/` are historical references.
 `sources/<repository>/` and `archive/<repository>/` preserve original paths.
 These are snapshots of local files, not automatically synchronized mirrors.
 Local hosting adaptations are labelled in the manifest; see [HOSTING.md](HOSTING.md).
-The original repositories are unchanged. Application code, dependencies,
-build outputs, test fixtures, and agent instruction files are excluded;
+The original repositories are unchanged. Active copied instructions are adapted
+to the current GitHub workflow, with changes recorded in the manifest.
+Application code, dependencies,
+build outputs, test fixtures, and source-root agent instruction files are excluded;
 the Ku privacy page source is included because it contains the policy.
 
 [manifest.json](manifest.json) records source repositories, commit IDs,
 original paths, and SHA-256 hashes for every copied or generated resource.
 `logos/` provides convenient copies of the existing brand files.
 Source licenses and font notices are retained where available; collecting
-a file does not change its ownership or license. Internal documents are
-included, so this repository is private.
+a file does not change its ownership or license. This repository is public on
+[GitHub](https://github.com/TerraScale/ts-resources).
+
+## GitHub workflow
+
+Use `gh` for PRs, GitHub Issues, Actions, and releases, and Git over SSH to
+github.com. TerraScale tickets use Ku (ku MCP, ku.mariogk.com). Forgejo and
+`git.terrascale.tech` have been dead since 2026-10-11. The
+[contributor instructions](AGENTS.md) define ready-for-review PRs, optional
+local checks, CI on GitHub-hosted runners, and merging only a green latest
+head rebased on current main. ts-reviewer is not deployed and no review
+approval is required.
+
+Dated evidence and original provenance remain historical. Retired repositories
+without a verified GitHub copy are named as plain text. See the
+[archive notice](archive/README.md) before following archived references.
 
 ## Verify the collection
 

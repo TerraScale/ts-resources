@@ -70,7 +70,7 @@ and domain packages. Domain packages do not import the host or transport.
 
 ## Verification
 
-Before a commit is integrated, run:
+CI runs the following checks before merging. Local runs are optional before push:
 
 ```bash
 gofmt -l .

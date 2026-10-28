@@ -63,7 +63,7 @@ prebuilt binary:
 Builds never write into the source checkouts: Cargo uses
 `CARGO_TARGET_DIR=.stack/target/<repo>` with `--locked`, Go writes to
 `.stack/bin`. ts-auth depends on `../ts-rust` by path at the revision in
-`ts-auth/.forgejo/workflows/ci.yml` (`TS_RUST_REV`); if the sibling `ts-rust`
+`ts-auth/.github/workflows/ci.yml` (`TS_RUST_REV`); if the sibling `ts-rust`
 is elsewhere, `--locked` fails. Point `TS_AUTH_SRC` at a ts-auth checkout
 whose `../ts-rust` is at that revision, for example two detached worktrees in
 one temporary directory. `STACK_SKIP_BUILD=1` uses whatever is in

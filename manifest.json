@@ -1,6 +1,6 @@
 {
   "snapshot_at": "2026-10-06T19:24:07.148002+00:00",
-  "snapshot": "Local working tree copies; originals are unchanged. Hosting cleanup adaptations dated 2026-10-22 are labelled per file; their sha256 hashes describe local bytes. Other entries retain snapshot metadata.",
+  "snapshot": "Local working tree copies; originals are unchanged. Hosting cleanup adaptations dated 2026-10-22 are labelled per file; their sha256 hashes describe local bytes. Other entries retain snapshot metadata. GitHub instruction adaptations dated 2026-10-28 are labelled per file; archive notice added without changing archived source content.",
   "png_renderer": "rsvg-convert version 2.62.3\n\nlibraries used:\n  cairo 1.18.4\n  pango 1.58.2\n  harfbuzz 14.4.0\n  fontconfig 2.18.3",
   "png_zoom": 2,
   "repositories": {
@@ -198,21 +198,24 @@
       "kind": "docs",
       "source_repository": "sources/ku",
       "source_path": "BE/docs/dev-box-worker.md",
-      "sha256": "97efeae141149898c03ef224a2e03dfa4b354d126c0d0d8095ef8af0a0005ab9"
+      "sha256": "bb34b6ad92a66106e8320a4921d1a30b496985a444d077fb723e28acf2263fe9",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ku/BE/docs/forgejo-actions-mcp.md",
       "kind": "docs",
       "source_repository": "sources/ku",
       "source_path": "BE/docs/forgejo-actions-mcp.md",
-      "sha256": "6d182743586b754be0195b664479a088b0739d1beea1b6b935ba8d779ae129db"
+      "sha256": "7fc7c85393f7033f11a4a84ab4788d4485ca4dde8e33ac475c74ddcde76fcce8",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ku/BE/docs/forgejo-integration.md",
       "kind": "docs",
       "source_repository": "sources/ku",
       "source_path": "BE/docs/forgejo-integration.md",
-      "sha256": "3a4a1569dff39d47c384670b1a82cc6977550b87f997843cf312092245655070"
+      "sha256": "fdadf966dac63be09a71c9b768c3118f1dba8e17bfd75fbc2b99d1d463ced1b8",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ku/LICENSE",
@@ -226,14 +229,16 @@
       "kind": "docs",
       "source_repository": "sources/ku",
       "source_path": "README.md",
-      "sha256": "a90af84cb434f7dbd947ab20e5e6a1f89247fce1120de2961a58148e0646d150"
+      "sha256": "1498f062369aa2c266e86f63397ea007b54fcaf9010fee49213aca083064b665",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ku/TECHNICAL.md",
       "kind": "docs",
       "source_repository": "sources/ku",
       "source_path": "TECHNICAL.md",
-      "sha256": "04b2f0ae6d89e202455903c81a5142b4ed01920cd83d09cd2fe7fb67241dae43"
+      "sha256": "60528a031a14be3bb896e4f474d97c4d25f4a5e5b76f78c62344f5afc8923d63",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ku/UI/src/lib/assets/favicon.svg",
@@ -429,14 +434,16 @@
       "kind": "docs",
       "source_repository": "sources/terrabase",
       "source_path": "README.md",
-      "sha256": "7972296386ea4951163a18cb4396cd30bb9937164f893b2966de9d30a7a5851d"
+      "sha256": "321ab7c7694ea65e2a0b46593d67da31fe5b2eeabdd91e00c5e759d34cc7e26f",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/terrabase/docs/ci.md",
       "kind": "docs",
       "source_repository": "sources/terrabase",
       "source_path": "docs/ci.md",
-      "sha256": "418ae9f4dddb27e3056c1d95801b2bd908ae411dd85d1b4d221733862029c081"
+      "sha256": "d8475cdee4a711146ef74d74232ee720600e50c047075083e9aaa18798227c15",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/terrabase/docs/decisions/0001-grpc-lz4-transport-compression.md",
@@ -506,7 +513,8 @@
       "kind": "docs",
       "source_repository": "sources/terrabase",
       "source_path": "docs/node-pressure.md",
-      "sha256": "024e65507c9353850d8be159bed0aafd15870a5e796696aa4bb3d6c5c87d0bf0"
+      "sha256": "03d524e90a057f599891e4f6410fd9c3c4c173e975c25ce1d9f322473c952f3a",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/terrabase/docs/region-identity.md",
@@ -576,7 +584,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-atlas",
       "source_path": "docs/release.md",
-      "sha256": "0616e173b3533c38b1913067b8d377dacb2be05ffd9ba780c17711e5f096b054"
+      "sha256": "e15fe872b53aafe335945e2bd09758353a84cf3b95e4095361356d358d737b6c",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-auth/LICENSE",
@@ -590,8 +599,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-auth",
       "source_path": "README.md",
-      "sha256": "a219d363e7cd4ef4549b4870079a885e7a6afd576e4ce4acc088eaf0daec7987",
-      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
+      "sha256": "0ae48179089e87419bcbb6b9672c40fb9d1ad7cbfef04f5f682c7905b9e8e1ff",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-auth/docs/competitive-review.md",
@@ -612,7 +621,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-auth",
       "source_path": "docs/csharp-port.md",
-      "sha256": "d2cc07ed24db956d26d2a1d6b2ab0c828ffa83780db3dc430200c1abab783727"
+      "sha256": "bd4904ba06f3ebc6de2ad22edfcb3da751389d9175b848bee858d38d7fb8168f",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-auth/docs/parity.md",
@@ -647,8 +657,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-benchmark",
       "source_path": "README.md",
-      "sha256": "5a6031b49f4604f0a627da8d0b1666f31a5386e2f4f9f20f0f90f3c267897ee2",
-      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
+      "sha256": "f00154d2ccd7cb69f76f9a781353365a9ad8eb826d37ddae0caff6493d76b0c9",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-benchmark/firecracker-harness/README.md",
@@ -677,7 +687,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-benchmark",
       "source_path": "https-document/README.md",
-      "sha256": "ebdad6cbdc303fe44a3adb49403d34999c91e42f14ceea5077df5966a15ca0ce"
+      "sha256": "17279a56318a881e99142bf57ce1d52ae31150f8ba0ee1af3a22d66469f95da6",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-benchmark/local-engine/README.md",
@@ -698,14 +709,16 @@
       "kind": "docs",
       "source_repository": "sources/ts-builder",
       "source_path": "README.md",
-      "sha256": "503f2efbaa6b05edd1c489748a9d5e5ba31bf958e78978b6eb81d0ff7f3aab2e"
+      "sha256": "220ebfffd88894c1140bc1e17f35ba68d2076d4bc78a242784d8e1bcee7499cd",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-builder/docs/image-pinning.md",
       "kind": "docs",
       "source_repository": "sources/ts-builder",
       "source_path": "docs/image-pinning.md",
-      "sha256": "bc06b408d3200311273cbac4dbda34881e0f9daba1b3a8f7c8b971a2323a2452"
+      "sha256": "b23be88d4d7fd61669626e47c3c42c30c357daa47da1edf7bc6bf63a78872201",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-cli/LICENSE",
@@ -775,8 +788,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-dashboard",
       "source_path": "docs/development.md",
-      "sha256": "ae92b17b3f17d1c9b73164e99a813d5e02820d68d654c2986566a8eec003c84f",
-      "local_adaptation": "2026-10-22: obsolete hosting references retired; unrelated historical text retained. See HOSTING.md."
+      "sha256": "b823512985938b6d46cf69e6dc2f1d9e32432865a2a5a044eb6642c7052fecec",
+      "local_adaptation": "2026-10-22: obsolete hosting references retired; unrelated historical text retained. See HOSTING.md. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-dashboard/docs/go-cutover.md",
@@ -843,7 +856,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-dashboard",
       "source_path": "stack/README.md",
-      "sha256": "05c2330a10b8f961028dd9cb15b5e433bd1b89afd19fa8a27eee165885caa6fb"
+      "sha256": "7f0b95d63d034cb907d446f371df15f5e90621d7cbcb8fd5f8ef7f874a2d29e6",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-dashboard/tools/README.md",
@@ -1011,21 +1025,24 @@
       "kind": "docs",
       "source_repository": "sources/ts-deploy",
       "source_path": "README.md",
-      "sha256": "1c548c054ce5d641702f02b9de51cef8c64d35c9f4de6ca6d69ab6be27978886"
+      "sha256": "0881f1d8615cfd3830614d4e11e5d1abeb4f883fac0ad19a061073c21dda37d0",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-deploy/docs/adr/0004-forgejo-provider.md",
       "kind": "docs",
       "source_repository": "sources/ts-deploy",
       "source_path": "docs/adr/0004-forgejo-provider.md",
-      "sha256": "fb8da9d9f9faf878145594fa04a2b7a2f4d06b5b32a3696c3cd7bf727bf16119"
+      "sha256": "8bb57922f670f14ce01fa35776649ece4c18c5b0b2c4d8a31448855c5794fe8d",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-deploy/docs/adr/README.md",
       "kind": "docs",
       "source_repository": "sources/ts-deploy",
       "source_path": "docs/adr/README.md",
-      "sha256": "d1048c7d17d8373ea6c6d528a9c2963d99006970c7561353f138eee9566418a1"
+      "sha256": "06759869e9ba20ab78d50aa7d09d131b914947e3bada101f133465288f7b4edf",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-deploy/docs/agents/domain.md",
@@ -1039,7 +1056,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-deploy",
       "source_path": "docs/forgejo.md",
-      "sha256": "54d5cae39c87d92159ce93fc3ca50adbd3cf4b67c8e4f6d6b04646cb00dae012"
+      "sha256": "f36ade493a606092d29ada5f7299800af8a5e5d0c7754a635b780143856e4e95",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-docs/README.md",
@@ -2855,7 +2873,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-dotnet",
       "source_path": "README.md",
-      "sha256": "dccfd05e6dc72bb0eb96fd98e3c788f22820c7e239d6af694e06bdb480299a7b"
+      "sha256": "76441a9cfff3980c2c8ce0a457473963f39011eded095970e8a803b0b2ceda04",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-dotnet/docs/adr/0001-support-dotnet-10-lts.md",
@@ -2897,14 +2916,16 @@
       "kind": "docs",
       "source_repository": "sources/ts-dotnet",
       "source_path": "docs/native-package-distribution.md",
-      "sha256": "171945941c7e4f4b77e03140e99d270d745a997078d1f60121d1b2115add8620"
+      "sha256": "e6bcf58119c5799a95bcbbb051127d07d2a6ef343c4aced2c25d54a1bd9c1ec7",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-dotnet/docs/terrabase-consumers.md",
       "kind": "docs",
       "source_repository": "sources/ts-dotnet",
       "source_path": "docs/terrabase-consumers.md",
-      "sha256": "bb0d07d61c858780333f1a698fbd8d48dbec7394510963946007506258e3b93f"
+      "sha256": "e3879e05ab7a8689dffd21699e3f6b585e098779c71fcf287f78c35cf89be3cb",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-dotnet/scripts/qualification/README.md",
@@ -2953,7 +2974,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-js",
       "source_path": "README.md",
-      "sha256": "c309f010a6d5972108dd59f47116bff6073b7302eb14714c7072aca5fdd63c9d"
+      "sha256": "273619289644e471e8ea970c4ff97a12186f65d4535167eab816f754b5c58494",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-js/contracts/terrabase-csharp/0004-document-api-v1.md",
@@ -3065,7 +3087,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-js",
       "source_path": "docs/agents/issue-tracker.md",
-      "sha256": "d2872f7ef192fafb301752ed53d1eb1a9a9a0377c174cbcae9fd0a149a79aebb"
+      "sha256": "0e3050c204b022c3c46ec08985b93503e92ff8ece2428b001e140fdfc3f47609",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-js/docs/guides/2026-08-05-typed-sdk-boundary.md",
@@ -3079,7 +3102,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-js",
       "source_path": "docs/release.md",
-      "sha256": "4e5964510352ee2c7b03814760b2c64251f24b81b8c249292a44b5546e9e8c1d"
+      "sha256": "7e09c1d57526d78bca3095676b142a57ee5434eafe5047d552a0bbcc4b8e5281",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-js/docs/rename/README.md",
@@ -3107,14 +3131,16 @@
       "kind": "docs",
       "source_repository": "sources/ts-landing",
       "source_path": "README.md",
-      "sha256": "ce70bbe332e8edfd4671e395324e33d0ec507087a8826c7e2777f4c83a5b2704"
+      "sha256": "404cc9a381adf71cad8125b8ee48f10b5be2855c8da6c4ecc84352cb8fdc7e72",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-landing/docs/DESIGN_SYSTEM.md",
       "kind": "docs",
       "source_repository": "sources/ts-landing",
       "source_path": "docs/DESIGN_SYSTEM.md",
-      "sha256": "317b72b1cd11909e22592ee27cbd014ce8f28a453f85bc79ef325316f8e8caa7"
+      "sha256": "80f9ba2ea6bad71a50e932b510e72d8b30558388cc889d6f314c31299367d633",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-landing/docs/agents/domain.md",
@@ -3128,14 +3154,16 @@
       "kind": "docs",
       "source_repository": "sources/ts-landing",
       "source_path": "docs/agents/issue-tracker.md",
-      "sha256": "cc581d5198cedbc04499245db7b96fc778b47b0675d066264a4af3949595497d"
+      "sha256": "0e3050c204b022c3c46ec08985b93503e92ff8ece2428b001e140fdfc3f47609",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-landing/docs/agents/triage-labels.md",
       "kind": "docs",
       "source_repository": "sources/ts-landing",
       "source_path": "docs/agents/triage-labels.md",
-      "sha256": "46cf4f36b2fbe43fcd1e8780cfb3fc5c76b00c3554c45ae6707805a0235e537f"
+      "sha256": "406c8429e4ea8ca7cb9fe946ead319e827ffb1cf358e91a0986be95fc05bb531",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-landing/docs/design_handoff_terrascale_landing/design-reference/assets/icon-blue.svg",
@@ -3674,32 +3702,32 @@
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "CONTEXT.md",
-      "sha256": "83389dec8ea60ac2be081656f09c29524af99f02ae12c3bab08258f8d4b54594",
-      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
+      "sha256": "fa71aa26122d1157aa523e593c1f38305252b04104c50a34f4967f4841af23fd",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-orchestrator/CONTRIBUTING.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "CONTRIBUTING.md",
-      "sha256": "b21c2dcfecac468d318dae9c073d4fbd232423a4d5424709c672b2458e4971c0",
-      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
+      "sha256": "fcd8595a9436cbe2d518b6d665b29463f706b630299ac9d73a3fc12663576454",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-orchestrator/README.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "README.md",
-      "sha256": "06bc11572245cd7aa8d546325acfd5705ff273510a2b3c3c288c3ea6e5d49c88",
-      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
+      "sha256": "f2dde39d35d5ddb3af9a73b8c22c6f9a5791dc7e0b6a8a42812c9e6b3c056d42",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-orchestrator/deploy/netbird/README.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "deploy/netbird/README.md",
-      "sha256": "5baabd8e81c2030f76436ceb6d147d50bb0b7698d713376eca7e0c860df071f7",
-      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
+      "sha256": "479075e9bec96436a6e6f7ea506a38856a3ae278c06c774a3600e76afdf0969a",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-orchestrator/docs/README.md",
@@ -3714,8 +3742,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/architecture.md",
-      "sha256": "f485417a66c41a0a235a042a193e1d7d07baae93465f42c73109b7654f1d1892",
-      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
+      "sha256": "91b4a83ca19be954debf1688cbbc368907681e4cdff1a39c7600365dd25ef3f9",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-orchestrator/docs/autoscale-telemetry.md",
@@ -3753,8 +3781,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/continuous-delivery.md",
-      "sha256": "72703e9dec69c05884fa9682933fc5f1dde507dfb9c3ae353f1dc7f468f82ae3",
-      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
+      "sha256": "cf0110909b0755221ec26435884054ec2f7d20ca3b4fbeaea668fc8837cf831b",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-orchestrator/docs/controller-membership.md",
@@ -3932,15 +3960,16 @@
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/delivery-pipeline.md",
-      "sha256": "86ce5d2d73ffaca1f46736977545af0484ddecfc825b4759dde9ef953347b4bc",
-      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
+      "sha256": "d24ec2016c362d0be0879a8fe349a67e634d68cdc47d39c761b19adfc9c51e5e",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-orchestrator/docs/e2e.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/e2e.md",
-      "sha256": "b1c495b09a1f34a9c6c21f578f40b85805196bd57e86da447c6b7167d9a7123b"
+      "sha256": "2445990bdcb234cccb971661ca77eb7a4ed80373fdd1dc7d3e3a8181179acda6",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-orchestrator/docs/evidence/gates/d02.md",
@@ -4184,8 +4213,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/releases.md",
-      "sha256": "f73e1af4f9d1f8d0e4272f50d0b09719630073514c11f40309c56b0de9fdb91c",
-      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
+      "sha256": "094f097a17d125f09b24d5065aaae0eca2f7463622c49e881dd4c42f580cc0d0",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-orchestrator/docs/storage.md",
@@ -4200,16 +4229,16 @@
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/terrabase-deployment.md",
-      "sha256": "7fecdf5fa83c12f7003ecd377f2ce362a366f0bbade23124bd4b486628c7b593",
-      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
+      "sha256": "05e020195beb16778c4d4c2585b8104284bd08985f22d8eae4de0412d8c27c5b",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-orchestrator/docs/terrabase-runtime-contract.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/terrabase-runtime-contract.md",
-      "sha256": "dd927ac3ed9462e5c04f8530d7ed33d7389bbea56f46de34b6aabfabff527844",
-      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
+      "sha256": "244863bc1bda3378ec4c56ac019584a8a88b27115a95fb806ba1a06fa51157ba",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-orchestrator/docs/terrabase-serving-lifecycle-plan.md",
@@ -4224,16 +4253,16 @@
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/testing.md",
-      "sha256": "a7253dfb93494c433ceffe07b7b9a35e3c7ae7a73fa4560caab70b05c53d62e7",
-      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
+      "sha256": "ffb1057cce309e7448815856930313bebcb4b0d08fc99da0ed29767fec5e0794",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-orchestrator/docs/ts-auth-deployment.md",
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/ts-auth-deployment.md",
-      "sha256": "d5cfffc1a2e718f62a68fe8436302534fea32b4242ad059c36938e46f366c6b9",
-      "local_adaptation": "2026-10-22: obsolete hosting references retired; unrelated historical text retained. See HOSTING.md."
+      "sha256": "00e1e2f7bf6c76ba475a7b095d9a8b17d3b8897c342f47b68808d31815fc721a",
+      "local_adaptation": "2026-10-22: obsolete hosting references retired; unrelated historical text retained. See HOSTING.md. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-orchestrator/internal/dashboard/assets/VENDOR.md",
@@ -4254,7 +4283,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-reviewer",
       "source_path": "README.md",
-      "sha256": "b9413eeec73efce1e45b623b9550ce31ccdb79cef5bae2932e98965c001adfec"
+      "sha256": "5c4fc98809bc215ae451028c71d8fdac332b41a3b880e4496537e597f9f6f985",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-router/LICENSE",
@@ -4289,7 +4319,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-router",
       "source_path": "docs/operations.md",
-      "sha256": "30a199eba61668785393790888c99ab946e679506b49f9caf115b9f01145df58"
+      "sha256": "3b4bf910c2d573a1b7404f186204c033996880421ec5ec03695b510bef263e1c",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-router/docs/routing.md",
@@ -4338,8 +4369,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-status",
       "source_path": "README.md",
-      "sha256": "16d480a6e8bc39687897eef2ab28e91f2fb8c3bcc958c9097a3779197ffa561e",
-      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23."
+      "sha256": "18ce4dc5bbc662f917a31fbbe7596c0912a1e5e0321d76ebd883548d1d8f597b",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-status/public/fonts/OFL-oxanium.txt",
@@ -9493,14 +9524,16 @@
       "kind": "docs",
       "source_repository": "sources/ts-internals",
       "source_path": "docs/agents/issue-tracker.md",
-      "sha256": "767adcc9d4bd6cb73c5e1a534565a79644fe16e4b4195237d03ebabb765b673b"
+      "sha256": "0e3050c204b022c3c46ec08985b93503e92ff8ece2428b001e140fdfc3f47609",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-internals/docs/agents/triage-labels.md",
       "kind": "docs",
       "source_repository": "sources/ts-internals",
       "source_path": "docs/agents/triage-labels.md",
-      "sha256": "46cf4f36b2fbe43fcd1e8780cfb3fc5c76b00c3554c45ae6707805a0235e537f"
+      "sha256": "406c8429e4ea8ca7cb9fe946ead319e827ffb1cf358e91a0986be95fc05bb531",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-internals/docs/database-api/adr/0001-public-tbep-gateway.md",
@@ -9628,7 +9661,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-internals",
       "source_path": "docs/go-migration/DESIGN.md",
-      "sha256": "4165dca29a1c261ce12db133a9eb869154eb8db15799ec29d1b490bdac3feee8"
+      "sha256": "77e7e4367931f878e131c741481017d459728250aa4fe467aa7a1eb03c2fc06c",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-internals/docs/local-dev-tailscale.md",
@@ -11388,6 +11422,12 @@
       "kind": "generated-png",
       "svg": "logos/terrascale/logo-terrascale-white.svg",
       "sha256": "4979d0c1e4c71d294d1b17e037ad38171a975f197339fcd3cf408cfb62e8359b"
+    },
+    {
+      "path": "archive/README.md",
+      "kind": "docs",
+      "sha256": "a21b885a3e116d5bbaa06df1979c4719fda4ad299f95d40f33b9af6e0e7d0f23",
+      "local_adaptation": "Added historical archive notice 2026-10-28; archived source files unchanged."
     }
   ]
 }

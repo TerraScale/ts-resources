@@ -24,9 +24,9 @@ no mutations. Preserving those failures keeps autoscaling gated. Substituting
 zero, HTTP liveness, request share, or connection-pool occupancy would invent
 information used to authorize destructive autoscaler actions.
 
-Follow up after [terrabase#13](https://git.terrascale.tech/TerraScale/terrabase/pulls/13)
+Follow up after terrabase#13
 (I/O admission pool and memory budgeting) and
-[terrabase#11](https://git.terrascale.tech/TerraScale/terrabase/pulls/11)
+terrabase#11
 (replication) merge: connect their real counters, membership identity/readiness
 and authenticated peer frontiers; verify the producer against the autoscaler
 consumer before removing the gate. These merges alone do not qualify live

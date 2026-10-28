@@ -1025,7 +1025,7 @@ Section `*__inner` containers shrink their gutter from `0 40px` to
   renewal and an eligible first 30 days at no charge. Invited-user onboarding
   remains separate and does not require signup card verification or a plan
   choice. Until
-  [TerraScale.Internals issue 30](https://git.terrascale.tech/TerraScale/TerraScale.Internals/issues/30)
+  TerraScale.Internals issue 30
   ships, label this as the target contract rather than released behavior.
 - **Export + no-lock-in is a first-class story.** FAQ addresses this
   directly: rate-limit on exports is for platform health, never charges,

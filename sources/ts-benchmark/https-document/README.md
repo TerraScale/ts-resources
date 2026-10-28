@@ -8,8 +8,9 @@ nice -n 19 python3 https-document/acceptance.py --output bench/csharp-baseline/N
 ```
 
 `release.json` pins a published TerraBase release by exact tag, source revision
-and SHA-256. The harness downloads through `ORG_READ_TOKEN` (CI) or an existing
-`fj` login (local), verifies the hash before executing, provisions fresh real
+and SHA-256. Download with `gh release download` from the verified current GitHub
+publishing repository; public reads need no token. Confirm the harness supports
+that source before running it. It verifies the hash before executing, provisions fresh real
 TerraBase storage, and removes temporary credentials, certificate, binary and
 data on exit. Smoke commands create fresh run subdirectories under `bench/csharp-smoke/`,
 preserving prior success and failure evidence. Explicit `--output` paths must

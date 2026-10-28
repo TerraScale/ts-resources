@@ -1,5 +1,11 @@
 # TerraBase consumers
 
+Current workflow (2026-10-28): use GitHub `.github/workflows/` and `gh`.
+The pin inventory below records the original snapshot, including its former
+workflow paths; it is historical evidence, not current CI setup. Resolve the
+current publishing repository and verify every source SHA with `gh api` before
+adopting a dependency. Public reads need no repository token.
+
 ts-auth's store (`src/TerraScale.Auth.Store` in TerraScale/ts-auth) is meant to
 persist through the TerraBase client from this repository (TS-489), consumed as
 a source dependency, not a package. Today it references the SDK project but
@@ -34,15 +40,15 @@ The current consumption details below were checked against ts-auth revision
 1. Merge the ts-dotnet change to `main`.
 2. Set `TS_DOTNET_REV` in both ts-auth workflows (`ci.yml` and `slow.yml`) to
    the full 40-hex SHA of that merge commit, so they never test different
-   revisions.
+   revisions. Use `.github/workflows/` in the current GitHub checkout.
 3. The TerraBase server pin comes with it: `TerraBaseRelease.Pinned` in
    `src/TerraScale.DotNet.Testing/TerraBaseRelease.cs` names the release tag
    and SHA-256 this SDK revision was verified against (today the CI build of
    terrabase `ff256067015433c8c40b59879f1282d2a40480ce`). After adding the
    helper reference and starting it in ts-auth's test harness, those tests
-   can run against that same binary. Pass `ORG_READ_TOKEN` to both test steps
-   so the helper can download it; currently the token is scoped to dependency
-   checkout, not the fast or slow test step.
+   can run against that same binary. Download public release assets with `gh release download`; confirm the
+   current helper supports GitHub and retains the pinned digest. Do not
+   provision credentials for the retired host.
 4. Locally, clone ts-dotnet next to ts-auth, or pass
    `-p:TerraScaleRoot=<dir containing ts-dotnet and ts-libs>` to `dotnet build`.
 

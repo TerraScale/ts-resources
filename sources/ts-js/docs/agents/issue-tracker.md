@@ -1,47 +1,46 @@
-# Issue tracker: Forgejo
+# Issue tracker: GitHub and Ku
 
-Issues and specs for this repository live in Forgejo at `git.terrascale.tech`.
-Use the `fj` CLI for every issue operation.
+TerraScale tickets and specs live in Ku (ku MCP, ku.mariogk.com). Repository
+issues live in GitHub Issues and use the `gh` CLI. Choose the tracker from the
+request; do not copy a Ku ticket into GitHub unless explicitly requested.
 
 ## Conventions
 
-- Infer the Forgejo repository from the current repository's `origin` remote.
-- Before any write, confirm that the selected Forgejo repository matches the current Git repository.
-- Preserve existing issue content and labels unless the task calls for changing them.
-- Use `fj -C <repo-path>` when the command runs outside the repository.
+- Infer the GitHub repository from `origin` and verify it before any write.
+- Preserve existing issue content and labels unless the task changes them.
+- Outside a checkout, pass `--repo TerraScale/<repo>` explicitly.
+- Use `--body-file` for long issue bodies and comments.
 
-## Commands
+## Repository issue commands
 
-- Create: `fj issue create "..." --body "..."`
-- Read: `fj issue view <number>` and `fj issue view <number> comments`
-- Search: `fj issue search [query] --state open`
-- Comment: `fj issue comment <number> "..."`
-- Add or remove labels: `fj issue edit <number> labels --add "..."` or `--rm "..."`
-- Assign: `fj issue assign <number> <username>`
-- Close with an explanation: `fj issue close <number> --with-msg "..."`
+- Create: `gh issue create --title "..." --body-file /path/to/body.md`
+- Read: `gh issue view <number> --comments`
+- Search: `gh issue list --search "query" --state open`
+- Comment: `gh issue comment <number> --body-file /path/to/comment.md`
+- Labels: `gh issue edit <number> --add-label "..." --remove-label "..."`
+- Assign: `gh issue edit <number> --add-assignee "@me"`
+- Close: `gh issue close <number> --comment "explanation"`
 
-Use `--body-file` for long issue bodies or comments.
+## Pull requests
 
-## Request surface
+Use ready-for-review GitHub PRs for code changes; never drafts. CI is the gate,
+with no local tests required before push and no required review approval.
+ts-reviewer is not deployed. Address and answer every reviewer finding. Keep
+at most one open PR per repository per thread. Rebase on current main and
+merge only when CI is green on the exact latest head. Use the T3 PR watcher
+instead of polling. See the root [workflow](../../../../AGENTS.md).
 
-Use Forgejo issues. This repository does not use pull requests.
+## Skills and wayfinding
 
-## When a skill says "publish to the issue tracker"
+When a skill says "publish to the issue tracker" or "fetch the relevant ticket",
+use Ku for TerraScale tickets and `gh issue` for repository issues. Read the
+body, comments, labels, state, assignees, and blockers in the chosen tracker.
 
-Create a Forgejo issue in the repository inferred from `origin`.
-
-## When a skill says "fetch the relevant ticket"
-
-Read the issue body, comments, labels, state, and assignees with `fj issue view`.
-
-## Wayfinding operations
-
-The map is one Forgejo issue. Its child tickets are separate issues.
-
-- Label the map `wayfinder:map`.
-- Put `Part of #<map>` at the top of each child issue.
-- Label each child `wayfinder:<type>`, where the type is `research`, `prototype`, `grilling`, or `task`.
-- Record dependencies as `Blocked by: #<number>, #<number>` at the top of the child body.
-- A ticket is available when it is open, has no open blocker, and has no assignee.
-- Claim a ticket by assigning the current Forgejo user before starting work.
-- Resolve a ticket by posting the answer, closing it, and adding its result to the map's Decisions-so-far section.
+For a repository map, use one GitHub issue labelled `wayfinder:map`. Child
+issues begin with `Part of #<map>` and carry `wayfinder:research`,
+`wayfinder:prototype`, `wayfinder:grilling`, or `wayfinder:task`. Record
+`Blocked by: #<number>, #<number>` at the top of the body. A ticket is available
+when open, unassigned, and without an open blocker. Claim it with
+`gh issue edit <number> --add-assignee "@me"`. Post the answer, close the
+issue, and update the map's Decisions-so-far section when done. For Ku maps,
+use Ku identifiers, relationships, and assignments instead.

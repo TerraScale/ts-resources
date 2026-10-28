@@ -42,7 +42,7 @@ ts-auth CI publishes `ts-auth-linux-arm64` and `ts-auth-linux-arm64.sha256`
 (TS-488). `tsauth.VerifyRelease` checks them like a TerraBase release: the
 asset name (`ts-auth-linux-amd64` or `-arm64`), ELF magic, at most 512 MiB,
 and the single `sha256sum` line; that digest is admitted and pinned. The
-source claim is `https://git.terrascale.tech/TerraScale/ts-auth`, the commit
+source claim is the verified GitHub source URL in the current release inventory, the commit
 and the SHA-256 of `git archive --format=tar <commit>`.
 
 ### Signed configuration
@@ -294,7 +294,7 @@ one env file each, one ts-auth replica on two of them).
    `.sha256` (TS-488).
 6. **Operator grant.** The operator's signer grant lists role `ts-auth`,
    environment `canary` and repository
-   `https://git.terrascale.tech/TerraScale/ts-auth`.
+   the verified GitHub source URL in the current release inventory.
 8. **Instance metadata blocked.** Step 3 installs the nftables rule and its
    boot dependency on every controller before the host is restarted. Each
    host must provide `/usr/sbin/nft` (Ubuntu package `nftables`) and the

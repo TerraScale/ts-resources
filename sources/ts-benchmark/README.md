@@ -30,7 +30,8 @@ nice -n 19 python3 https-document/acceptance.py --output bench/csharp-baseline/N
 ```
 
 Prerequisites: the pinned Rust toolchain, Python 3.8+, OpenSSL, Linux amd64, and
-an existing `fj` login or `ORG_READ_TOKEN` with release read access. Cargo and
+the pinned release from the verified current GitHub publishing repository
+(download with `gh release download`; public reads need no token). Cargo and
 rustfmt must come from rustup; with mise use `nice -n 19 mise exec -- make …`.
 Without mise, use `nice -n 19 env -u RUSTUP_TOOLCHAIN PATH="$HOME/.cargo/bin:$PATH"
 make …`. The harness honors Cargo target overrides when locating the driver.
@@ -61,7 +62,7 @@ not a stable `v*` release; changing that pin requires a new baseline.
 
 ## CI and historical comparisons
 
-[Fast CI](.forgejo/workflows/fast.yml) runs the C# HTTPS acceptance smoke.
+[Fast CI](.github/workflows/fast.yml) runs the C# HTTPS acceptance smoke.
 The lane checks formatting, strict Clippy, unit checks and the
 real released server, and retains JSON/Markdown artifacts even on failure.
 It fails on correctness, setup, transport or API errors, **never performance
