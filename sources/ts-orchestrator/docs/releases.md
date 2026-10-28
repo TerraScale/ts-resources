@@ -47,7 +47,7 @@ for the readback commands, temporary root-owned path, and manifest fields.
 This source route permits qualifying the unchanged cc9a ARM image. It does
 not establish that the image's runtime or any live guest passed D15 pressure.
 
-CI is the gate for GitHub PR merging; ts-reviewer is not deployed and no
+CI is the gate for GitHub PR merging and no
 review approval is required. Release signing remains an independently
 authorized operator operation, with root and delegated keys outside Actions.
 A public JSON `reviewer` field is an audit assertion, not authenticated

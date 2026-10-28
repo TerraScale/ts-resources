@@ -1,6 +1,6 @@
 {
   "snapshot_at": "2026-10-06T19:24:07.148002+00:00",
-  "snapshot": "Local working tree copies; originals are unchanged. Hosting cleanup adaptations dated 2026-10-22 are labelled per file; their sha256 hashes describe local bytes. Other entries retain snapshot metadata. GitHub instruction adaptations dated 2026-10-28 are labelled per file; archive notice added without changing archived source content.",
+  "snapshot": "Local working tree copies; originals are unchanged. Hosting cleanup adaptations dated 2026-10-22 are labelled per file; their sha256 hashes describe local bytes. Other entries retain snapshot metadata. GitHub instruction adaptations dated 2026-10-28 are labelled per file; archive notice added without changing archived source content. Retired reviewer-bot snapshot and mentions removed 2026-10-28.",
   "png_renderer": "rsvg-convert version 2.62.3\n\nlibraries used:\n  cairo 1.18.4\n  pango 1.58.2\n  harfbuzz 14.4.0\n  fontconfig 2.18.3",
   "png_zoom": 2,
   "repositories": {
@@ -159,11 +159,6 @@
       "remote": "ssh://git@git.terrascale.tech/TerraScale/ts-orchestrator.git",
       "commit": "4383e04e369fc3ef7c7de674506d17e6fe2d41d4"
     },
-    "sources/ts-reviewer": {
-      "local_source": "TerraScale/ts-reviewer",
-      "remote": "ssh://git@git.terrascale.tech/TerraScale/ts-reviewer.git",
-      "commit": "949bfc24ca3df4daf889cdfd579523349f7e1017"
-    },
     "sources/ts-router": {
       "local_source": "TerraScale/ts-router",
       "remote": "ssh://git@git.terrascale.tech/TerraScale/ts-router.git",
@@ -214,8 +209,8 @@
       "kind": "docs",
       "source_repository": "sources/ku",
       "source_path": "BE/docs/forgejo-integration.md",
-      "sha256": "fdadf966dac63be09a71c9b768c3118f1dba8e17bfd75fbc2b99d1d463ced1b8",
-      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
+      "sha256": "22eaebd0323808d0bfc6fb6561fa417504ea9f0ee910e093e31e703c0570bf27",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained. Retired reviewer-bot mention removed 2026-10-28."
     },
     {
       "path": "sources/ku/LICENSE",
@@ -3087,8 +3082,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-js",
       "source_path": "docs/agents/issue-tracker.md",
-      "sha256": "0e3050c204b022c3c46ec08985b93503e92ff8ece2428b001e140fdfc3f47609",
-      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
+      "sha256": "496b86fc53746d9bf6b6db80c741b5fab5446bb9bb62bf94d9076af66412f6e7",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained. Retired reviewer-bot mention removed 2026-10-28."
     },
     {
       "path": "sources/ts-js/docs/guides/2026-08-05-typed-sdk-boundary.md",
@@ -3154,8 +3149,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-landing",
       "source_path": "docs/agents/issue-tracker.md",
-      "sha256": "0e3050c204b022c3c46ec08985b93503e92ff8ece2428b001e140fdfc3f47609",
-      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
+      "sha256": "496b86fc53746d9bf6b6db80c741b5fab5446bb9bb62bf94d9076af66412f6e7",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained. Retired reviewer-bot mention removed 2026-10-28."
     },
     {
       "path": "sources/ts-landing/docs/agents/triage-labels.md",
@@ -3710,8 +3705,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "CONTRIBUTING.md",
-      "sha256": "fcd8595a9436cbe2d518b6d665b29463f706b630299ac9d73a3fc12663576454",
-      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
+      "sha256": "a24f7070c53fd5c671c67aad2befea407bd194a707ce50683e5114961e451f3a",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained. Retired reviewer-bot mention removed 2026-10-28."
     },
     {
       "path": "sources/ts-orchestrator/README.md",
@@ -4213,8 +4208,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-orchestrator",
       "source_path": "docs/releases.md",
-      "sha256": "094f097a17d125f09b24d5065aaae0eca2f7463622c49e881dd4c42f580cc0d0",
-      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
+      "sha256": "233ab4e23f58d695a02ae52206df35fb5ef07e54430c633d6db5c2f7cca20eb1",
+      "local_adaptation": "Committed snapshot cleanup predating integrity CI; checksum reconciled 2026-10-23. GitHub instruction migration 2026-10-28; original provenance and dated evidence retained. Retired reviewer-bot mention removed 2026-10-28."
     },
     {
       "path": "sources/ts-orchestrator/docs/storage.md",
@@ -4270,21 +4265,6 @@
       "source_repository": "sources/ts-orchestrator",
       "source_path": "internal/dashboard/assets/VENDOR.md",
       "sha256": "5cb8c843d78e6604facce2427567cfaa3429e6cb984f77f3517960529d4d936b"
-    },
-    {
-      "path": "sources/ts-reviewer/LICENSE",
-      "kind": "licenses",
-      "source_repository": "sources/ts-reviewer",
-      "source_path": "LICENSE",
-      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
-    },
-    {
-      "path": "sources/ts-reviewer/README.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-reviewer",
-      "source_path": "README.md",
-      "sha256": "5c4fc98809bc215ae451028c71d8fdac332b41a3b880e4496537e597f9f6f985",
-      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
     },
     {
       "path": "sources/ts-router/LICENSE",
@@ -9524,8 +9504,8 @@
       "kind": "docs",
       "source_repository": "sources/ts-internals",
       "source_path": "docs/agents/issue-tracker.md",
-      "sha256": "0e3050c204b022c3c46ec08985b93503e92ff8ece2428b001e140fdfc3f47609",
-      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
+      "sha256": "496b86fc53746d9bf6b6db80c741b5fab5446bb9bb62bf94d9076af66412f6e7",
+      "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained. Retired reviewer-bot mention removed 2026-10-28."
     },
     {
       "path": "sources/ts-internals/docs/agents/triage-labels.md",

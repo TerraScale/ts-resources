@@ -40,7 +40,6 @@ Legal documents retain their original draft status.
 | [sources/ts-landing](sources/ts-landing/) | 5 | 71 | 0 | `0d505754144a` |
 | [sources/ts-libs](sources/ts-libs/) | 4 | 0 | 1 | `dcce2855f585` |
 | [sources/ts-orchestrator](sources/ts-orchestrator/) | 84 | 22 | 0 | `4383e04e369f` |
-| [sources/ts-reviewer](sources/ts-reviewer/) | 1 | 0 | 1 | `949bfc24ca3d` |
 | [sources/ts-router](sources/ts-router/) | 5 | 0 | 1 | `0f3ab36429f1` |
 | [sources/ts-rust](sources/ts-rust/) | 4 | 0 | 1 | `f400217520f7` |
 | [sources/ts-status](sources/ts-status/) | 1 | 4 | 1 | `cc367c2f1212` |
