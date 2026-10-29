@@ -5,6 +5,11 @@ GitHub Issues; TerraScale tickets belong in Ku (ku MCP, ku.mariogk.com).
 
 Workspace rules (hosting, secrets, models, Cloudflare, GitHub and shipping) are in the **Shipping code** section of the TerraScale workspace AGENTS.md.
 
+## Layout and checks
+
+- `sources/` holds adapted and original resources, `archive/` holds historical material, `logos/` holds logos, and `manifest.json` registers every file under those three directories.
+- Fast tests: `python3 scripts/check_resources.py` checks hashes and image coverage; CI runs it for resource changes. No application builds are needed for documentation.
+
 ## Preserve the collection
 
 Keep `archive/**` historical. Its README identifies dead references. Preserve
@@ -18,5 +23,3 @@ For an adapted resource, update its SHA-256 and append a dated
 `local_adaptation` note in `manifest.json`. Keep original source paths,
 repositories, remotes, commits, and other provenance intact. Register new
 resources under `sources/`, `archive/`, or `logos/` in the manifest.
-`python3 scripts/check_resources.py` checks hashes and image coverage; CI runs
-it for resource changes. No application builds are needed for documentation.
