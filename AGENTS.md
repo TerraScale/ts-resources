@@ -1,25 +1,9 @@
 # Working in ts-resources
 
-This public repository collects resource snapshots. Use GitHub at
-https://github.com/TerraScale/ts-resources and Git over SSH to github.com.
-Use `gh` for pull requests, repository issues, Actions, and releases. TerraScale
-tickets belong in Ku (ku MCP, ku.mariogk.com); repository issues belong in
-GitHub Issues. Forgejo at git.terrascale.tech has been dead since 2026-10-11.
-Do not use its CLI, MCP, API, package registry, or the retired COS script.
+This public repository collects resource snapshots. Repository issues belong in
+GitHub Issues; TerraScale tickets belong in Ku (ku MCP, ku.mariogk.com).
 
-## GitHub workflow
-
-- Open ready-for-review pull requests, never drafts. Keep at most one open PR
-  per repository per thread. Do not add AI attribution to commits or PRs.
-- CI is the gate; local tests are optional before pushing. GitHub Actions
-  must use GitHub-hosted runners only.
-- **Start from latest main.** Base every change on the most recent `main`: before starting, `git fetch origin` and branch from `origin/main`, never from a stale local `main`, another feature branch or an old worktree. Before every push, `git fetch origin && git rebase origin/main` again; right before merging, rebase once more and merge only when CI is green on that exact head.
-- Address and answer every reviewer finding.
-- No review approval is required. Do not request mariogk or any bot as
-  reviewers.
-- This repository merges directly when green. `terrascale` and `ts-dashboard`
-  use the merge queue through `gh pr merge --auto --squash`.
-- Use the T3 PR watcher for pending checks or reviews; do not poll `gh` in loops.
+Workspace rules (hosting, secrets, models, Cloudflare, GitHub and shipping) are in the **Shipping code** section of the TerraScale workspace AGENTS.md.
 
 ## Preserve the collection
 
