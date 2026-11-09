@@ -239,11 +239,15 @@ Base path: `/v1/management`.
 | `GET` | `/organizations/{organization}/projects/{project}` | project |
 | `PATCH` | `/organizations/{organization}/projects/{project}` | `{name}` → renamed project |
 | `DELETE` | `/organizations/{organization}/projects/{project}` | `204`; `409` while it has databases |
-| `POST` | `…/projects/{project}/databases` | `{name}` → `201` empty database |
-| `GET` | `…/projects/{project}/databases` | page of databases |
-| `GET` | `…/projects/{project}/databases/{database}` | database |
-| `DELETE` | `…/projects/{project}/databases/{database}` | `204`; deletes the data. Branches are independent and stay. |
-| `POST` | `…/databases/{database}/branches` | `{name}` → `201` database in the same project holding a consistent snapshot copy |
+Database routes live on the canonical project paths, `/v1/projects/{project}/databases…`, reached with the same ts-auth access token; the Management service credential is accepted there on the administrative listener too.
+
+| Method | Route | Result |
+| --- | --- | --- |
+| `POST` | `/v1/projects/{project}/databases` | `{name}` → `201` empty database |
+| `GET` | `/v1/projects/{project}/databases` | page of databases |
+| `GET` | `/v1/projects/{project}/databases/{database}` | database |
+| `DELETE` | `/v1/projects/{project}/databases/{database}` | `204`; deletes the data. Branches are independent and stay. |
+| `POST` | `/v1/projects/{project}/databases/{database}/branches` | `{name}` → `201` database in the same project holding a consistent snapshot copy |
 
 Shapes:
 
@@ -329,8 +333,8 @@ These back the dashboard's database tooling pages (TS-463). Same access, convent
 ts-auth access token (or, on the administrative listener only, the management service credential) on every route,
 and `404` for an organization the acting user is not a member of and everything under it. Like projects and databases, the
 tooling is open to every member whatever its role (see [Membership](#membership)); per-project roles are a follow-up.
-D = `/v1/management/organizations/{organization}/projects/{project}/databases/{database}`,
-P = `/v1/management/organizations/{organization}/projects/{project}`. Every route returns `404` when the
+D = `/v1/projects/{project}/databases/{database}`,
+P = `/v1/projects/{project}`. Every route returns `404` when the
 organization, project or database does not exist.
 
 | Method | Route | Result |

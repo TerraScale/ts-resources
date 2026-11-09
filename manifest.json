@@ -501,7 +501,7 @@
       "kind": "docs",
       "source_repository": "sources/terrabase",
       "source_path": "docs/management-api.md",
-      "sha256": "8f571eb28920b2647667ff6d2a0c09e714c10c44361b17dd32ec2f5e4f15021e"
+      "sha256": "f6da350d5ac6350930117bbcfc378707f15d099802057b160cb2e9fba3878c5a"
     },
     {
       "path": "sources/terrabase/docs/node-pressure.md",
@@ -756,13 +756,6 @@
       "source_repository": "sources/ts-cli",
       "source_path": "scripts/qualification/README.md",
       "sha256": "0185b4a1830ac17c0062e90a49b7c1cafbf3d98574757a04572cdcf12b90baac"
-    },
-    {
-      "path": "sources/ts-dashboard/DESIGN_SYSTEM.md",
-      "kind": "docs",
-      "source_repository": "sources/ts-dashboard",
-      "source_path": "DESIGN_SYSTEM.md",
-      "sha256": "b45b4a1ac3d24441e0fde043481da0b9f68ed42efe18c07cdc18b32d0c29bd1d"
     },
     {
       "path": "sources/ts-dashboard/README.md",
