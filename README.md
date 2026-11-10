@@ -60,9 +60,10 @@ the Ku privacy page source is included because it contains the policy.
 [manifest.json](manifest.json) records source repositories, commit IDs,
 original paths, and SHA-256 hashes for every copied or generated resource.
 `logos/` provides convenient copies of the existing brand files.
-Source licenses and font notices are retained where available; collecting
-a file does not change its ownership or license. This repository is public on
-[GitHub](https://github.com/TerraScale/ts-resources).
+Font notices and third-party license notices are retained; mirrored TerraScale
+source licenses are removed, so no copied repository carries a TerraScale
+license. Collecting a file does not change its ownership or license. This
+repository is public on [GitHub](https://github.com/TerraScale/ts-resources).
 
 ## GitHub workflow
 
