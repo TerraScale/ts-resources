@@ -213,13 +213,6 @@
       "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained. Retired reviewer-bot mention removed 2026-10-28."
     },
     {
-      "path": "sources/ku/LICENSE",
-      "kind": "licenses",
-      "source_repository": "sources/ku",
-      "source_path": "LICENSE",
-      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
-    },
-    {
       "path": "sources/ku/README.md",
       "kind": "docs",
       "source_repository": "sources/ku",
@@ -547,13 +540,6 @@
       "sha256": "a0cc211e41f00911af663b9350d8cc31e4cb5a4153683644fd89a0c186e2704f"
     },
     {
-      "path": "sources/ts-atlas/LICENSE",
-      "kind": "licenses",
-      "source_repository": "sources/ts-atlas",
-      "source_path": "LICENSE",
-      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
-    },
-    {
       "path": "sources/ts-atlas/README.md",
       "kind": "docs",
       "source_repository": "sources/ts-atlas",
@@ -581,13 +567,6 @@
       "source_path": "docs/release.md",
       "sha256": "e15fe872b53aafe335945e2bd09758353a84cf3b95e4095361356d358d737b6c",
       "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
-    },
-    {
-      "path": "sources/ts-auth/LICENSE",
-      "kind": "licenses",
-      "source_repository": "sources/ts-auth",
-      "source_path": "LICENSE",
-      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
     },
     {
       "path": "sources/ts-auth/README.md",
@@ -714,13 +693,6 @@
       "source_path": "docs/image-pinning.md",
       "sha256": "b23be88d4d7fd61669626e47c3c42c30c357daa47da1edf7bc6bf63a78872201",
       "local_adaptation": "GitHub instruction migration 2026-10-28; original provenance and dated evidence retained."
-    },
-    {
-      "path": "sources/ts-cli/LICENSE",
-      "kind": "licenses",
-      "source_repository": "sources/ts-cli",
-      "source_path": "LICENSE",
-      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
     },
     {
       "path": "sources/ts-cli/README.md",
@@ -932,13 +904,6 @@
       "sha256": "65c90b5df3efe7a3df1f1f4030b141ccb6e573fabaa0e50f4123e8ee3f602d69"
     },
     {
-      "path": "sources/ts-dashboard/web/static/flags/LICENSE",
-      "kind": "licenses",
-      "source_repository": "sources/ts-dashboard",
-      "source_path": "web/static/flags/LICENSE",
-      "sha256": "8f1195d55a2fd315a07d812328470ca9ba2abb78c8d317ff19619d5125e00cea"
-    },
-    {
       "path": "sources/ts-dashboard/web/static/flags/br.svg",
       "kind": "assets",
       "source_repository": "sources/ts-dashboard",
@@ -1000,13 +965,6 @@
       "source_repository": "sources/ts-dashboard",
       "source_path": "web/static/img/404-number.webp",
       "sha256": "cd31fcfb972480184f4e10254f396f51267902112112af2cd4f9e2b9aa84bd48"
-    },
-    {
-      "path": "sources/ts-deploy/LICENSE",
-      "kind": "licenses",
-      "source_repository": "sources/ts-deploy",
-      "source_path": "LICENSE",
-      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
     },
     {
       "path": "sources/ts-deploy/README.md",
@@ -2850,13 +2808,6 @@
       "sha256": "9ffc340022bbcaede7908340a1ce7e281dcee5d0c54b39ca49f51f258f6ba1d5"
     },
     {
-      "path": "sources/ts-dotnet/LICENSE",
-      "kind": "licenses",
-      "source_repository": "sources/ts-dotnet",
-      "source_path": "LICENSE",
-      "sha256": "0c923cb258f12ef461f466990d5364b3e3aa6af74935489b52314616dc0e296a"
-    },
-    {
       "path": "sources/ts-dotnet/README.md",
       "kind": "docs",
       "source_repository": "sources/ts-dotnet",
@@ -2923,13 +2874,6 @@
       "sha256": "ce3a9fda246a9b31cfa772aa044f956b2e22f78d2684866c09443977773c423e"
     },
     {
-      "path": "sources/ts-go/LICENSE",
-      "kind": "licenses",
-      "source_repository": "sources/ts-go",
-      "source_path": "LICENSE",
-      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
-    },
-    {
       "path": "sources/ts-go/README.md",
       "kind": "docs",
       "source_repository": "sources/ts-go",
@@ -2949,13 +2893,6 @@
       "source_repository": "sources/ts-js",
       "source_path": "CHANGELOG.md",
       "sha256": "44c381afd5c19b3a791e10c170ab53039fe0e72fa0c24c31bad2b38165bbae1d"
-    },
-    {
-      "path": "sources/ts-js/LICENSE",
-      "kind": "licenses",
-      "source_repository": "sources/ts-js",
-      "source_path": "LICENSE",
-      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
     },
     {
       "path": "sources/ts-js/README.md",
@@ -3651,13 +3588,6 @@
       "sha256": "061b7d13070f339a1cf4a315ebf84fe8a278bfc12b25236139c66a34058f9057"
     },
     {
-      "path": "sources/ts-libs/LICENSE",
-      "kind": "licenses",
-      "source_repository": "sources/ts-libs",
-      "source_path": "LICENSE",
-      "sha256": "0c923cb258f12ef461f466990d5364b3e3aa6af74935489b52314616dc0e296a"
-    },
-    {
       "path": "sources/ts-libs/src/TerraScale.Endpoints.Example/README.md",
       "kind": "docs",
       "source_repository": "sources/ts-libs",
@@ -4260,13 +4190,6 @@
       "sha256": "5cb8c843d78e6604facce2427567cfaa3429e6cb984f77f3517960529d4d936b"
     },
     {
-      "path": "sources/ts-router/LICENSE",
-      "kind": "licenses",
-      "source_repository": "sources/ts-router",
-      "source_path": "LICENSE",
-      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
-    },
-    {
       "path": "sources/ts-router/README.md",
       "kind": "docs",
       "source_repository": "sources/ts-router",
@@ -4301,13 +4224,6 @@
       "source_repository": "sources/ts-router",
       "source_path": "docs/routing.md",
       "sha256": "15a7d3f0ffc55cb288c82f7040a1a53d15237272fbbed0b7f5f22225b20896d0"
-    },
-    {
-      "path": "sources/ts-rust/LICENSE",
-      "kind": "licenses",
-      "source_repository": "sources/ts-rust",
-      "source_path": "LICENSE",
-      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
     },
     {
       "path": "sources/ts-rust/README.md",
@@ -4435,13 +4351,6 @@
       "source_repository": "archive/TerraBaseV2",
       "source_path": "CONTEXT.md",
       "sha256": "5b5fa9868e33e6c951880ba471543f2fe22f72704d01ab2407007c4bfd106de1"
-    },
-    {
-      "path": "archive/TerraBaseV2/LICENSE.md",
-      "kind": "docs",
-      "source_repository": "archive/TerraBaseV2",
-      "source_path": "LICENSE.md",
-      "sha256": "a6f7bba5d9b817a023bdfb50fbc264f129e62320ae95755be4134dd6da56600b"
     },
     {
       "path": "archive/TerraBaseV2/README.md",
@@ -6791,13 +6700,6 @@
       "source_repository": "archive/TerraScale.Skills",
       "source_path": "productivity/writing-for-agents/SKILL-MECHANICS.md",
       "sha256": "b6ceecada24993ae37acfd1870660ddd62c5c3883e34336c744310006e6bee9f"
-    },
-    {
-      "path": "archive/TerraScale.TypeScript/LICENSE",
-      "kind": "licenses",
-      "source_repository": "archive/TerraScale.TypeScript",
-      "source_path": "LICENSE",
-      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
     },
     {
       "path": "archive/TerraScale.TypeScript/README.md",
