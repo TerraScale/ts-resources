@@ -1,28 +1,23 @@
 name: CI
 
 on:
+  pull_request:
   push:
     branches: [main]
-  pull_request:
-    paths:
-      - 'sources/**'
-      - 'archive/**'
-      - 'logos/**'
-      - 'manifest.json'
-      - 'scripts/**'
-      - '.github/workflows/ci.yml'
-  workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  test:
-    uses: TerraScale/.github/.github/workflows/command.yml@3a54c0184eacdc45466c1123bca67a99db62e91c
-    with:
-      command: |
-        python3 scripts/check_resources.py
+  all-green:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          persist-credentials: false
+      - run: python3 scripts/check_resources.py
